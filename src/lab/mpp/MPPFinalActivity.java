@@ -22,7 +22,7 @@ public class MPPFinalActivity extends TabActivity {
 				.getDrawable(R.drawable.icon));
 		addTab("Map", new Intent(this, TGAMap.class), getResources()
 				.getDrawable(R.drawable.icon));
-		addTab("Search", new Intent(this, TGASearch.class), getResources()
+		addTab("Search", new Intent(this, TGAProfile.class), getResources()
 				.getDrawable(R.drawable.icon));
 		addTab("Activity", new Intent(this, TGAActivity.class), getResources()
 				.getDrawable(R.drawable.icon));

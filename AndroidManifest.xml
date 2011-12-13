@@ -18,11 +18,11 @@
 
 		<activity android:name=".HomePage"></activity>
 		<activity android:name=".MapPage"></activity>
-		<activity android:name=".SearchPage"></activity>
+		<activity android:name=".ProfilePage"></activity>
 		<activity android:name=".ActivityPage"></activity>
 		<activity android:name=".TGAHome"></activity>
 		<activity android:name=".TGAMap"></activity>
-		<activity android:name=".TGASearch"></activity>
+		<activity android:name=".TGAProfile"></activity>
 		<activity android:name=".TGAActivity"></activity>
 	</application>
 </manifest>
