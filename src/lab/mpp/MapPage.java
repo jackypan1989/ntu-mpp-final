@@ -15,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MapPage extends MapActivity implements LocationListener {
 
@@ -27,39 +28,46 @@ public class MapPage extends MapActivity implements LocationListener {
 		MapController mc = map.getController();
 		mc.setZoom(20);
 
-		LocationManager lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Criteria criteria = new Criteria();
+		while (true) {
+			Log.e("log", "log");
+			LocationManager lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+			Criteria criteria = new Criteria();
 
-		String best = lmgr.getBestProvider(criteria, true);
-		best = LocationManager.GPS_PROVIDER;
+			String best = lmgr.getBestProvider(criteria, true);
+			best = LocationManager.GPS_PROVIDER;
 
-		lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
-
-		Location location = lmgr.getLastKnownLocation(best);
-		if (location == null) {
-			best = lmgr.getBestProvider(criteria, true);
 			lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
-			location = lmgr.getLastKnownLocation(best);
-		} else if (System.currentTimeMillis() - location.getTime() > 30000) {
-			best = lmgr.getBestProvider(criteria, true);
-			lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
-			location = lmgr.getLastKnownLocation(best);
-		}
-		if (location != null) {
-			// TODO Auto-generated method stub
-			double x = location.getLatitude();
-			double y = location.getLongitude();
-			GeoPoint p = new GeoPoint((int) (x * 1000000), (int) (y * 1000000));
-			mc.setCenter(p);
-			List<Overlay> mapOverlays = map.getOverlays();
-			MyOverlay pin = new MyOverlay(this.getResources().getDrawable(
-					R.drawable.icon));
-			pin.addOverlay(new OverlayItem(p, "", ""));
 
-			pin.addOverlay(new OverlayItem(new GeoPoint(
-					(int) (x * 1000000 + 200), (int) (y * 1000000 + 200)), "",
-					""));
-			mapOverlays.add(pin);
+			Location location = lmgr.getLastKnownLocation(best);
+			if (location == null) {
+				best = lmgr.getBestProvider(criteria, true);
+				lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
+				location = lmgr.getLastKnownLocation(best);
+			} else if (System.currentTimeMillis() - location.getTime() > 30000) {
+				best = lmgr.getBestProvider(criteria, true);
+				lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
+				location = lmgr.getLastKnownLocation(best);
+			}
+			if (location != null) {
+				if (System.currentTimeMillis() - location.getTime() <= 30000) {
+					// TODO Auto-generated method stub
+					double x = location.getLatitude();
+					double y = location.getLongitude();
+					GeoPoint p = new GeoPoint((int) (x * 1000000),
+							(int) (y * 1000000));
+					mc.setCenter(p);
+					List<Overlay> mapOverlays = map.getOverlays();
+					MyOverlay pin = new MyOverlay(this.getResources()
+							.getDrawable(R.drawable.icon));
+					pin.addOverlay(new OverlayItem(p, "", ""));
+
+					pin.addOverlay(new OverlayItem(new GeoPoint(
+							(int) (x * 1000000 + 200),
+							(int) (y * 1000000 + 200)), "", ""));
+					mapOverlays.add(pin);
+					break;
+				}
+			}
 		}
 	}
 
