@@ -24,5 +24,8 @@
 		<activity android:name=".TGAMap"></activity>
 		<activity android:name=".TGAProfile"></activity>
 		<activity android:name=".TGAActivity"></activity>
+		<activity android:name="LoginActivity"></activity>
+
+		
 	</application>
 </manifest>
