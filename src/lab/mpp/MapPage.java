@@ -16,27 +16,19 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 public class MapPage extends MapActivity implements LocationListener {
-	long preTime = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-		preTime = System.currentTimeMillis();
 		MapView map = (MapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
 		MapController mc = map.getController();
 		mc.setZoom(20);
 
 		while (true) {
-			if (System.currentTimeMillis() - preTime > 4000) {
-				Toast.makeText(this, "No location signal", Toast.LENGTH_LONG)
-						.show();
-				break;
-			}
 			Log.e("log", "log");
 			LocationManager lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 			Criteria criteria = new Criteria();

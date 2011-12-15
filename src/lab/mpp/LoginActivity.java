@@ -1,10 +1,15 @@
 package lab.mpp;
 
+import org.json.JSONException;
+
 import ntu.csie.mpp.util.InitFacebook;
+import ntu.csie.mpp.util.MyPreferences;
+import ntu.csie.mpp.util.RemoteData;
 
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.BaseRequestListener;
 import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
 import com.facebook.android.LoginButton;
 import com.facebook.android.SessionEvents;
 import com.facebook.android.SessionStore;
@@ -14,17 +19,18 @@ import com.facebook.android.SessionEvents.LogoutListener;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class LoginActivity extends Activity {
+	public static final String TAG = "jacky";
 	// set facebook info
 	private String APP_ID = "229865623746685" ;
 	private Facebook mFacebook ;
     private AsyncFacebookRunner mAsyncRunner ;
-    private String mFacebookID ;
-    private String mFacebookName ;
 	
     // set view
     private LoginButton mLoginButton;
@@ -52,7 +58,7 @@ public class LoginActivity extends Activity {
         Button saveFriendBtn = (Button)findViewById(R.id.button1);
         saveFriendBtn.setOnClickListener(new Button.OnClickListener(){
 	    	 public void onClick(View v){
-	    		 InitFacebook init = new InitFacebook(mFacebook ,mAsyncRunner);
+	    		 InitFacebook init = new InitFacebook(mAsyncRunner);
 	             init.run();
 	    	 }
 	    });
@@ -68,8 +74,7 @@ public class LoginActivity extends Activity {
 
         @Override
 		public void onAuthSucceed() {
-
-            
+        	mAsyncRunner.request("me", new MeRequestListener());
         }
 
         @Override
@@ -90,11 +95,31 @@ public class LoginActivity extends Activity {
         }
     }
     
-    public class SampleRequestListener extends BaseRequestListener {
-
+    public class MeRequestListener extends BaseRequestListener {
         @Override
 		public void onComplete(final String response, final Object state) {
+        	Log.d( TAG , response);
+        	try {
+				RemoteData.fb_me = Util.parseJson(response);
+				
+				String id = RemoteData.fb_me.getString("id");
+				String name = RemoteData.fb_me.getString("name");
+				
+				
+				SharedPreferences settings = getSharedPreferences(MyPreferences.PREF_FB, 0);
+	            settings.edit()
+	              .putString(MyPreferences.PREF_FB_ID, id)
+	              .putString(MyPreferences.PREF_FB_NAME, name)
+	              .commit();
+			
+        	} catch (JSONException e) {
+				Log.e( TAG , e.toString());
+			} catch (FacebookError e) {
+				Log.e( TAG , e.toString());
+			}
+			
+			
+			
         }
- 
     }
 }
