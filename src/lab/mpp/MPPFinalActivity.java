@@ -17,20 +17,23 @@ public class MPPFinalActivity extends TabActivity {
 	/** Called when the activity is first created. */
 	public static final String TAG = "MPPFinalActivity";
 	TabHost tabHost;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		SharedPreferences settings = getSharedPreferences(MyPreferences.PREF_FB, 0);
-	    LocalData.fb_id = settings.getString(MyPreferences.PREF_FB_ID, "");
-	    LocalData.fb_name = settings.getString(MyPreferences.PREF_FB_NAME, "");
-		
-	    if(LocalData.fb_id.equals("") && LocalData.fb_name.equals("")){
-	    	Log.d(TAG , "It's the first time to use this app.");
-	    	Intent intent = new Intent(MPPFinalActivity.this , LoginActivity.class);
-    		startActivity(intent);
-	    }
-	    
+
+		SharedPreferences settings = getSharedPreferences(
+				MyPreferences.PREF_FB, 0);
+		LocalData.fb_id = settings.getString(MyPreferences.PREF_FB_ID, "");
+		LocalData.fb_name = settings.getString(MyPreferences.PREF_FB_NAME, "");
+
+		if (LocalData.fb_id.equals("") && LocalData.fb_name.equals("")) {
+			Log.d(TAG, "It's the first time to use this app.");
+			Intent intent = new Intent(MPPFinalActivity.this,
+					LoginActivity.class);
+			startActivity(intent);
+		}
+
 		// setContentView(R.layout.main);
 		tabHost = getTabHost();
 		addTab("Home", new Intent(this, TGAHome.class), getResources()
