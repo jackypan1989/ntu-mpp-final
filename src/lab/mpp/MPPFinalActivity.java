@@ -1,6 +1,11 @@
 package lab.mpp;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.LocalData;
+import ntu.csie.mpp.util.RemoteData;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,7 +40,18 @@ public class MPPFinalActivity extends TabActivity {
     		startActivity(intent);
 	    }
 	    */
-	    
+		// send the request to server
+		HttpPoster hp = new HttpPoster();
+		String response = hp.getCheckin();
+		Log.d(TAG, response);
+
+
+			try {
+				RemoteData.checkins = new JSONArray(response);
+		} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		tabHost = getTabHost();
 		addTab("Home", new Intent(this, TGAHome.class), getResources()
 				.getDrawable(R.drawable.list_icon));
