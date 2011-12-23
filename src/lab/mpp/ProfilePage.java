@@ -2,12 +2,18 @@ package lab.mpp;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
+import ntu.csie.mpp.util.MyPreferences;
+import ntu.csie.mpp.util.RemoteData;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ProfilePage extends Activity {
 	MyAdapter myadapter;
@@ -48,7 +54,21 @@ public class ProfilePage extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		this.getParent().getParent().setTitle("ProfilePage");
+		TextView t = (TextView) findViewById(R.id.textView1);
+		try {
+			this.getParent().getParent().setTitle("ProfilePage");
+			if (Globo.prefid == -1) {
+				t.setText(MyPreferences.PREF_FB_NAME);
+			} else {
+
+				t.setText(RemoteData.checkins.getJSONObject(Globo.prefid)
+						.getString("name"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Globo.prefid = -1;
 
 	}
 }

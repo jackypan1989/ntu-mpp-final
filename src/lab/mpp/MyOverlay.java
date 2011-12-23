@@ -64,11 +64,8 @@ public class MyOverlay extends ItemizedOverlay {
 						if (Math.abs(xy.x - me.getX()) < 100
 								&& Math.abs(xy.y - me.getY()) < 100) {
 
-							Toast.makeText(
-									mp.getContext(),
-									RemoteData.checkins.getJSONObject(i)
-											.getString("name"),
-									Toast.LENGTH_SHORT).show();
+							Globo.prefid = i;
+							MPPFinalActivity.goTo(2);
 							return true;
 						}
 
@@ -85,10 +82,7 @@ public class MyOverlay extends ItemizedOverlay {
 					if (Math.abs(xy.x - me.getX()) < 100
 							&& Math.abs(xy.y - me.getY()) < 100) {
 
-						// Toast.makeText(mp.getContext(),
-						// MyPreferences.PREF_FB_NAME, Toast.LENGTH_SHORT)
-						// .show();
-
+						Globo.prefid = -1;
 						MPPFinalActivity.goTo(2);
 						return true;
 					}
