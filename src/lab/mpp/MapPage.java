@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import ntu.csie.mpp.util.MyPreferences;
 import ntu.csie.mpp.util.RemoteData;
 
 import com.google.android.maps.GeoPoint;
@@ -53,6 +54,8 @@ public class MapPage extends MapActivity implements LocationListener {
 							// TODO Auto-generated method stub
 							double x = location.getLatitude();
 							double y = location.getLongitude();
+							MyPreferences.latitude = x;
+							MyPreferences.longitude = y;
 							GeoPoint p = new GeoPoint((int) (x * 1000000),
 									(int) (y * 1000000));
 							mc.setCenter(p);

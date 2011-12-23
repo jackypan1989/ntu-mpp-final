@@ -2,6 +2,11 @@ package lab.mpp;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
+import ntu.csie.mpp.util.MyPreferences;
+import ntu.csie.mpp.util.RemoteData;
+
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -44,22 +49,52 @@ public class MyOverlay extends ItemizedOverlay {
 
 			// Log.e("log", me.getX() + " " + me.getY());
 			// Log.e("log", g.getLatitudeE6() + " " + g.getLongitudeE6());
-			Log.e("log", mOverlays.size() + "");
-			int i = 0;
-			for (OverlayItem oi : mOverlays) {
 
-				Point xy = null;
-				xy = mp.getProjection().toPixels(oi.getPoint(), null);
-				if (xy != null) {
-					if (Math.abs(xy.x - me.getX()) < 100
-							&& Math.abs(xy.y - me.getY()) < 100) {
-						Toast.makeText(mp.getContext(), "Touch" + i,
-								Toast.LENGTH_SHORT).show();
+			try {
+				for (int i = 0; i < RemoteData.checkins.length(); i++) {
 
-						return true;
+					GeoPoint p = new GeoPoint((int) (RemoteData.checkins
+							.getJSONObject(i).getDouble("latitude") * 1000000),
+							(int) (RemoteData.checkins.getJSONObject(i)
+									.getDouble("longitude") * 1000000));
+					Point xy = mp.getProjection().toPixels(p, null);
+
+					if (xy != null) {
+						Log.e("log", xy.x + " " + me.getX());
+						if (Math.abs(xy.x - me.getX()) < 100
+								&& Math.abs(xy.y - me.getY()) < 100) {
+
+							Toast.makeText(
+									mp.getContext(),
+									RemoteData.checkins.getJSONObject(i)
+											.getString("name"),
+									Toast.LENGTH_SHORT).show();
+							return true;
+						}
+
 					}
 				}
-				i++;
+
+				GeoPoint p = new GeoPoint(
+						(int) (MyPreferences.latitude * 1000000),
+						(int) (MyPreferences.longitude * 1000000));
+				Point xy = mp.getProjection().toPixels(p, null);
+
+				if (xy != null) {
+					Log.e("log", xy.x + " " + me.getX());
+					if (Math.abs(xy.x - me.getX()) < 100
+							&& Math.abs(xy.y - me.getY()) < 100) {
+
+						Toast.makeText(mp.getContext(),
+								MyPreferences.PREF_FB_NAME, Toast.LENGTH_SHORT)
+								.show();
+						return true;
+					}
+
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return false;
