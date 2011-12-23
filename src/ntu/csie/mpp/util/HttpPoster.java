@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
@@ -37,47 +38,9 @@ public class HttpPoster {
 		nameValuePairs = new ArrayList<NameValuePair>();
 	}
 	
-	// send fb's graph data to server
-	public void setInitFbData(String type , String data){
-		// do http post
+	// do http post
+	public String doPost(){
 		try {
-			httppost = new HttpPost("http://140.112.107.209/mpp_final/initFbData.php");
-			nameValuePairs.add(new BasicNameValuePair("id",LocalData.fb_id));
-			nameValuePairs.add(new BasicNameValuePair("name",LocalData.fb_name));
-			nameValuePairs.add(new BasicNameValuePair("type",type));
-			nameValuePairs.add(new BasicNameValuePair("data",data));
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs , HTTP.UTF_8));
-			response = httpclient.execute(httppost);
-            entity = response.getEntity();
-		    is = entity.getContent();
-		} catch (UnsupportedEncodingException e) {
-			Log.e(TAG , e.toString());
-		} catch (ClientProtocolException e){
-			Log.e(TAG , e.toString());
-		} catch (IOException e) {
-			Log.e(TAG , e.toString());
-		}
-		
-        // convert response to string
-		try{
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF_8"),8);
-	        StringBuilder sb = new StringBuilder();
-	        String line = null;
-	        while ((line = reader.readLine()) != null) {
-	                sb.append(line + "\n");
-	        }
-	        is.close();
-	        
-	        Log.d(TAG, "Result:" + sb.toString());
-		}catch(Exception e){
-	        Log.e(TAG, "Error Converting:" + e.toString());
-		}
-	}
-	
-	public String getFbData(){
-		// http post
-		try {
-			httppost = new HttpPost("http://140.112.107.209/mpp_final/getFbData.php");
 			response = httpclient.execute(httppost);
 		    entity = response.getEntity();
 		    is = entity.getContent();
@@ -107,37 +70,29 @@ public class HttpPoster {
 		return result;
 	}
 	
-	public String getCheckIn(){
-		// http post
-		try {
-			httpclient = new DefaultHttpClient();
-			httppost = new HttpPost("http://140.112.107.209/mpp_final/getCheckIn.php");
-			response = httpclient.execute(httppost);
-		    entity = response.getEntity();
-		    is = entity.getContent();
-		} catch (UnsupportedEncodingException e) {
-			Log.e(TAG , e.toString());
-		} catch (ClientProtocolException e) {
-			Log.e(TAG , e.toString());
-		} catch (IOException e) {
-			Log.e(TAG , e.toString());
-		}
-		
-        // convert response to string
-		String result = null;
-		try{
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF_8"),8);
-	        StringBuilder sb = new StringBuilder();
-	        String line = null;
-	        while ((line = reader.readLine()) != null) {
-	                sb.append(line + "\n");
-	        }
-	        is.close();
-	        result = sb.toString();
-	        Log.d(TAG, "result:" + result);
-		}catch(Exception e){
-	        Log.e(TAG, "Error converting:" + e.toString());
-		}
-		return result;
+	// send fb's graph data to server
+	public String setInitFbData(String type , String data){
+		httppost = new HttpPost("http://140.112.107.209/mpp_final/initFbData.php");
+		nameValuePairs.add(new BasicNameValuePair("id",LocalData.fb_id));
+		nameValuePairs.add(new BasicNameValuePair("name",LocalData.fb_name));
+		nameValuePairs.add(new BasicNameValuePair("type",type));
+		nameValuePairs.add(new BasicNameValuePair("data",data));
+		return doPost();
+	}
+	
+	public String getFbData(){
+		httppost = new HttpPost("http://140.112.107.209/mpp_final/getFbData.php");
+		return doPost();
+	}
+	
+	public String getCheckin(){
+		httppost = new HttpPost("http://140.112.107.209/mpp_final/getCheckin.php");
+		return doPost();
+	}
+	
+	public String getLastCheckinById(String id){
+		httppost = new HttpPost("http://140.112.107.209/mpp_final/getLastCheckinById.php");
+		nameValuePairs.add(new BasicNameValuePair("id",id));
+		return doPost();
 	}
 }
