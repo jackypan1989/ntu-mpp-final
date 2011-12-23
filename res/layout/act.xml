@@ -4,6 +4,14 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ActivityPage"></TextView>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:orientation="horizontal" android:layout_height="wrap_content" android:layout_weight="5">
+        <TextView android:text="TextView" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+        <Button android:text="Button" android:id="@+id/button1" android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+    </LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_weight="5">
+        <TextView android:text="TextView" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        <Button android:text="Button" android:id="@+id/button3" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+    </LinearLayout>
+    <Button android:layout_weight="1" android:text="Button" android:id="@+id/button2" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
     
 </LinearLayout>
