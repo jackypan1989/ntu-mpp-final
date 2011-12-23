@@ -20,38 +20,37 @@ import android.widget.TabHost.TabSpec;
 public class MPPFinalActivity extends TabActivity {
 	/** Called when the activity is first created. */
 	public static final String TAG = "MPPFinalActivity";
-	TabHost tabHost;
+	static TabHost tabHost;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		Log.d(TAG , "My id is "+LocalData.fb_id+". My name is "+LocalData.fb_name);
-		
+
+		Log.d(TAG, "My id is " + LocalData.fb_id + ". My name is "
+				+ LocalData.fb_name);
+
 		// get preferences
 		SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
 		LocalData.getPreference(settings);
-		
-		// check if user is the first time to login 
+
+		// check if user is the first time to login
 		/*
-		if(LocalData.fb_id.equals("") && LocalData.fb_name.equals("")){
-	    	Log.d(TAG , "It's the first time to use this app.");
-	    	// go to login activity
-	    	Intent intent = new Intent(MPPFinalActivity.this , LoginActivity.class);
-    		startActivity(intent);
-	    }
-	    */
+		 * if(LocalData.fb_id.equals("") && LocalData.fb_name.equals("")){
+		 * Log.d(TAG , "It's the first time to use this app."); // go to login
+		 * activity Intent intent = new Intent(MPPFinalActivity.this ,
+		 * LoginActivity.class); startActivity(intent); }
+		 */
 		// send the request to server
 		HttpPoster hp = new HttpPoster();
 		String response = hp.getCheckin();
 		Log.d(TAG, response);
 
-
-			try {
-				RemoteData.checkins = new JSONArray(response);
+		try {
+			RemoteData.checkins = new JSONArray(response);
 		} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		tabHost = getTabHost();
 		addTab("Home", new Intent(this, TGAHome.class), getResources()
 				.getDrawable(R.drawable.list_icon));
@@ -75,5 +74,9 @@ public class MPPFinalActivity extends TabActivity {
 				.setContent(intent);
 
 		tabHost.addTab(setContent);
+	}
+	
+	static void goTo(int i){
+		tabHost.setCurrentTab(i);
 	}
 }
