@@ -12,6 +12,9 @@ public class LocalData {
     // the facebook data at local device
 	public static String fb_id = "";
 	public static String fb_name = "";
+	public static double latitude;
+	public static double longitude;
+	
 	public static JSONObject fb_me;
 	public static JSONObject fb_friends; 
 	public static JSONObject fb_photos; 

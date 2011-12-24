@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 
-import ntu.csie.mpp.util.MyPreferences;
+import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
@@ -58,7 +58,7 @@ public class ProfilePage extends Activity {
 		try {
 			this.getParent().getParent().setTitle("ProfilePage");
 			if (Globo.prefid == -1) {
-				t.setText(MyPreferences.PREF_FB_NAME);
+				t.setText(LocalData.fb_name);
 			} else {
 
 				t.setText(RemoteData.checkins.getJSONObject(Globo.prefid)

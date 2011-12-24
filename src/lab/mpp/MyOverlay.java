@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 
-import ntu.csie.mpp.util.MyPreferences;
+import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.graphics.Point;
@@ -73,8 +73,8 @@ public class MyOverlay extends ItemizedOverlay {
 				}
 
 				GeoPoint p = new GeoPoint(
-						(int) (MyPreferences.latitude * 1000000),
-						(int) (MyPreferences.longitude * 1000000));
+						(int) (LocalData.latitude * 1000000),
+						(int) (LocalData.longitude * 1000000));
 				Point xy = mp.getProjection().toPixels(p, null);
 
 				if (xy != null) {
