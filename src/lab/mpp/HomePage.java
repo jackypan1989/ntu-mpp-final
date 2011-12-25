@@ -14,6 +14,8 @@ import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -31,6 +33,37 @@ public class HomePage extends Activity {
 	private ArrayList<String> statusList = new ArrayList<String>();
 	private ArrayList<String> tagList = new ArrayList<String>();
 	private ArrayList<String> dateTimeList = new ArrayList<String>();
+	Handler h = new Handler() {
+		@Override
+		public void handleMessage(Message m) {
+			switch (m.what) {
+			case 0:
+				Log.e("log","wait");
+				if (Globo.flagStringLoad) {
+					try {
+
+						for (int i = 0; i < RemoteData.checkins.length(); i++) {
+							JSONObject checkin = RemoteData.checkins
+									.getJSONObject(i);
+							nameList.add(checkin.getString("name"));
+							locationNameList.add(checkin
+									.getString("location_name"));
+							statusList.add(checkin.getString("status"));
+							tagList.add(checkin.getString("tag"));
+							dateTimeList.add(checkin.getString("create_time"));
+						}
+						updateCheckinList();
+					} catch (JSONException e) {
+						Log.e(TAG, e.toString());
+					}
+				} else {
+					sendEmptyMessageDelayed(0, 1000);
+				}
+				break;
+			}
+		}
+
+	};
 
 	/** Called when the activity is first created. */
 	@Override
@@ -38,21 +71,7 @@ public class HomePage extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 		checkinList = (ListView) findViewById(R.id.checkinListView);
-
-		try {
-
-			for (int i = 0; i < RemoteData.checkins.length(); i++) {
-				JSONObject checkin = RemoteData.checkins.getJSONObject(i);
-				nameList.add(checkin.getString("name"));
-				locationNameList.add(checkin.getString("location_name"));
-				statusList.add(checkin.getString("status"));
-				tagList.add(checkin.getString("tag"));
-				dateTimeList.add(checkin.getString("create_time"));
-			}
-			updateCheckinList();
-		} catch (JSONException e) {
-			Log.e(TAG, e.toString());
-		}
+		h.sendEmptyMessage(0);
 	}
 
 	@Override

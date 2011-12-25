@@ -28,6 +28,7 @@ public class MyOverlay extends ItemizedOverlay {
 	}
 
 	public void addOverlay(OverlayItem overlay) {
+
 		mOverlays.add(overlay);
 		populate();
 	}
@@ -72,13 +73,12 @@ public class MyOverlay extends ItemizedOverlay {
 					}
 				}
 
-				GeoPoint p = new GeoPoint(
-						(int) (LocalData.latitude * 1000000),
+				GeoPoint p = new GeoPoint((int) (LocalData.latitude * 1000000),
 						(int) (LocalData.longitude * 1000000));
 				Point xy = mp.getProjection().toPixels(p, null);
 
 				if (xy != null) {
-					Log.e("log", xy.x + " " + me.getX());
+//					Log.e("log", xy.x + " " + me.getX());
 					if (Math.abs(xy.x - me.getX()) < 100
 							&& Math.abs(xy.y - me.getY()) < 100) {
 

@@ -15,6 +15,9 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -74,6 +77,44 @@ public class MapPage extends MapActivity implements LocationListener {
 					}
 				}
 				break;
+			case 1:
+				Log.e("log", "waitpic");
+				if (Globo.flagPicLoad) {
+					try {
+
+						List<Overlay> mapOverlays = map.getOverlays();
+						MyOverlay pin = new MyOverlay(MapPage.this
+								.getResources().getDrawable(R.drawable.icon));
+
+						for (int i = 0; i < RemoteData.checkins.length(); i++) {
+							Log.e("log", "add");
+							GeoPoint p = new GeoPoint(
+									(int) (RemoteData.checkins.getJSONObject(i)
+											.getDouble("latitude") * 1000000),
+									(int) (RemoteData.checkins.getJSONObject(i)
+											.getDouble("longitude") * 1000000));
+							mc.setCenter(p);
+							OverlayItem o = new OverlayItem(p, "", "");
+							Matrix ma = new Matrix();
+							ma.postScale(2, 2);
+							Bitmap b = Bitmap.createBitmap(RemoteData.face[i],
+									0, 0, 50, 50, ma, true);
+							BitmapDrawable bd = new BitmapDrawable(b);
+							bd.setBounds(0, 0, bd.getIntrinsicWidth(),
+									bd.getIntrinsicHeight());
+							o.setMarker(bd);
+							pin.addOverlay(o);
+
+						}
+						mapOverlays.add(pin);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					sendEmptyMessageDelayed(1, 1000);
+				}
+				break;
 			}
 		}
 	};
@@ -86,27 +127,7 @@ public class MapPage extends MapActivity implements LocationListener {
 		map.setBuiltInZoomControls(true);
 		mc = map.getController();
 		mc.setZoom(18);
-		try {
-			List<Overlay> mapOverlays = map.getOverlays();
-			MyOverlay pin = new MyOverlay(MapPage.this.getResources()
-					.getDrawable(R.drawable.icon));
-			for (int i = 0; i < RemoteData.checkins.length(); i++) {
-				GeoPoint p;
-
-				p = new GeoPoint((int) (RemoteData.checkins.getJSONObject(i)
-						.getDouble("latitude") * 1000000),
-						(int) (RemoteData.checkins.getJSONObject(i).getDouble(
-								"longitude") * 1000000));
-				mc.setCenter(p);
-				pin.addOverlay(new OverlayItem(p, "", ""));
-
-			}
-			mapOverlays.add(pin);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		myHandler.sendEmptyMessage(1);
 	}
 
 	@Override
