@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@android:id/tabhost" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<LinearLayout android:id="@+id/linearLayout1"
-		android:layout_width="match_parent" android:layout_height="wrap_content"
-		android:layout_weight="0">
-		<RelativeLayout android:layout_height="wrap_content"
-			android:id="@+id/relativeLayout1" android:layout_width="fill_parent">
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:id="@+id/addcreation_linearLayout">
 
-			<Button android:layout_width="wrap_content"
-
-				android:layout_height="wrap_content" android:id="@+id/goAddCreaiton"
-				android:layout_alignParentRight="true"></Button>
-		</RelativeLayout>
-		<TextView android:text="@string/hello" android:layout_width="fill_parent"
-			android:layout_height="wrap_content"></TextView>
 		<FrameLayout android:id="@android:id/tabcontent"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 

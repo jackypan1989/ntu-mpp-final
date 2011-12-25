@@ -26,7 +26,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.main);
 		Log.d(TAG, "My id is " + LocalData.fb_id + ". My name is "
 				+ LocalData.fb_name);
 
