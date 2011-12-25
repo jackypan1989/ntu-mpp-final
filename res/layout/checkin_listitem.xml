@@ -2,8 +2,8 @@
 <LinearLayout   
     android:id="@+id/LinearLayout1"   
     xmlns:android="http://schemas.android.com/apk/res/android"   
-    android:layout_height="wrap_content" android:layout_width="wrap_content">
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageView1" android:src="@drawable/icon" android:layout_margin="5dip"></ImageView>
+    android:layout_height="wrap_content" android:layout_width="match_parent">
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/icon" android:id="@+id/checkinUserImage" android:layout_margin="10dip"></ImageView>
     <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical" android:layout_width="match_parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3">
             <TextView android:layout_marginTop="5dip" android:id="@+id/checkinName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="20dip" android:text="Name"></TextView>

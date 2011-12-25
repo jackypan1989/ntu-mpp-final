@@ -2,10 +2,6 @@ package lab.mpp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,21 +9,30 @@ import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 public class HomePage extends Activity {
 	public static final String TAG = "HomePage";
 	// set check list to show
 	private ListView checkinList;
 	private ArrayList<HashMap<String, Object>> checkinListItem = new ArrayList<HashMap<String, Object>>();
-	private SimpleAdapter checkinListItemAdapter;
-
+	//private SimpleAdapter checkinListItemAdapter;
+	private CheckinListAdapter checkinListItemAdapter;
+	
 	// set list content
+	private ArrayList<String> idList = new ArrayList<String>();
 	private ArrayList<String> nameList = new ArrayList<String>();
 	private ArrayList<String> locationNameList = new ArrayList<String>();
 	private ArrayList<String> statusList = new ArrayList<String>();
@@ -45,6 +50,7 @@ public class HomePage extends Activity {
 						for (int i = 0; i < RemoteData.checkins.length(); i++) {
 							JSONObject checkin = RemoteData.checkins
 									.getJSONObject(i);
+							idList.add(checkin.getString("id"));
 							nameList.add(checkin.getString("name"));
 							locationNameList.add(checkin
 									.getString("location_name"));
@@ -82,26 +88,113 @@ public class HomePage extends Activity {
 
 	public void updateCheckinList() {
 		checkinListItem.clear();
-		for (int i = 0; i < nameList.size(); i++) {
+		for (int i = 0; i < RemoteData.checkins.length(); i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("checkinID", idList.get(i));
 			map.put("checkinName", nameList.get(i));
 			map.put("checkinLocationName", locationNameList.get(i));
 			map.put("checkinStatus", statusList.get(i));
 			map.put("checkinTag", tagList.get(i));
 			map.put("checkinDateTime", dateTimeList.get(i));
-
+			
 			checkinListItem.add(map);
 		}
 
 		Log.e("test", checkinListItem.toString());
 
-		checkinListItemAdapter = new SimpleAdapter(this, checkinListItem,
-				R.layout.checkin_listitem, new String[] { "checkinName",
-						"checkinLocationName", "checkinStatus", "checkinTag",
-						"checkinDateTime" }, new int[] { R.id.checkinName,
-						R.id.checkinLocationName, R.id.checkinStatus,
-						R.id.checkinTag, R.id.checkinDateTime });
+		//checkinListItemAdapter =new LazyAdapter(this, mStrings);
+		checkinListItemAdapter = new CheckinListAdapter(this, checkinListItem);
 
 		checkinList.setAdapter(checkinListItemAdapter);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		checkinList.setAdapter(null);
+		super.onDestroy();
+	}
+
+	public class CheckinListAdapter extends BaseAdapter {
+		private Context context;
+		ArrayList<HashMap<String, Object>> array;
+
+		private class ViewContainer {
+			ImageView imageView;
+			TextView nameTV;
+			TextView locationNameTV;
+			TextView statusTV;
+			TextView dateTimeTV;
+			TextView tagTV;
+		}
+
+		public CheckinListAdapter(Context context, ArrayList<HashMap<String, Object>> array) {
+			this.context = context;
+			this.array = array;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			ViewContainer viewContainer = new ViewContainer();
+			if (position < array.size()) {
+				if (convertView == null) {
+					LayoutInflater layoutInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					convertView = layoutInflater.inflate(R.layout.checkin_listitem, null);
+
+					// Create and set ViewContainer
+
+					viewContainer.imageView = (ImageView) convertView
+					.findViewById(R.id.checkinUserImage);
+					viewContainer.nameTV = (TextView) convertView
+					.findViewById(R.id.checkinName);
+					viewContainer.locationNameTV = (TextView) convertView
+					.findViewById(R.id.checkinLocationName);
+					viewContainer.statusTV = (TextView) convertView
+					.findViewById(R.id.checkinStatus);
+					viewContainer.tagTV = (TextView) convertView
+					.findViewById(R.id.checkinTag);
+					viewContainer.dateTimeTV = (TextView) convertView
+					.findViewById(R.id.checkinDateTime);
+
+					convertView.setTag(viewContainer);
+
+				} else {
+					viewContainer = (ViewContainer) convertView.getTag();
+				}
+				
+				HttpPoster hp = new HttpPoster();
+				Bitmap bm = hp.getUserPic(array.get(position).get("checkinID").toString());
+				
+				viewContainer.imageView.setImageBitmap(bm);
+			
+				viewContainer.nameTV.setText(array.get(position).get("checkinName").toString());
+				viewContainer.locationNameTV.setText(array.get(position).get("checkinLocationName").toString());
+				viewContainer.statusTV.setText(array.get(position).get("checkinStatus").toString());
+				viewContainer.tagTV.setText(array.get(position).get("checkinTag").toString());
+				viewContainer.dateTimeTV.setText(array.get(position).get("checkinDateTime").toString());
+				
+				convertView.setTag(viewContainer);
+			}
+			return convertView;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return array.size();// length.intValue();
+		}
+
 	}
 }
