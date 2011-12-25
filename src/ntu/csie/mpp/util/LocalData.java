@@ -15,6 +15,9 @@ public class LocalData {
 	public static double latitude;
 	public static double longitude;
 	
+	// app status : demo , login(first used) , session(have used)
+	public static String app_status = "";
+	
 	public static JSONObject fb_me;
 	public static JSONObject fb_friends; 
 	public static JSONObject fb_photos; 

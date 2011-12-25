@@ -34,13 +34,13 @@ public class MPPFinalActivity extends TabActivity {
 		LocalData.getPreference(settings);
 
 		// check if user is the first time to login
-		
+		/*
 		if(LocalData.fb_id.equals("") && LocalData.fb_name.equals("")){
 		 Log.d(TAG , "It's the first time to use this app."); // go to login
 		 Intent intent = new Intent(MPPFinalActivity.this ,LoginActivity.class); 
 		 startActivity(intent); 
 		 }
-		 
+		 */
 		// send the request to server
 		HttpPoster hp = new HttpPoster();
 		String response = hp.getCheckin();

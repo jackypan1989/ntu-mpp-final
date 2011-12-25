@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android1:id="@+id/LinearLayout1" xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-<com.facebook.android.LoginButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/login_button" android:id="@+id/loginButton1"></com.facebook.android.LoginButton>
-<Button android:text="Save Friend" android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+    android:layout_height="fill_parent" 
+    xmlns:android1="http://schemas.android.com/apk/res/android" android1:background="@drawable/back_ground">
+    <ImageView android1:layout_height="wrap_content" android1:id="@+id/imageView1" android1:layout_width="wrap_content" android1:src="@drawable/big_title" android1:layout_marginTop="30dip"></ImageView>
+    <ImageView android1:layout_height="wrap_content" android1:id="@+id/imageView2" android1:layout_width="wrap_content" android1:src="@drawable/small_title"></ImageView>
+    <LinearLayout android1:layout_width="match_parent" android1:id="@+id/linearLayout3" android1:layout_height="wrap_content" android1:gravity="center" android1:layout_marginTop="30dip">
+        <Button android1:layout_width="wrap_content" android1:layout_height="wrap_content" android1:layout_marginRight="10dip" android1:drawableTop="@drawable/facebook_icon" android1:id="@+id/facebookButton" android1:text="Login"></Button>
+        <Button android1:layout_width="wrap_content" android1:layout_height="wrap_content" android1:drawableTop="@drawable/try_icon" android1:id="@+id/tryButton" android1:layout_marginLeft="10dip" android1:layout_marginRight="10dip" android1:text="Try"></Button>
+        <Button android1:layout_width="wrap_content" android1:layout_height="wrap_content" android1:layout_marginLeft="10dip" android1:id="@+id/supportButton" android1:drawableTop="@drawable/support_icon" android1:text="Support"></Button>
+    </LinearLayout>
+<com.facebook.android.LoginButton android1:layout_width="wrap_content" android1:id="@+id/loginButton1" android1:layout_height="wrap_content" android1:src="@drawable/login_button" android1:visibility="visible"></com.facebook.android.LoginButton>
 </LinearLayout>
