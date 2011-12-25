@@ -75,7 +75,10 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 
 	@Override
 	public void run() {
+		Globo.flagStringLoad = false;
+		Globo.flagPicLoad = false;
 		// TODO Auto-generated method stub
+		Log.e("Log", "thread start");
 		HttpPoster hp = new HttpPoster();
 		String response = hp.getCheckin();
 		Log.d(TAG, response);
@@ -88,7 +91,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 				RemoteData.face[i] = hp.getUserPic(RemoteData.checkins
 						.getJSONObject(i).getString("id"));
 			}
-			Log.e("log","picok");
+			Log.e("log", "picok");
 			Globo.flagPicLoad = true;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
