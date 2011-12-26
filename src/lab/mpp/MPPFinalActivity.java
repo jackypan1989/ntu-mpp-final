@@ -48,13 +48,13 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 
 		tabHost = getTabHost();
 		addTab("Home", new Intent(this, TGAHome.class), getResources()
-				.getDrawable(R.drawable.list_icon));
+				.getDrawable(R.drawable.list_icon_w));
 		addTab("Map", new Intent(this, TGAMap.class), getResources()
-				.getDrawable(R.drawable.map_icon));
+				.getDrawable(R.drawable.map_icon_w));
 		addTab("Search", new Intent(this, TGAProfile.class), getResources()
-				.getDrawable(R.drawable.user_icon));
+				.getDrawable(R.drawable.profile_icon_w));
 		addTab("Activity", new Intent(this, TGAActivity.class), getResources()
-				.getDrawable(R.drawable.search_icon));
+				.getDrawable(R.drawable.create_icon_w));
 
 		tabHost.setCurrentTab(0);
 	}

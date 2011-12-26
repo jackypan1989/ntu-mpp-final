@@ -11,7 +11,6 @@
 
 			android:layout_weight="1" />
 		<TabWidget android:id="@android:id/tabs"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="0" />
+			android:layout_width="fill_parent" android:layout_weight="0" android:layout_height="120px"/>
 	</LinearLayout>
 </TabHost>

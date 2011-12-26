@@ -1,7 +1,5 @@
 package ntu.csie.mpp.util;
 
-import lab.mpp.MPPFinalActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

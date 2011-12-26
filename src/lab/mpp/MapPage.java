@@ -14,7 +14,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -33,6 +32,7 @@ public class MapPage extends MapActivity implements LocationListener {
 	MapController mc;
 	boolean flagHasDraw = false;
 	Handler myHandler = new Handler() {
+		@Override
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:

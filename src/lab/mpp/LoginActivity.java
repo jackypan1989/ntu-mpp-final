@@ -71,6 +71,7 @@ public class LoginActivity extends Activity {
 		
 		// set 3 buttons's click
 		facebookBtn.setOnClickListener(new Button.OnClickListener(){
+			@Override
 			public void onClick(View v){
 				LocalData.app_status = "LOGIN";
 				mLoginButton.performClick();
@@ -78,6 +79,7 @@ public class LoginActivity extends Activity {
 		});
 
 		tryBtn.setOnClickListener(new Button.OnClickListener(){
+			@Override
 			public void onClick(View v){
 				LocalData.app_status = "DEMO";
 				Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
@@ -86,6 +88,7 @@ public class LoginActivity extends Activity {
 		});
 
 		supportBtn.setOnClickListener(new Button.OnClickListener(){
+			@Override
 			public void onClick(View v){
 				Intent intent = new Intent(LoginActivity.this ,SupportActivity.class); 
 				startActivity(intent); 

@@ -77,7 +77,8 @@ public class LoginButton extends ImageButton {
     
     private final class ButtonOnClickListener implements OnClickListener {
         
-        public void onClick(View arg0) {
+        @Override
+		public void onClick(View arg0) {
             if (mFb.isSessionValid()) {
                 SessionEvents.onLogoutBegin();
                 AsyncFacebookRunner asyncRunner = new AsyncFacebookRunner(mFb);
@@ -90,29 +91,35 @@ public class LoginButton extends ImageButton {
     }
 
     private final class LoginDialogListener implements DialogListener {
-        public void onComplete(Bundle values) {
+        @Override
+		public void onComplete(Bundle values) {
             SessionEvents.onLoginSuccess();
         }
 
-        public void onFacebookError(FacebookError error) {
+        @Override
+		public void onFacebookError(FacebookError error) {
             SessionEvents.onLoginError(error.getMessage());
         }
         
-        public void onError(DialogError error) {
+        @Override
+		public void onError(DialogError error) {
             SessionEvents.onLoginError(error.getMessage());
         }
 
-        public void onCancel() {
+        @Override
+		public void onCancel() {
             SessionEvents.onLoginError("Action Canceled");
         }
     }
     
     private class LogoutRequestListener extends BaseRequestListener {
-        public void onComplete(String response, final Object state) {
+        @Override
+		public void onComplete(String response, final Object state) {
             // callback should be run in the original thread, 
             // not the background thread
             mHandler.post(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     SessionEvents.onLogoutFinish();
                 }
             });
@@ -121,18 +128,22 @@ public class LoginButton extends ImageButton {
     
     private class SessionListener implements AuthListener, LogoutListener {
         
-        public void onAuthSucceed() {
+        @Override
+		public void onAuthSucceed() {
             setImageResource(R.drawable.logout_button);
             SessionStore.save(mFb, getContext());
         }
 
-        public void onAuthFail(String error) {
+        @Override
+		public void onAuthFail(String error) {
         }
         
-        public void onLogoutBegin() {           
+        @Override
+		public void onLogoutBegin() {           
         }
         
-        public void onLogoutFinish() {
+        @Override
+		public void onLogoutFinish() {
             SessionStore.clear(getContext());
             setImageResource(R.drawable.login_button);
         }
