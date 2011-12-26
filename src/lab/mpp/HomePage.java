@@ -5,14 +5,10 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

@@ -8,11 +8,9 @@ import android.app.LocalActivityManager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View.MeasureSpec;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 
