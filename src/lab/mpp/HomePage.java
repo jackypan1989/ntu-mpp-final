@@ -10,7 +10,9 @@ import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,10 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class HomePage extends Activity {
 	public static final String TAG = "HomePage";
@@ -71,14 +75,13 @@ public class HomePage extends Activity {
 				}
 				break;
 			case 1:
-				if (RemoteData.face != null&&RemoteData.face[m.arg1] != null) {
-						updateCheckinList();
-				}
-				else{
-					Message m2=new Message();
-					m2.what=1;
-					m2.arg1=m.arg1;
-					sendMessageDelayed(m2,1000);
+				if (RemoteData.face != null && RemoteData.face[m.arg1] != null) {
+					updateCheckinList();
+				} else {
+					Message m2 = new Message();
+					m2.what = 1;
+					m2.arg1 = m.arg1;
+					sendMessageDelayed(m2, 1000);
 				}
 
 				break;
@@ -93,6 +96,15 @@ public class HomePage extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 		checkinList = (ListView) findViewById(R.id.checkinListView);
+		checkinList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				Globo.prefid = position;
+				MPPFinalActivity.goTo(2);
+			}
+		});
 		h.sendEmptyMessage(0);
 	}
 
@@ -217,6 +229,19 @@ public class HomePage extends Activity {
 
 				} else {
 					viewContainer = (ViewContainer) convertView.getTag();
+					viewContainer.imageView
+					.setImageBitmap(RemoteData.face[position]);
+					viewContainer.nameTV.setText(array.get(position)
+							.get("checkinName").toString());
+					viewContainer.locationNameTV.setText(array.get(position)
+							.get("checkinLocationName").toString());
+					viewContainer.statusTV.setText(array.get(position)
+							.get("checkinStatus").toString());
+					viewContainer.tagTV.setText(array.get(position)
+							.get("checkinTag").toString());
+					viewContainer.dateTimeTV.setText(array.get(position)
+							.get("checkinDateTime").toString());
+					convertView.setTag(viewContainer);
 				}
 
 			}
