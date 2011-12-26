@@ -16,6 +16,7 @@ import com.google.android.maps.OverlayItem;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
@@ -97,8 +98,11 @@ public class MapPage extends MapActivity implements LocationListener {
 							OverlayItem o = new OverlayItem(p, "", "");
 							Matrix ma = new Matrix();
 							ma.postScale(2, 2);
-							Bitmap b = Bitmap.createBitmap(RemoteData.face[i],
+							Bitmap b=BitmapFactory.decodeResource(MapPage.this.getResources(), R.drawable.icon);
+							if(RemoteData.face[i]!=null){
+							b = Bitmap.createBitmap(RemoteData.face[i],
 									0, 0, 50, 50, ma, true);
+							}
 							BitmapDrawable bd = new BitmapDrawable(b);
 							bd.setBounds(0, 0, bd.getIntrinsicWidth(),
 									bd.getIntrinsicHeight());

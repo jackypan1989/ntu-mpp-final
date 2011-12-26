@@ -19,6 +19,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
 public class MyOverlay extends ItemizedOverlay {
+	boolean flagMove = false;
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
 	public MyOverlay(Drawable defaultMarker) {
@@ -45,53 +46,61 @@ public class MyOverlay extends ItemizedOverlay {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent me, MapView mp) {
-
+		if (me.getAction() == MotionEvent.ACTION_MOVE) {
+			flagMove = true;
+		}
 		if (me.getAction() == MotionEvent.ACTION_UP) {
 
 			// Log.e("log", me.getX() + " " + me.getY());
 			// Log.e("log", g.getLatitudeE6() + " " + g.getLongitudeE6());
+			if (!flagMove) {
+				try {
+					if (RemoteData.checkins != null) {
+						for (int i = 0; i < RemoteData.checkins.length(); i++) {
 
-			try {
-				for (int i = 0; i < RemoteData.checkins.length(); i++) {
+							GeoPoint p = new GeoPoint(
+									(int) (RemoteData.checkins.getJSONObject(i)
+											.getDouble("latitude") * 1000000),
+									(int) (RemoteData.checkins.getJSONObject(i)
+											.getDouble("longitude") * 1000000));
+							Point xy = mp.getProjection().toPixels(p, null);
 
-					GeoPoint p = new GeoPoint((int) (RemoteData.checkins
-							.getJSONObject(i).getDouble("latitude") * 1000000),
-							(int) (RemoteData.checkins.getJSONObject(i)
-									.getDouble("longitude") * 1000000));
+							if (xy != null) {
+								Log.e("log", xy.x + " " + me.getX());
+								if (Math.abs(xy.x - me.getX()) < 100
+										&& Math.abs(xy.y - me.getY()) < 100) {
+
+									Globo.prefid = i;
+									MPPFinalActivity.goTo(2);
+									return true;
+								}
+
+							}
+						}
+					}
+
+					GeoPoint p = new GeoPoint(
+							(int) (LocalData.latitude * 1000000),
+							(int) (LocalData.longitude * 1000000));
 					Point xy = mp.getProjection().toPixels(p, null);
 
 					if (xy != null) {
-						Log.e("log", xy.x + " " + me.getX());
+						// Log.e("log", xy.x + " " + me.getX());
 						if (Math.abs(xy.x - me.getX()) < 100
 								&& Math.abs(xy.y - me.getY()) < 100) {
 
-							Globo.prefid = i;
+							Globo.prefid = -1;
 							MPPFinalActivity.goTo(2);
 							return true;
 						}
 
 					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-
-				GeoPoint p = new GeoPoint((int) (LocalData.latitude * 1000000),
-						(int) (LocalData.longitude * 1000000));
-				Point xy = mp.getProjection().toPixels(p, null);
-
-				if (xy != null) {
-//					Log.e("log", xy.x + " " + me.getX());
-					if (Math.abs(xy.x - me.getX()) < 100
-							&& Math.abs(xy.y - me.getY()) < 100) {
-
-						Globo.prefid = -1;
-						MPPFinalActivity.goTo(2);
-						return true;
-					}
-
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			flagMove = false;
 		}
 		return false;
 	}

@@ -71,8 +71,16 @@ public class HomePage extends Activity {
 				}
 				break;
 			case 1:
-				
-					updateCheckinList();
+				if (RemoteData.face != null&&RemoteData.face[m.arg1] != null) {
+						updateCheckinList();
+				}
+				else{
+					Message m2=new Message();
+					m2.what=1;
+					m2.arg1=m.arg1;
+					sendMessageDelayed(m2,1000);
+				}
+
 				break;
 			}
 		}
@@ -181,11 +189,15 @@ public class HomePage extends Activity {
 					// HttpPoster hp = new HttpPoster();
 					// Bitmap bm =
 					// hp.getUserPic(array.get(position).get("checkinID").toString());
+					Message m = new Message();
+					m.what = 1;
+					m.arg1 = position;
 					if (RemoteData.face == null) {
-						h.sendEmptyMessageDelayed(1, 1000);
+
+						h.sendMessageDelayed(m, 1000);
 					}
 					if (RemoteData.face[position] == null) {
-						h.sendEmptyMessageDelayed(1, 1000);
+						h.sendMessageDelayed(m, 1000);
 					}
 					viewContainer.imageView
 							.setImageBitmap(RemoteData.face[position]);
