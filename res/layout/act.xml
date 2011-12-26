@@ -5,33 +5,17 @@
 	<ScrollView android:layout_width="match_parent"
 		android:layout_height="wrap_content" android:id="@+id/scrollView1"
 		android:layout_weight="25">
-		<LinearLayout android:id="@+id/linearLayout1"
-			android:layout_width="match_parent" android:layout_height="match_parent"
-			android:orientation="vertical">
-			<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical">
-				<TextView android:layout_width="wrap_content" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="TextView"></TextView>
-				<LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:orientation="horizontal">
-					<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/button1" android:text="Button"></Button>
-					<HorizontalScrollView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/horizontalScrollView1">
-						<LinearLayout android:orientation="horizontal" android:id="@+id/linearLayout4" android:layout_height="match_parent" android:layout_width="match_parent">
-							<TextView android:layout_width="wrap_content" android:id="@+id/textView3" android:layout_height="wrap_content" android:text="TextView" android:textSize="36px"></TextView>
-						</LinearLayout>
-					</HorizontalScrollView>
+		<LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+			<TextView android:layout_width="match_parent" android:id="@+id/textView1" android:gravity="center" android:text="建立活動" android:layout_height="match_parent"></TextView>
+			<TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="加入朋友"></TextView>
+			<HorizontalScrollView android:layout_width="match_parent" android:id="@+id/horizontalScrollView1" android:layout_height="wrap_content">
+				<LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
+					<Button android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="推薦"></Button>
+					<LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout3" android:layout_height="match_parent"></LinearLayout>
 				</LinearLayout>
-			</LinearLayout>
-			<View android:layout_width="fill_parent" android:layout_height="1px"
-				android:background="?android:attr/listDivider" />
-			<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout5" android:orientation="vertical">
-				<TextView android:layout_width="wrap_content" android:id="@+id/textView2" android:layout_height="wrap_content" android:text="TextView"></TextView>
-				<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout6">
-					<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/button3" android:text="Button"></Button>
-					<HorizontalScrollView android:id="@+id/horizontalScrollView2" android:layout_width="wrap_content" android:layout_height="wrap_content">
-						<LinearLayout android:id="@+id/linearLayout7" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
-							<TextView android:layout_width="wrap_content" android:id="@+id/textView4" android:layout_height="wrap_content" android:text="TextView" android:textSize="36px"></TextView>
-						</LinearLayout>
-					</HorizontalScrollView>
-				</LinearLayout>
-			</LinearLayout>
+			</HorizontalScrollView>
+			<TextView android:layout_width="wrap_content" android:id="@+id/textView3" android:layout_height="wrap_content" android:text="選擇活動"></TextView>
+			<Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/spinner1"></Spinner>
 		</LinearLayout>
 	</ScrollView>
 	<Button android:layout_width="fill_parent"
