@@ -77,14 +77,16 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 	public void run() {
 		Globo.flagStringLoad = false;
 		Globo.flagPicLoad = false;
+		Globo.flagHasInternet=true;
 		// TODO Auto-generated method stub
 		Log.e("Log", "thread start");
 		HttpPoster hp = new HttpPoster();
 		String response = hp.getCheckin();
 		if (response == null) {
+			Globo.flagHasInternet = false;
 			return;
 		}
-		Globo.flagHasInternet = true;
+
 		// Log.d(TAG, response);
 
 		try {

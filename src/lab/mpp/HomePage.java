@@ -28,9 +28,9 @@ public class HomePage extends Activity {
 	// set check list to show
 	private ListView checkinList;
 	private ArrayList<HashMap<String, Object>> checkinListItem = new ArrayList<HashMap<String, Object>>();
-	//private SimpleAdapter checkinListItemAdapter;
+	// private SimpleAdapter checkinListItemAdapter;
 	private CheckinListAdapter checkinListItemAdapter;
-	
+
 	// set list content
 	private ArrayList<String> idList = new ArrayList<String>();
 	private ArrayList<String> nameList = new ArrayList<String>();
@@ -38,12 +38,13 @@ public class HomePage extends Activity {
 	private ArrayList<String> statusList = new ArrayList<String>();
 	private ArrayList<String> tagList = new ArrayList<String>();
 	private ArrayList<String> dateTimeList = new ArrayList<String>();
+	boolean flagHasPic = false;
 	Handler h = new Handler() {
 		@Override
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:
-				Log.e("log","wait");
+				Log.e("log", "wait");
 				if (Globo.flagStringLoad) {
 					try {
 
@@ -62,9 +63,16 @@ public class HomePage extends Activity {
 					} catch (JSONException e) {
 						Log.e(TAG, e.toString());
 					}
-				} else if(Globo.flagHasInternet){
+				} else if (Globo.flagHasInternet) {
+
 					sendEmptyMessageDelayed(0, 1000);
+				} else {
+					Log.e("log", "nointernet");
 				}
+				break;
+			case 1:
+				
+					updateCheckinList();
 				break;
 			}
 		}
@@ -83,7 +91,8 @@ public class HomePage extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		this.getParent().getParent().setTitle("HomePage");
+		Log.e("log", "homePage");
+		// this.getParent().getParent().setTitle("HomePage");
 	}
 
 	public void updateCheckinList() {
@@ -96,21 +105,20 @@ public class HomePage extends Activity {
 			map.put("checkinStatus", statusList.get(i));
 			map.put("checkinTag", tagList.get(i));
 			map.put("checkinDateTime", dateTimeList.get(i));
-			
+
 			checkinListItem.add(map);
 		}
 
 		Log.e("test", checkinListItem.toString());
 
-		//checkinListItemAdapter =new LazyAdapter(this, mStrings);
+		// checkinListItemAdapter =new LazyAdapter(this, mStrings);
 		checkinListItemAdapter = new CheckinListAdapter(this, checkinListItem);
 
 		checkinList.setAdapter(checkinListItemAdapter);
 	}
 
 	@Override
-	public void onDestroy()
-	{
+	public void onDestroy() {
 		checkinList.setAdapter(null);
 		super.onDestroy();
 	}
@@ -128,7 +136,8 @@ public class HomePage extends Activity {
 			TextView tagTV;
 		}
 
-		public CheckinListAdapter(Context context, ArrayList<HashMap<String, Object>> array) {
+		public CheckinListAdapter(Context context,
+				ArrayList<HashMap<String, Object>> array) {
 			this.context = context;
 			this.array = array;
 		}
@@ -150,42 +159,54 @@ public class HomePage extends Activity {
 			if (position < array.size()) {
 				if (convertView == null) {
 					LayoutInflater layoutInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					convertView = layoutInflater.inflate(R.layout.checkin_listitem, null);
+							.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					convertView = layoutInflater.inflate(
+							R.layout.checkin_listitem, null);
 
 					// Create and set ViewContainer
 
 					viewContainer.imageView = (ImageView) convertView
-					.findViewById(R.id.checkinUserImage);
+							.findViewById(R.id.checkinUserImage);
 					viewContainer.nameTV = (TextView) convertView
-					.findViewById(R.id.checkinName);
+							.findViewById(R.id.checkinName);
 					viewContainer.locationNameTV = (TextView) convertView
-					.findViewById(R.id.checkinLocationName);
+							.findViewById(R.id.checkinLocationName);
 					viewContainer.statusTV = (TextView) convertView
-					.findViewById(R.id.checkinStatus);
+							.findViewById(R.id.checkinStatus);
 					viewContainer.tagTV = (TextView) convertView
-					.findViewById(R.id.checkinTag);
+							.findViewById(R.id.checkinTag);
 					viewContainer.dateTimeTV = (TextView) convertView
-					.findViewById(R.id.checkinDateTime);
+							.findViewById(R.id.checkinDateTime);
+
+					// HttpPoster hp = new HttpPoster();
+					// Bitmap bm =
+					// hp.getUserPic(array.get(position).get("checkinID").toString());
+					if (RemoteData.face == null) {
+						h.sendEmptyMessageDelayed(1, 1000);
+					}
+					if (RemoteData.face[position] == null) {
+						h.sendEmptyMessageDelayed(1, 1000);
+					}
+					viewContainer.imageView
+							.setImageBitmap(RemoteData.face[position]);
+
+					viewContainer.nameTV.setText(array.get(position)
+							.get("checkinName").toString());
+					viewContainer.locationNameTV.setText(array.get(position)
+							.get("checkinLocationName").toString());
+					viewContainer.statusTV.setText(array.get(position)
+							.get("checkinStatus").toString());
+					viewContainer.tagTV.setText(array.get(position)
+							.get("checkinTag").toString());
+					viewContainer.dateTimeTV.setText(array.get(position)
+							.get("checkinDateTime").toString());
 
 					convertView.setTag(viewContainer);
 
 				} else {
 					viewContainer = (ViewContainer) convertView.getTag();
 				}
-				
-				HttpPoster hp = new HttpPoster();
-				Bitmap bm = hp.getUserPic(array.get(position).get("checkinID").toString());
-				
-				viewContainer.imageView.setImageBitmap(bm);
-			
-				viewContainer.nameTV.setText(array.get(position).get("checkinName").toString());
-				viewContainer.locationNameTV.setText(array.get(position).get("checkinLocationName").toString());
-				viewContainer.statusTV.setText(array.get(position).get("checkinStatus").toString());
-				viewContainer.tagTV.setText(array.get(position).get("checkinTag").toString());
-				viewContainer.dateTimeTV.setText(array.get(position).get("checkinDateTime").toString());
-				
-				convertView.setTag(viewContainer);
+
 			}
 			return convertView;
 		}
