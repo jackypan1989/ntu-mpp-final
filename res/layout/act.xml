@@ -5,21 +5,31 @@
 	<ScrollView android:layout_width="match_parent"
 		android:layout_height="wrap_content" android:id="@+id/scrollView1"
 		android:layout_weight="25">
-		<LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
-			<TextView android:layout_width="match_parent" android:id="@+id/textView1" android:gravity="center" android:text="建立活動" android:layout_height="match_parent"></TextView>
-			<TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="加入朋友"></TextView>
-			<HorizontalScrollView android:layout_width="match_parent" android:id="@+id/horizontalScrollView1" android:layout_height="wrap_content">
-				<LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
-					<Button android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="推薦"></Button>
-					<LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout3" android:layout_height="match_parent"></LinearLayout>
+		<LinearLayout android:id="@+id/linearLayout1"
+			android:layout_width="match_parent" android:layout_height="match_parent"
+			android:orientation="vertical">
+			<TextView android:layout_width="match_parent" android:id="@+id/textView1"
+				android:gravity="center" android:text="建立活動" android:layout_height="match_parent" />
+			<TextView android:id="@+id/textView2" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="加入朋友" />
+			<HorizontalScrollView android:layout_width="match_parent"
+				android:id="@+id/horizontalScrollView1" android:layout_height="wrap_content">
+				<LinearLayout android:id="@+id/linearLayout2"
+					android:layout_width="match_parent" android:layout_height="match_parent"
+					android:orientation="horizontal">
+					<Button android:id="@+id/button1" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:text="推薦" />
+					<LinearLayout android:layout_width="wrap_content"
+						android:id="@+id/linearLayout3" android:layout_height="match_parent" />
 				</LinearLayout>
 			</HorizontalScrollView>
-			<TextView android:layout_width="wrap_content" android:id="@+id/textView3" android:layout_height="wrap_content" android:text="選擇活動"></TextView>
-			<Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/spinner1"></Spinner>
+			<TextView android:layout_width="wrap_content" android:id="@+id/textView3"
+				android:layout_height="wrap_content" android:text="選擇活動" />
+			<Spinner android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:id="@+id/spinner1" />
 		</LinearLayout>
 	</ScrollView>
 	<Button android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/button2"
-		android:layout_weight="1" android:text="Button"></Button>
-
+		android:layout_weight="1" android:text="Button" />
 </LinearLayout>
