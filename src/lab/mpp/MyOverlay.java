@@ -7,6 +7,10 @@ import org.json.JSONException;
 import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
 
+import android.app.Activity;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -20,6 +24,7 @@ import com.google.android.maps.OverlayItem;
 
 public class MyOverlay extends ItemizedOverlay {
 	boolean flagMove = false;
+	int[] c = new int[100];
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
 	public MyOverlay(Drawable defaultMarker) {
@@ -46,14 +51,17 @@ public class MyOverlay extends ItemizedOverlay {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent me, MapView mp) {
+		Log.e("log", "alert touch");
 		if (me.getAction() == MotionEvent.ACTION_MOVE) {
 			flagMove = true;
-		}
-		if (me.getAction() == MotionEvent.ACTION_UP) {
-
+		} else if (me.getAction() == MotionEvent.ACTION_UP) {
+			Log.e("log", "alert up");
 			// Log.e("log", me.getX() + " " + me.getY());
 			// Log.e("log", g.getLatitudeE6() + " " + g.getLongitudeE6());
+
+			int cnt = 0;
 			if (!flagMove) {
+				
 				try {
 					if (RemoteData.checkins != null) {
 						for (int i = 0; i < RemoteData.checkins.length(); i++) {
@@ -66,13 +74,15 @@ public class MyOverlay extends ItemizedOverlay {
 							Point xy = mp.getProjection().toPixels(p, null);
 
 							if (xy != null) {
-								Log.e("log", xy.x + " " + me.getX());
+//								Log.e("log", xy.x + " " + me.getX());
 								if (Math.abs(xy.x - me.getX()) < 100
 										&& Math.abs(xy.y - me.getY()) < 100) {
 
-									Globo.prefid = i;
-									MPPFinalActivity.goTo(2);
-									return true;
+									// Globo.prefid = i;
+									// MPPFinalActivity.goTo(2);
+									// return true;
+									c[cnt] = i;
+									cnt++;
 								}
 
 							}
@@ -89,11 +99,40 @@ public class MyOverlay extends ItemizedOverlay {
 						if (Math.abs(xy.x - me.getX()) < 100
 								&& Math.abs(xy.y - me.getY()) < 100) {
 
-							Globo.prefid = -1;
-							MPPFinalActivity.goTo(2);
-							return true;
+							// Globo.prefid = -1;
+							// MPPFinalActivity.goTo(2);
+							// return true;
+							c[cnt] = -1;
+							cnt++;
 						}
 
+					}
+
+					if (cnt == 1) {
+						Globo.prefid = c[0];
+						MPPFinalActivity.goTo(2);
+						return true;
+					} else if (cnt > 1) {
+						Log.e("log", "alert cnt");
+						String[] nameArray = new String[cnt];
+						for (int i = 0; i < cnt; i++) {
+							nameArray[i] = RemoteData.checkins.getJSONObject(
+									c[i]).getString("name");
+						}
+						Builder nearIcon = new Builder(
+								((Activity) (mp.getContext())).getParent());
+						nearIcon.setTitle("您在下列館區附近")
+								.setItems(nameArray,
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												Globo.prefid = c[which];
+												MPPFinalActivity.goTo(2);
+											}
+										}).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

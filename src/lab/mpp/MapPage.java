@@ -64,9 +64,9 @@ public class MapPage extends MapActivity implements LocationListener {
 									(int) (y * 1000000));
 							mc.setCenter(p);
 							List<Overlay> mapOverlays = map.getOverlays();
-							MyOverlay pin = new MyOverlay(MapPage.this
-									.getResources()
-									.getDrawable(R.drawable.icon));
+//							MyOverlay pin = new MyOverlay(MapPage.this
+//									.getResources()
+//									.getDrawable(R.drawable.icon));
 							pin.addOverlay(new OverlayItem(p, "", ""));
 
 							mapOverlays.add(pin);
@@ -84,8 +84,6 @@ public class MapPage extends MapActivity implements LocationListener {
 					try {
 
 						List<Overlay> mapOverlays = map.getOverlays();
-						MyOverlay pin = new MyOverlay(MapPage.this
-								.getResources().getDrawable(R.drawable.icon));
 
 						for (int i = 0; i < RemoteData.checkins.length(); i++) {
 							Log.e("log", "add");
@@ -98,10 +96,12 @@ public class MapPage extends MapActivity implements LocationListener {
 							OverlayItem o = new OverlayItem(p, "", "");
 							Matrix ma = new Matrix();
 							ma.postScale(2, 2);
-							Bitmap b=BitmapFactory.decodeResource(MapPage.this.getResources(), R.drawable.icon);
-							if(RemoteData.face[i]!=null){
-							b = Bitmap.createBitmap(RemoteData.face[i],
-									0, 0, 50, 50, ma, true);
+							Bitmap b = BitmapFactory.decodeResource(
+									MapPage.this.getResources(),
+									R.drawable.icon);
+							if (RemoteData.face[i] != null) {
+								b = Bitmap.createBitmap(RemoteData.face[i], 0,
+										0, 50, 50, ma, true);
 							}
 							BitmapDrawable bd = new BitmapDrawable(b);
 							bd.setBounds(0, 0, bd.getIntrinsicWidth(),
@@ -110,18 +110,19 @@ public class MapPage extends MapActivity implements LocationListener {
 							pin.addOverlay(o);
 
 						}
-						mapOverlays.add(pin);
+//						mapOverlays.add(pin);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				} else if(Globo.flagHasInternet){
+				} else if (Globo.flagHasInternet) {
 					sendEmptyMessageDelayed(1, 1000);
 				}
 				break;
 			}
 		}
 	};
+	MyOverlay pin;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,8 @@ public class MapPage extends MapActivity implements LocationListener {
 		map.setBuiltInZoomControls(true);
 		mc = map.getController();
 		mc.setZoom(18);
+		pin = new MyOverlay(MapPage.this.getResources().getDrawable(
+				R.drawable.icon));
 		myHandler.sendEmptyMessage(1);
 	}
 
