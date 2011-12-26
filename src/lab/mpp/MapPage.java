@@ -36,54 +36,28 @@ public class MapPage extends MapActivity implements LocationListener {
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:
-				if (!flagHasDraw) {
-					LocationManager lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-					Criteria criteria = new Criteria();
-					String best = lmgr.getBestProvider(criteria, true);
-					best = LocationManager.GPS_PROVIDER;
-					lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
+				Log.e("log", "waitgps");
+				if (LocalData.latitude != 0 && LocalData.longitude != 0) {
 
-					Location location = lmgr.getLastKnownLocation(best);
-					if (location == null) {
-						best = lmgr.getBestProvider(criteria, true);
-						lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
-						location = lmgr.getLastKnownLocation(best);
-					} else if (System.currentTimeMillis() - location.getTime() > 30000) {
-						best = lmgr.getBestProvider(criteria, true);
-						lmgr.requestLocationUpdates(best, 5000, 1, MapPage.this);
-						location = lmgr.getLastKnownLocation(best);
-					}
-					if (location != null) {
-						if (System.currentTimeMillis() - location.getTime() <= 30000) {
-							// TODO Auto-generated method stub
-							double x = location.getLatitude();
-							double y = location.getLongitude();
-							LocalData.latitude = x;
-							LocalData.longitude = y;
-							GeoPoint p = new GeoPoint((int) (x * 1000000),
-									(int) (y * 1000000));
-							mc.setCenter(p);
-							List<Overlay> mapOverlays = map.getOverlays();
-//							MyOverlay pin = new MyOverlay(MapPage.this
-//									.getResources()
-//									.getDrawable(R.drawable.icon));
-							pin.addOverlay(new OverlayItem(p, "", ""));
+					GeoPoint p = new GeoPoint(
+							(int) (LocalData.latitude * 1000000),
+							(int) (LocalData.longitude * 1000000));
+					mc.setCenter(p);
+					pin.addOverlay(new OverlayItem(p, "", ""));
 
-							mapOverlays.add(pin);
-							flagHasDraw = true;
+					mc.setCenter(p);
+					flagHasDraw = true;
 
-						} else {
-							this.sendEmptyMessageDelayed(0, 3000);
-						}
-					}
+				} else {
+					this.sendEmptyMessageDelayed(0, 3000);
+
 				}
+
 				break;
 			case 1:
 				Log.e("log", "waitpic");
 				if (Globo.flagPicLoad) {
 					try {
-
-						List<Overlay> mapOverlays = map.getOverlays();
 
 						for (int i = 0; i < RemoteData.checkins.length(); i++) {
 							Log.e("log", "add");
@@ -92,7 +66,7 @@ public class MapPage extends MapActivity implements LocationListener {
 											.getDouble("latitude") * 1000000),
 									(int) (RemoteData.checkins.getJSONObject(i)
 											.getDouble("longitude") * 1000000));
-							mc.setCenter(p);
+							// mc.setCenter(p);
 							OverlayItem o = new OverlayItem(p, "", "");
 							Matrix ma = new Matrix();
 							ma.postScale(2, 2);
@@ -110,7 +84,7 @@ public class MapPage extends MapActivity implements LocationListener {
 							pin.addOverlay(o);
 
 						}
-//						mapOverlays.add(pin);
+						sendEmptyMessage(0);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -134,13 +108,13 @@ public class MapPage extends MapActivity implements LocationListener {
 		mc.setZoom(18);
 		pin = new MyOverlay(MapPage.this.getResources().getDrawable(
 				R.drawable.icon));
+		map.getOverlays().add(pin);
 		myHandler.sendEmptyMessage(1);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		myHandler.sendEmptyMessage(0);
 		// this.getParent().getParent().setTitle("MapPage");
 	}
 

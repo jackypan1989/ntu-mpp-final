@@ -203,13 +203,12 @@ public class HomePage extends Activity {
 					if (RemoteData.face == null) {
 
 						h.sendMessageDelayed(m, 1000);
-					}
-					if (RemoteData.face[position] == null) {
+					} else if (RemoteData.face[position] == null) {
 						h.sendMessageDelayed(m, 1000);
+					} else {
+						viewContainer.imageView
+								.setImageBitmap(RemoteData.face[position]);
 					}
-					viewContainer.imageView
-							.setImageBitmap(RemoteData.face[position]);
-
 					viewContainer.nameTV.setText(array.get(position)
 							.get("checkinName").toString());
 					viewContainer.locationNameTV.setText(array.get(position)
@@ -225,8 +224,18 @@ public class HomePage extends Activity {
 
 				} else {
 					viewContainer = (ViewContainer) convertView.getTag();
-					viewContainer.imageView
-					.setImageBitmap(RemoteData.face[position]);
+					Message m = new Message();
+					m.what = 1;
+					m.arg1 = position;
+					if (RemoteData.face == null) {
+
+						h.sendMessageDelayed(m, 1000);
+					} else if (RemoteData.face[position] == null) {
+						h.sendMessageDelayed(m, 1000);
+					} else {
+						viewContainer.imageView
+								.setImageBitmap(RemoteData.face[position]);
+					}
 					viewContainer.nameTV.setText(array.get(position)
 							.get("checkinName").toString());
 					viewContainer.locationNameTV.setText(array.get(position)

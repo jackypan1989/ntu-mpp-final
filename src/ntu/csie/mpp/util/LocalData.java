@@ -19,7 +19,7 @@ public class LocalData {
 	public static JSONObject fb_me;
 	public static JSONObject fb_friends; 
 	public static JSONObject fb_photos; 
-	public static JSONObject fb_statuses; 
+	public static JSONObject fb_statuses;
 
     // load the facebook data from preference(at local device)
 	public static void getPreference(SharedPreferences settings){
