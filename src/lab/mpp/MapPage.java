@@ -111,7 +111,7 @@ public class MapPage extends MapActivity implements LocationListener {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				} else {
+				} else if(Globo.flagHasInternet){
 					sendEmptyMessageDelayed(1, 1000);
 				}
 				break;

@@ -81,7 +81,11 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 		Log.e("Log", "thread start");
 		HttpPoster hp = new HttpPoster();
 		String response = hp.getCheckin();
-		Log.d(TAG, response);
+		if (response == null) {
+			return;
+		}
+		Globo.flagHasInternet = true;
+		// Log.d(TAG, response);
 
 		try {
 			RemoteData.checkins = new JSONArray(response);
@@ -91,7 +95,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable {
 				RemoteData.face[i] = hp.getUserPic(RemoteData.checkins
 						.getJSONObject(i).getString("id"));
 			}
-			Log.e("log", "picok");
+			// Log.e("log", "picok");
 			Globo.flagPicLoad = true;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

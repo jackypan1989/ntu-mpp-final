@@ -62,7 +62,7 @@ public class HomePage extends Activity {
 					} catch (JSONException e) {
 						Log.e(TAG, e.toString());
 					}
-				} else {
+				} else if(Globo.flagHasInternet){
 					sendEmptyMessageDelayed(0, 1000);
 				}
 				break;
