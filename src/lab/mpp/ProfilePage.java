@@ -3,14 +3,19 @@ package lab.mpp;
 import java.util.ArrayList;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,8 +27,8 @@ public class ProfilePage extends Activity {
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:
-				myadapter.array.add("Test" + m.arg1);
-				myadapter.notifyDataSetChanged();
+				// myadapter.array.add("Test" + m.arg1);
+				// myadapter.notifyDataSetChanged();
 				break;
 			case 1:
 				if (RemoteData.face[m.arg1] != null) {
@@ -45,8 +50,40 @@ public class ProfilePage extends Activity {
 		setContentView(R.layout.profile);
 		ListView listView = (ListView) findViewById(R.id.listView1);
 
-		myadapter = new MyAdapter(this, new ArrayList<String>());
+		myadapter = new MyAdapter(this, new ArrayList<Act>());
 		listView.setAdapter(myadapter);
+		listView.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getParent(),
+						ActiveDetailPage.class);
+				
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity
+						.startChildActivity("ActiveDetailPage", intent);
+				
+			}
+			
+		});
+		for (int i = 0; i < RemoteData.checkins.length(); i++) {
+			JSONObject j;
+			try {
+				j = RemoteData.checkins.getJSONObject(i);
+
+				myadapter.array
+						.add(new Act(j.getString("tag"), j
+								.getString("location_name"), j
+								.getString("create_time")));
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		myadapter.notifyDataSetChanged();
 		// listView.setOnItemClickListener(OnCreationListViewClickListener);
 
 		// Message m = new Message();
@@ -73,7 +110,9 @@ public class ProfilePage extends Activity {
 		try {
 			this.getParent().getParent().setTitle("ProfilePage");
 			if (Globo.prefid == -1) {
-				name.setText(LocalData.fb_name);
+				name.setText("name");
+				status.setText("status");
+				location_name.setText("location_name");
 
 			} else {
 

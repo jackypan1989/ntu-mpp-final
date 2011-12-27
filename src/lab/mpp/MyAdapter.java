@@ -12,16 +12,18 @@ import android.widget.TextView;
 
 public class MyAdapter extends BaseAdapter {
 	private Context context;
-	ArrayList<String> array;
+	ArrayList<Act> array;
 
 	private class ViewContainer {
 
-		ImageView activityImage;
-		TextView activityName;
+		// ImageView activityImage;
+		TextView time;
+		TextView place;
+		TextView name;
 
 	}
 
-	public MyAdapter(Context context, ArrayList<String> a) {
+	public MyAdapter(Context context, ArrayList<Act> a) {
 		this.context = context;
 		array = a;
 	}
@@ -48,18 +50,23 @@ public class MyAdapter extends BaseAdapter {
 
 				// Create and set ViewContainer
 
-				viewContainer.activityImage = (ImageView) convertView
-						.findViewById(R.id.item_view_item_img);
+				// viewContainer.activityImage = (ImageView) convertView
+				// .findViewById(R.id.item_view_item_img);
 
-				viewContainer.activityName = (TextView) convertView
-						.findViewById(R.id.name);
-
+				viewContainer.time = (TextView) convertView
+						.findViewById(R.id.textView1);
+				viewContainer.place = (TextView) convertView
+						.findViewById(R.id.textView2);
+				viewContainer.name = (TextView) convertView
+						.findViewById(R.id.textView3);
 				convertView.setTag(viewContainer);
 
 			} else {
 				viewContainer = (ViewContainer) convertView.getTag();
 			}
-			viewContainer.activityName.setText(array.get(position));
+			viewContainer.name.setText(array.get(position).name);
+			viewContainer.time.setText(array.get(position).time);
+			viewContainer.place.setText(array.get(position).place);
 		}
 		return convertView;
 	}

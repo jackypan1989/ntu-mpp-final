@@ -66,16 +66,16 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 						double y = location.getLongitude();
 						LocalData.latitude = x;
 						LocalData.longitude = y;
-//						Geocoder c = new Geocoder(MPPFinalActivity.this);
-//						try {
-//							List<Address> la = c.getFromLocation(x, y, 100);
-//							for (Address a : la) {
-//								Log.e("location", a + "");
-//							}
-//						} catch (IOException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
+						// Geocoder c = new Geocoder(MPPFinalActivity.this);
+						// try {
+						// List<Address> la = c.getFromLocation(x, y, 100);
+						// for (Address a : la) {
+						// Log.e("location", a + "");
+						// }
+						// } catch (IOException e) {
+						// // TODO Auto-generated catch block
+						// e.printStackTrace();
+						// }
 					} else {
 						this.sendEmptyMessageDelayed(0, 3000);
 					}
@@ -136,6 +136,9 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 
 	static void goTo(int i) {
 		tabHost.setCurrentTab(i);
+		// if (i != 2) {
+		// Globo.prefid = -1;
+		// }
 	}
 
 	@Override
@@ -157,24 +160,24 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		try {
 			RemoteData.checkins = new JSONArray(response);
 			Globo.flagStringLoad = true;
-//			for (int i = 0; i < RemoteData.checkins.length(); i++) {
-//				Geocoder c = new Geocoder(MPPFinalActivity.this);
-//				try {
-//					List<Address> la = c.getFromLocation(
-//							RemoteData.checkins.getJSONObject(i).getDouble(
-//									"latitude"),
-//							RemoteData.checkins.getJSONObject(i).getDouble(
-//									"longitude"), 100);
-//					Log.e("location", RemoteData.checkins.getJSONObject(i)
-//							.getString("name"));
-//					for (Address a : la) {
-//						Log.e("location", a + "");
-//					}
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
+			// for (int i = 0; i < RemoteData.checkins.length(); i++) {
+			// Geocoder c = new Geocoder(MPPFinalActivity.this);
+			// try {
+			// List<Address> la = c.getFromLocation(
+			// RemoteData.checkins.getJSONObject(i).getDouble(
+			// "latitude"),
+			// RemoteData.checkins.getJSONObject(i).getDouble(
+			// "longitude"), 100);
+			// Log.e("location", RemoteData.checkins.getJSONObject(i)
+			// .getString("name"));
+			// for (Address a : la) {
+			// Log.e("location", a + "");
+			// }
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
 
 			RemoteData.face = new Bitmap[RemoteData.checkins.length()];
 			for (int i = 0; i < RemoteData.face.length; i++) {
