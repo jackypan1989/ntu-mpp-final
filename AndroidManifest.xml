@@ -32,7 +32,8 @@
 		<!-- <activity android:name="LoginActivity"></activity> -->
 		<activity android:name="SupportActivity"
 			android:screenOrientation="portrait"></activity>
-
+		<activity android:name="ActiveDetailPage"
+			android:screenOrientation="portrait"></activity>
 
 	</application>
 </manifest>
