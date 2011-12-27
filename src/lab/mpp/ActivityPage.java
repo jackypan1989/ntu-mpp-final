@@ -37,7 +37,7 @@ public class ActivityPage extends Activity {
 				// TODO Auto-generated method stub
 				Dialog dialog = new Dialog(mppFinal);
 				AlertDialog.Builder builder = new AlertDialog.Builder(mppFinal);
-				builder.setTitle("加入朋友");
+				builder.setTitle("加入一個朋友");
 				
 				final ListView modeList = new ListView(mppFinal);
 				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(mppFinal, 
@@ -45,11 +45,6 @@ public class ActivityPage extends Activity {
 				modeList.setAdapter(modeAdapter);
 				modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 				
-				//
-				/*modeList.setAdapter(new ArrayAdapter<String>(this,
-						android.R.layout.simple_list_item_multiple_choice, lv_items));
-				modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-				*/		
 				builder.setView(modeList);
 				builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface d, int i) {
@@ -69,20 +64,38 @@ public class ActivityPage extends Activity {
 		});
 		
 		// set spinner for tag
-		Spinner spinner = (Spinner)findViewById(R.id.spinner1);
+		Spinner spinnerActivityTag = (Spinner)findViewById(R.id.spinnerActivityTag);
 		// create array to set adapter
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getParent().getParent(),android.R.layout.simple_spinner_item,LocalData.tagList);
 		// set dropdown view
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-		spinner.setPrompt("選擇活動");
+		spinnerActivityTag.setAdapter(adapter);
+		spinnerActivityTag.setPrompt("請選擇一個標籤");
 		// set onclick
-		spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+		spinnerActivityTag.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
 			public void onItemSelected(AdapterView adapterView, View view, int position, long id){
-				Toast.makeText(getParent().getParent(), "您選擇"+adapterView.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+				
 			}
 			public void onNothingSelected(AdapterView arg0) {
-				Toast.makeText(getParent().getParent(), "您沒有選擇任何項目", Toast.LENGTH_SHORT).show();
+				
+			}
+		});
+		
+		// set spinner for tag
+		Spinner spinnerActivityStatus = (Spinner)findViewById(R.id.spinnerActivityStatus);
+		// create array to set adapter
+		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getParent().getParent(),android.R.layout.simple_spinner_item,LocalData.statusList);
+		// set dropdown view
+		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerActivityStatus.setAdapter(adapter2);
+		spinnerActivityStatus.setPrompt("請選擇目前狀態");
+		// set onclick
+		spinnerActivityStatus.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+			public void onItemSelected(AdapterView adapterView, View view, int position, long id){
+				
+			}
+			public void onNothingSelected(AdapterView arg0) {
+				
 			}
 		});
 

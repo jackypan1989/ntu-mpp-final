@@ -27,8 +27,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
 public class MPPFinalActivity extends TabActivity implements Runnable,
 		LocationListener {
@@ -110,25 +112,24 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		new Thread(this).start();
 
 		tabHost = getTabHost();
-		addTab("Home", new Intent(this, TGAHome.class), getResources()
-				.getDrawable(R.drawable.tabhome));
-		addTab("Map", new Intent(this, TGAMap.class), getResources()
-				.getDrawable(R.drawable.tabmap));
-		addTab("Search", new Intent(this, TGAProfile.class), getResources()
-				.getDrawable(R.drawable.tabprof));
-		addTab("Activity", new Intent(this, TGAActivity.class), getResources()
-				.getDrawable(R.drawable.tabact));
+		addTab("List", new Intent(this, TGAHome.class), R.drawable.tabhome);
+		addTab("Map", new Intent(this, TGAMap.class), R.drawable.tabmap);
+		addTab("Profile", new Intent(this, TGAProfile.class), R.drawable.tabprof);
+		addTab("Create", new Intent(this, TGAActivity.class), R.drawable.tabact);
 
 		tabHost.setCurrentTab(0);
 	}
 
-	void addTab(String name, Intent intent, Drawable pic) {
-		View tabview = LayoutInflater.from(tabHost.getContext()).inflate(
-				R.layout.tab, null);
+	void addTab(String name, Intent intent, int pic) {
+		View tabIndicator = LayoutInflater.from(tabHost.getContext()).inflate(
+				R.layout.tab_indicator, null);
 
-		tabview.setBackgroundDrawable(pic);
-
-		TabSpec setContent = tabHost.newTabSpec(name).setIndicator(tabview)
+		TextView title = (TextView) tabIndicator.findViewById(R.id.title);
+		title.setText(name);
+		ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
+		icon.setImageResource(pic);
+		  
+		TabSpec setContent = tabHost.newTabSpec(name).setIndicator(tabIndicator)
 				.setContent(intent);
 
 		tabHost.addTab(setContent);

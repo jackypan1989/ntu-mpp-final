@@ -7,12 +7,14 @@
     <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical" android:layout_width="match_parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3">
             <TextView android:layout_marginTop="5dip" android:id="@+id/checkinName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="20dip" android:text="Name"></TextView>
-            <TextView android:id="@+id/checkinStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Status" android:layout_marginLeft="20dip" android:layout_marginTop="5dip"></TextView>
         </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:id="@+id/linearLayout4" android:layout_marginBottom="5dip">
+        <LinearLayout android:layout_height="match_parent" android:id="@+id/linearLayout4" android:layout_width="match_parent">
             <TextView android:id="@+id/checkinDateTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DateTime"></TextView>
-            <TextView android:id="@+id/checkinLocationName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Location" android:layout_marginLeft="10dip"></TextView>
-            <TextView android:id="@+id/checkinTag" android:layout_marginLeft="10dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tag"></TextView>
+            <TextView android:layout_width="wrap_content" android:text="Status" android:layout_height="wrap_content" android:id="@+id/checkinStatus" android:layout_marginLeft="5dip"></TextView>
+        </LinearLayout>
+        <LinearLayout android:layout_marginBottom="5dip" android:id="@+id/LinearLayout01" android:layout_height="match_parent" android:layout_width="match_parent">
+            <TextView android:layout_width="wrap_content" android:text="Tag" android:layout_height="wrap_content" android:id="@+id/checkinTag"></TextView>
+            <TextView android:layout_width="wrap_content" android:text="Location" android:layout_height="wrap_content" android:id="@+id/checkinLocationName" android:layout_marginLeft="10dip"></TextView>
         </LinearLayout>
     </LinearLayout>  
 </LinearLayout> 
