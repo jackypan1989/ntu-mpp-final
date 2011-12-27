@@ -107,7 +107,7 @@ public class MapPage extends MapActivity implements LocationListener {
 		mc = map.getController();
 		mc.setZoom(18);
 		pin = new MyOverlay(MapPage.this.getResources().getDrawable(
-				R.drawable.icon));
+				R.drawable.map_pin));
 		map.getOverlays().add(pin);
 		myHandler.sendEmptyMessage(1);
 	}

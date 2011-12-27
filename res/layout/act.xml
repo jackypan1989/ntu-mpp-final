@@ -16,7 +16,7 @@
 				<LinearLayout android:id="@+id/linearLayout2"
 					android:layout_width="match_parent" android:layout_height="match_parent"
 					android:orientation="horizontal">
-					<Button android:id="@+id/button1" android:layout_width="wrap_content"
+					<Button android:id="@+id/recommendButton" android:layout_width="wrap_content"
 						android:layout_height="wrap_content" android:text="推薦" />
 					<LinearLayout android:layout_width="wrap_content"
 						android:id="@+id/linearLayout3" android:layout_height="match_parent" />
