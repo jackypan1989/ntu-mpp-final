@@ -21,7 +21,7 @@ public class LocalData {
 	public static JSONObject fb_photos; 
 	public static JSONObject fb_statuses;
 
-	public static String[] tagList = {"紅茶","奶茶","綠茶"};
+	public static String[] tagList = {"純打卡","吃飯","打球","睡覺","念書","逛街","聊天","寫作業"};
 	
     // load the facebook data from preference(at local device)
 	public static void getPreference(SharedPreferences settings){
