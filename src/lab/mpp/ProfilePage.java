@@ -109,6 +109,12 @@ public class ProfilePage extends Activity {
 			} else {
 				myId = RemoteData.checkins.getJSONObject(Globo.prefid)
 						.getString("id");
+				for(int i=0;i<RemoteData.checkins.length();i++){
+					if(myId.equals(RemoteData.checkins.getJSONObject(i).getString("id"))){
+						Globo.prefid=i;
+						break;
+					}
+				}
 				name.setText(RemoteData.checkins.getJSONObject(Globo.prefid)
 						.getString("name"));
 				status.setText(RemoteData.checkins.getJSONObject(Globo.prefid)
