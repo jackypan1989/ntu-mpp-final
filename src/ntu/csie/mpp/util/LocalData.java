@@ -1,5 +1,8 @@
 package ntu.csie.mpp.util;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,5 +46,39 @@ public class LocalData {
         settings.edit()
           .putString(key, value)
           .commit();
+	}// get friend name list
+	public static ArrayList<String> getFbFriendIdList(){
+		ArrayList<String> s = new ArrayList<String>();
+		
+		// set fb friend
+		try {
+			JSONArray json = fb_friends.getJSONArray("data");
+			for(int i = 0;i<json.length() ; i++){
+				s.add(json.getJSONObject(i).getString("id"));
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
+	}
+	
+	// get friend name list
+	public static ArrayList<String> getFbFriendNameList(){
+		ArrayList<String> s = new ArrayList<String>();
+		
+		// set fb friend
+		try {
+			JSONArray json = fb_friends.getJSONArray("data");
+			for(int i = 0;i<json.length() ; i++){
+				s.add(json.getJSONObject(i).getString("name"));
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
 	}
 }

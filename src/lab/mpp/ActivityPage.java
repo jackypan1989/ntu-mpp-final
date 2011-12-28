@@ -1,11 +1,8 @@
 package lab.mpp;
 
-<<<<<<< HEAD
 import java.io.IOException;
 import java.net.MalformedURLException;
-=======
 import java.util.ArrayList;
->>>>>>> origin/master
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class ActivityPage extends Activity {
-<<<<<<< HEAD
 	private String[] friendNameList = { "jacky", "wang" };
 	private long[] selectId;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,23 +36,10 @@ public class ActivityPage extends Activity {
 		// setContentView(R.layout.search_activity);
 		setContentView(contentView);
 
-=======
-	
-	private String[] friendNameList = {"jacky","wang"};
-	
-	private long[] selectId ;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		View contentView = LayoutInflater.from(this.getParent()).inflate(R.layout.act, null);
-		//setContentView(R.layout.search_activity);
-		setContentView(contentView); 
-		
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
-		final String[] nameList = (String[])nameArrayList.toArray(new String[nameArrayList.size()]);
-		
->>>>>>> origin/master
+		final String[] nameList = (String[]) nameArrayList
+				.toArray(new String[nameArrayList.size()]);
+
 		final Activity mppFinal = this.getParent().getParent();
 
 		// set button
@@ -71,15 +53,11 @@ public class ActivityPage extends Activity {
 				builder.setTitle("加入一個朋友");
 
 				final ListView modeList = new ListView(mppFinal);
-<<<<<<< HEAD
+
 				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(
 						mppFinal,
 						android.R.layout.simple_list_item_multiple_choice,
-						android.R.id.text1, friendNameList);
-=======
-				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(mppFinal, 
-						android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, nameList);
->>>>>>> origin/master
+						android.R.id.text1, nameList);
 				modeList.setAdapter(modeAdapter);
 				modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -118,16 +96,16 @@ public class ActivityPage extends Activity {
 
 					params.putString("distance", "1000");
 					try {
-						Log.e("gps","1");
+						Log.e("gps", "1");
 						JSONObject o = new JSONObject(LoginActivity.mFacebook
 								.request("search", params));
-						JSONArray j=o.getJSONArray("data");
-//						Log.e("gps",j+"");
-						Log.e("gps","2");
+						JSONArray j = o.getJSONArray("data");
+						// Log.e("gps",j+"");
+						Log.e("gps", "2");
 						for (int i = 0; i < j.length(); i++) {
 							Log.e("name", j.getJSONObject(i).getString("name"));
 						}
-						Log.e("gps","3");
+						Log.e("gps", "3");
 
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -203,5 +181,5 @@ public class ActivityPage extends Activity {
 		super.onResume();
 		this.getParent().getParent().setTitle("ActivityPage");
 	}
-	
+
 }
