@@ -59,7 +59,7 @@ public class MyOverlay extends ItemizedOverlay {
 
 			int cnt = 0;
 			if (!flagMove) {
-				
+
 				try {
 					if (RemoteData.checkins != null) {
 						for (int i = 0; i < RemoteData.checkins.length(); i++) {
@@ -72,9 +72,9 @@ public class MyOverlay extends ItemizedOverlay {
 							Point xy = mp.getProjection().toPixels(p, null);
 
 							if (xy != null) {
-//								Log.e("log", xy.x + " " + me.getX());
-								if (Math.abs(xy.x - me.getX()) < 100
-										&& Math.abs(xy.y - me.getY()) < 100) {
+								// Log.e("log", xy.x + " " + me.getX());
+								if (Math.abs(xy.x - me.getX() + 50) < 50
+										&& Math.abs(xy.y - me.getY() + 50) < 50) {
 
 									// Globo.prefid = i;
 									// MPPFinalActivity.goTo(2);
@@ -94,8 +94,8 @@ public class MyOverlay extends ItemizedOverlay {
 
 					if (xy != null) {
 						// Log.e("log", xy.x + " " + me.getX());
-						if (Math.abs(xy.x - me.getX()) < 100
-								&& Math.abs(xy.y - me.getY()) < 100) {
+						if (Math.abs(xy.x - me.getX() + 50) < 50
+								&& Math.abs(xy.y - me.getY() + 50) < 50) {
 
 							// Globo.prefid = -1;
 							// MPPFinalActivity.goTo(2);
@@ -114,12 +114,16 @@ public class MyOverlay extends ItemizedOverlay {
 						Log.e("log", "alert cnt");
 						String[] nameArray = new String[cnt];
 						for (int i = 0; i < cnt; i++) {
-							nameArray[i] = RemoteData.checkins.getJSONObject(
-									c[i]).getString("name");
+							if (c[i] != -1) {
+								nameArray[i] = RemoteData.checkins
+										.getJSONObject(c[i]).getString("name");
+							} else {
+								nameArray[i] = LocalData.fb_name;
+							}
 						}
 						Builder nearIcon = new Builder(
 								((Activity) (mp.getContext())).getParent());
-						nearIcon.setTitle("您在下列館區附近")
+						nearIcon.setTitle("您點選的人是")
 								.setItems(nameArray,
 										new DialogInterface.OnClickListener() {
 
