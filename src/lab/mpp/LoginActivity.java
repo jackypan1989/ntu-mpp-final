@@ -63,12 +63,6 @@ public class LoginActivity extends Activity {
 		mLoginButton.init(this, mFacebook , new String[] {"read_friendlists" , "user_photos" , "read_stream" });
 		mLoginButton.setVisibility(View.INVISIBLE);
 		
-		if(mFacebook.isSessionValid()){
-			LocalData.app_status = "SESSION";
-			Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
-			startActivity(intent); 
-        }
-		
 		// set 3 buttons's click
 		facebookBtn.setOnClickListener(new Button.OnClickListener(){
 			@Override
@@ -96,7 +90,18 @@ public class LoginActivity extends Activity {
 		});
 
 	}
-
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(mFacebook.isSessionValid()){
+			LocalData.app_status = "SESSION";
+			Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
+			startActivity(intent); 
+        }
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		mFacebook.authorizeCallback(requestCode, resultCode, data);
