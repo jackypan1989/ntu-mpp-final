@@ -185,9 +185,6 @@ public class LoginActivity extends Activity {
 				} catch (FacebookError e) {
 					Log.e( TAG , e.toString());
 				}
-
-				HttpPoster hp = new HttpPoster();
-				hp.setInitFbData("friends" , response);
 			}
 
 		}
@@ -209,8 +206,6 @@ public class LoginActivity extends Activity {
 				} catch (FacebookError e) {
 					Log.e( TAG , e.toString());
 				}
-				HttpPoster hp = new HttpPoster();
-				hp.setInitFbData("photos" , response);
 			}
 
 		}
@@ -232,8 +227,6 @@ public class LoginActivity extends Activity {
 				} catch (FacebookError e) {
 					Log.e( TAG , e.toString());
 				}
-				HttpPoster hp = new HttpPoster();
-				hp.setInitFbData("statuses" , response);
 			}
 		}
 	}

@@ -191,6 +191,11 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		if(LocalData.fb_friends!=null){
+			hp.setInitFbData("friends" , LocalData.fb_friends.toString());
+		}
+		
 	}
 
 	@Override

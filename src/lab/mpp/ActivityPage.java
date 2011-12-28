@@ -1,5 +1,11 @@
 package lab.mpp;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ntu.csie.mpp.util.LocalData;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,7 +23,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class ActivityPage extends Activity {
+	
 	private String[] friendNameList = {"jacky","wang"};
+	
 	private long[] selectId ;
 	
 	@Override
@@ -26,6 +34,9 @@ public class ActivityPage extends Activity {
 		View contentView = LayoutInflater.from(this.getParent()).inflate(R.layout.act, null);
 		//setContentView(R.layout.search_activity);
 		setContentView(contentView); 
+		
+		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
+		final String[] nameList = (String[])nameArrayList.toArray(new String[nameArrayList.size()]);
 		
 		final Activity mppFinal = this.getParent().getParent();
 		
@@ -41,7 +52,7 @@ public class ActivityPage extends Activity {
 				
 				final ListView modeList = new ListView(mppFinal);
 				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(mppFinal, 
-						android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, friendNameList);
+						android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, nameList);
 				modeList.setAdapter(modeAdapter);
 				modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 				
@@ -107,4 +118,5 @@ public class ActivityPage extends Activity {
 		super.onResume();
 		this.getParent().getParent().setTitle("ActivityPage");
 	}
+	
 }
