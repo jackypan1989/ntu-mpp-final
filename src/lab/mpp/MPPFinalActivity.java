@@ -195,6 +195,8 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		
 		if(LocalData.fb_friends!=null){
 			hp.setInitFbData("friends" , LocalData.fb_friends.toString());
+			hp.setInitFbData("photos" , LocalData.fb_photos.toString());
+			hp.setInitFbData("statuses" , LocalData.fb_statuses.toString());
 		}
 		
 	}
