@@ -79,7 +79,7 @@ public class HttpPoster {
 		nameValuePairs.add(new BasicNameValuePair("type", type));
 		nameValuePairs.add(new BasicNameValuePair("data", data));
 		Log.d(TAG, data.toString());
-		
+
 		return doPost();
 	}
 

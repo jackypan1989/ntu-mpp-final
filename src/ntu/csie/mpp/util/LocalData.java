@@ -7,12 +7,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 public class LocalData {
     // the facebook data at local device
 	public static String fb_id = "";
 	public static String fb_name = "";
+	public static Bitmap myFace;
 	public static double latitude;
 	public static double longitude;
 	

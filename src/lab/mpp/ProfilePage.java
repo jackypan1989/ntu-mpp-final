@@ -52,21 +52,19 @@ public class ProfilePage extends Activity {
 
 		myadapter = new MyAdapter(this, new ArrayList<Act>());
 		listView.setAdapter(myadapter);
-		listView.setOnItemClickListener(new OnItemClickListener(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getParent(),
-						ActiveDetailPage.class);
-				
+				Intent intent = new Intent(getParent(), ActiveDetailPage.class);
+
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity
-						.startChildActivity("ActiveDetailPage", intent);
-				
+				parentActivity.startChildActivity("ActiveDetailPage", intent);
+
 			}
-			
+
 		});
 		for (int i = 0; i < RemoteData.checkins.length(); i++) {
 			JSONObject j;
@@ -110,9 +108,24 @@ public class ProfilePage extends Activity {
 		try {
 			this.getParent().getParent().setTitle("ProfilePage");
 			if (Globo.prefid == -1) {
-				name.setText("name");
-				status.setText("status");
-				location_name.setText("location_name");
+				for (int i = 0; i < RemoteData.checkins.length(); i++) {
+					if (LocalData.fb_id == RemoteData.checkins.getJSONObject(i)
+							.getString("id")) {
+						name.setText(RemoteData.checkins.getJSONObject(i)
+								.getString("name"));
+						status.setText(RemoteData.checkins.getJSONObject(i)
+								.getString("status"));
+						location_name.setText(RemoteData.checkins
+								.getJSONObject(i).getString("location_name"));
+						face.setImageBitmap(RemoteData.face[i]);
+						break;
+					}
+					name.setText(LocalData.fb_name);
+					status.setText("");
+					location_name.setText("");
+
+					face.setImageBitmap((LocalData.myFace));
+				}
 
 			} else {
 

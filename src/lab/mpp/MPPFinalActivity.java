@@ -187,6 +187,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			}
 			// Log.e("log", "picok");
 			Globo.flagPicLoad = true;
+			LocalData.myFace=hp.getUserPic("100000170686960");//LocalData.fb_id);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
