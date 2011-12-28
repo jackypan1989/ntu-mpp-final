@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ public class HomePage extends Activity {
 	private ArrayList<String> tagList = new ArrayList<String>();
 	private ArrayList<String> dateTimeList = new ArrayList<String>();
 	boolean flagHasPic = false;
+	ProgressDialog dialog;
 	Handler h = new Handler() {
 		@Override
 		public void handleMessage(Message m) {
@@ -58,8 +60,10 @@ public class HomePage extends Activity {
 							statusList.add(checkin.getString("status"));
 							tagList.add(checkin.getString("tag"));
 							dateTimeList.add(checkin.getString("create_time"));
+
 						}
 						updateCheckinList();
+						 dialog.dismiss();
 					} catch (JSONException e) {
 						Log.e(TAG, e.toString());
 					}
@@ -91,6 +95,8 @@ public class HomePage extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
+		dialog = ProgressDialog.show(getParent(), "",
+				"Loading. Please wait...", true);
 		checkinList = (ListView) findViewById(R.id.checkinListView);
 		checkinList.setOnItemClickListener(new OnItemClickListener() {
 
