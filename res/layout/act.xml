@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="match_parent"
-	android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout android:orientation="vertical"
+	android:layout_width="match_parent" android:layout_height="match_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 	<ScrollView android:layout_width="match_parent"
 		android:layout_height="wrap_content" android:id="@+id/scrollView1"
 		android:layout_weight="25">
@@ -8,23 +9,45 @@
 			android:layout_width="match_parent" android:layout_height="match_parent"
 			android:orientation="vertical">
 			<TextView android:layout_width="wrap_content" android:id="@+id/textView3"
-				android:layout_height="wrap_content" android:text="選擇活動標籤" android:textSize="20dip" android:layout_margin="5dip"/>
+				android:layout_height="wrap_content" android:text="選擇活動標籤"
+				android:textSize="20dip" android:layout_margin="5dip" />
 			<Spinner android:layout_width="match_parent"
-				android:layout_height="wrap_content" android:id="@+id/spinnerActivityTag" android:layout_margin="5dip"/>
-			<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TextView01" android:text="選擇活動狀態" android:textSize="20dip" android:layout_margin="5dip"></TextView>
-			<Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/spinnerActivityStatus" android:layout_margin="5dip"></Spinner>
-			<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView2" android:text="選擇要加入的朋友" android:textSize="20dip" android:layout_margin="5dip"></TextView>
-			<HorizontalScrollView android:id="@+id/horizontalScrollView1" android:layout_width="match_parent" android:layout_height="wrap_content">
-				<LinearLayout android:id="@+id/linearLayout2" android:layout_height="match_parent" android:orientation="horizontal" android:layout_width="match_parent">
-					<Button android:layout_width="wrap_content" android:id="@+id/recommendButton" android:layout_height="wrap_content" android:text="推薦" android:layout_margin="5dip"></Button>
-					<LinearLayout android:id="@+id/linearLayout3" android:layout_width="wrap_content" android:layout_height="match_parent">
-						<TextView android:text="TextView" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+				android:layout_height="wrap_content" android:id="@+id/spinnerActivityTag"
+				android:layout_margin="5dip" />
+			<TextView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:id="@+id/TextView01"
+				android:text="選擇活動狀態" android:textSize="20dip"
+				android:layout_margin="5dip"></TextView>
+			<Spinner android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:id="@+id/spinnerActivityStatus"
+				android:layout_margin="5dip"></Spinner>
+			<TextView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:id="@+id/textView2"
+				android:text="選擇要加入的朋友" android:textSize="20dip"
+				android:layout_margin="5dip"></TextView>
+			<HorizontalScrollView android:id="@+id/horizontalScrollView1"
+				android:layout_width="match_parent" android:layout_height="wrap_content">
+				<LinearLayout android:id="@+id/linearLayout2"
+					android:layout_height="match_parent" android:orientation="horizontal"
+					android:layout_width="match_parent">
+					<Button android:layout_width="wrap_content" android:id="@+id/recommendButton"
+						android:layout_height="wrap_content" android:text="推薦"
+						android:layout_margin="5dip"></Button>
+					<LinearLayout android:id="@+id/linearLayout3"
+						android:layout_width="wrap_content" android:layout_height="match_parent">
+						<TextView android:text="TextView" android:id="@+id/textView1"
+							android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 					</LinearLayout>
 				</LinearLayout>
 			</HorizontalScrollView>
+			<TextView android:layout_margin="5dip" android:textSize="20dip" android:layout_height="wrap_content" android:text="選擇地點" android:layout_width="wrap_content" android:id="@+id/TextView4"></TextView>
+			<LinearLayout android:id="@+id/linearLayout4" android:layout_width="match_parent" android:layout_height="wrap_content">
+				<Spinner android:id="@+id/spinner3" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="10"></Spinner>
+				<Button android:id="@+id/button1" android:text="自定" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_weight="0"></Button>
+			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>
 	<Button android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/button2"
-		android:layout_weight="1" android:text="建立"/>
+		android:layout_weight="1" android:text="建立" />
 </LinearLayout>

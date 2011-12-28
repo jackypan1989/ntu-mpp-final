@@ -150,6 +150,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		// TODO Auto-generated method stub
 		Log.e("Log", "thread start");
 		HttpPoster hp = new HttpPoster();
+		Log.e("log",hp.getFbData());
 		String response = hp.getCheckin();
 		if (response == null) {
 			Globo.flagHasInternet = false;
@@ -224,4 +225,5 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		// TODO Auto-generated method stub
 
 	}
+
 }

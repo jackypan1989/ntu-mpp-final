@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,13 +23,18 @@ import android.widget.TextView;
 
 public class ProfilePage extends Activity {
 	MyAdapter myadapter;
+
 	Handler myHandler = new Handler() {
 		@Override
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:
-				// myadapter.array.add("Test" + m.arg1);
-				// myadapter.notifyDataSetChanged();
+				if (LocalData.myFace != null) {
+					ImageView face = (ImageView) findViewById(R.id.imageView1);
+					face.setImageBitmap((LocalData.myFace));
+				} else {
+					myHandler.sendEmptyMessageDelayed(0, 1000);
+				}
 				break;
 			case 1:
 				if (RemoteData.face[m.arg1] != null) {
@@ -48,40 +54,7 @@ public class ProfilePage extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.profile);
-		ListView listView = (ListView) findViewById(R.id.listView1);
 
-		myadapter = new MyAdapter(this, new ArrayList<Act>());
-		listView.setAdapter(myadapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getParent(), ActiveDetailPage.class);
-
-				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
-				parentActivity.startChildActivity("ActiveDetailPage", intent);
-
-			}
-
-		});
-		for (int i = 0; i < RemoteData.checkins.length(); i++) {
-			JSONObject j;
-			try {
-				j = RemoteData.checkins.getJSONObject(i);
-
-				myadapter.array
-						.add(new Act(j.getString("tag"), j
-								.getString("location_name"), j
-								.getString("create_time")));
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		myadapter.notifyDataSetChanged();
 		// listView.setOnItemClickListener(OnCreationListViewClickListener);
 
 		// Message m = new Message();
@@ -101,6 +74,8 @@ public class ProfilePage extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		String myId = "";
+
 		TextView name = (TextView) findViewById(R.id.textView1);
 		TextView status = (TextView) findViewById(R.id.textView2);
 		TextView location_name = (TextView) findViewById(R.id.textView3);
@@ -108,6 +83,7 @@ public class ProfilePage extends Activity {
 		try {
 			this.getParent().getParent().setTitle("ProfilePage");
 			if (Globo.prefid == -1) {
+				myId = LocalData.fb_id;
 				for (int i = 0; i < RemoteData.checkins.length(); i++) {
 					if (LocalData.fb_id == RemoteData.checkins.getJSONObject(i)
 							.getString("id")) {
@@ -123,12 +99,22 @@ public class ProfilePage extends Activity {
 					name.setText(LocalData.fb_name);
 					status.setText("");
 					location_name.setText("");
-
-					face.setImageBitmap((LocalData.myFace));
+					if (LocalData.myFace != null) {
+						face.setImageBitmap((LocalData.myFace));
+					} else {
+						myHandler.sendEmptyMessage(0);
+					}
 				}
 
 			} else {
-
+				myId = RemoteData.checkins.getJSONObject(Globo.prefid)
+						.getString("id");
+				for(int i=0;i<RemoteData.checkins.length();i++){
+					if(myId.equals(RemoteData.checkins.getJSONObject(i).getString("id"))){
+						Globo.prefid=i;
+						break;
+					}
+				}
 				name.setText(RemoteData.checkins.getJSONObject(Globo.prefid)
 						.getString("name"));
 				status.setText(RemoteData.checkins.getJSONObject(Globo.prefid)
@@ -149,6 +135,42 @@ public class ProfilePage extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		ListView listView = (ListView) findViewById(R.id.listView1);
+		myadapter = new MyAdapter(this, new ArrayList<Act>());
+		listView.setAdapter(myadapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getParent(), ActiveDetailPage.class);
+				Log.e("press",arg2+"");
+				intent.putExtra("id",((Act)(myadapter.array.get(arg2))).cheakId);
+				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
+				parentActivity.startChildActivity("ActiveDetailPage", intent);
+
+			}
+
+		});
+		for (int i = 0; i < RemoteData.checkins.length(); i++) {
+			JSONObject j;
+			try {
+
+				j = RemoteData.checkins.getJSONObject(i);
+				if (j.getString("id").equals(myId)) {
+					myadapter.array.add(new Act(j.getString("tag"), j
+							.getString("location_name"), j
+							.getString("create_time"), i));
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		myadapter.notifyDataSetChanged();
+
 		Globo.prefid = -1;
 
 	}

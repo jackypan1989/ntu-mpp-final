@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="match_parent"
-	android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:text="TextView" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<LinearLayout android:layout_width="match_parent"
+		android:layout_height="wrap_content" android:id="@+id/linearLayout1">
+		<ImageView android:src="@drawable/no_photo" android:id="@+id/imageView1"
+			android:layout_height="100dp" android:layout_width="100dp"></ImageView>
+		<LinearLayout android:id="@+id/linearLayout2"
+			android:orientation="vertical" android:layout_height="wrap_content"
+			android:layout_width="match_parent">
+			<TextView android:text="TextView" android:id="@+id/textView1"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:textSize="36px"></TextView>
+			<TextView android:layout_width="wrap_content" android:id="@+id/textView2"
+				android:layout_height="wrap_content" android:text="TextView"
+				android:textSize="36px"></TextView>
+			<TextView android:text="TextView" android:id="@+id/textView3"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:textSize="36px"></TextView>
+		</LinearLayout>
+	</LinearLayout>
+	<TextView android:text="活動內容:" android:id="@+id/textView4"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textSize="36px"></TextView>
+	<ScrollView android:id="@+id/scrollView1"
+		android:layout_width="match_parent" android:layout_height="wrap_content">
+		<LinearLayout android:id="@+id/linearLayout3"
+			android:layout_width="match_parent" android:layout_height="match_parent"
+			android:orientation="vertical">
+			<TextView android:text="參與者:" android:id="@+id/textView5"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:textSize="36px"></TextView>
+			<TextView android:text="TextView" android:id="@+id/textView6"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:textSize="36px"></TextView>
+		</LinearLayout>
+	</ScrollView>
+
 </LinearLayout>
