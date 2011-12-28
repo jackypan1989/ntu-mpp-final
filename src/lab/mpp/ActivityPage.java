@@ -28,6 +28,7 @@ import android.view.View;
 public class ActivityPage extends Activity {
 	private String[] friendNameList = { "jacky", "wang" };
 	private long[] selectId;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,53 +81,55 @@ public class ActivityPage extends Activity {
 				dialog.show();
 			}
 		});
-		Button add = (Button) findViewById(R.id.button2);
-		add.setOnClickListener(new Button.OnClickListener() {
 
+		Button button2 = (Button) findViewById(R.id.button2);
+		button2.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
-				Log.e("GPS", "press button");
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				try {
-					Bundle params = new Bundle();
-					params.putString("type", "place");
+				MPPFinalActivity.goTo(2);
+			}
+		});
 
-					params.putString("center", LocalData.latitude + ","
-							+ LocalData.longitude);
+		String placeName[] = null;
+		try {
+			Bundle params = new Bundle();
+			params.putString("type", "place");
 
-					params.putString("distance", "1000");
-					try {
-						Log.e("gps", "1");
-						JSONObject o = new JSONObject(LoginActivity.mFacebook
-								.request("search", params));
-						JSONArray j = o.getJSONArray("data");
-						// Log.e("gps",j+"");
-						Log.e("gps", "2");
-						for (int i = 0; i < j.length(); i++) {
-							Log.e("name", j.getJSONObject(i).getString("name"));
-						}
-						Log.e("gps", "3");
+			params.putString("center", LocalData.latitude + ","
+					+ LocalData.longitude);
 
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					// Log.e("GPS",LoginActivity.mFacebook
-					// .request("search?type=place&center="
-					// + LocalData.latitude + ","
-					// + LocalData.longitude + "&distance=1000"));
-					// Log.e("GPS",LoginActivity.mFacebook
-					// .request("https://graph.facebook.com/search?type=place&center=37.76,122.427&distance=1000"));
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			params.putString("distance", "1000");
+
+			JSONObject o = new JSONObject(LoginActivity.mFacebook.request(
+					"search", params));
+			JSONArray j = o.getJSONArray("data");
+			placeName = new String[j.length()];
+			// Log.e("gps",j+"");
+			for (int i = 0; i < j.length(); i++) {
+				placeName[i] = j.getJSONObject(i).getString("name");
 			}
 
-		});
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 地標的spinner
+		ArrayAdapter<String> placeAdapter = new ArrayAdapter<String>(
+				getParent().getParent(), android.R.layout.simple_spinner_item,
+				placeName);
+		placeAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		Spinner spinnerPlcae = (Spinner) findViewById(R.id.spinner3);
+		spinnerPlcae.setAdapter(placeAdapter);
+		spinnerPlcae.setPrompt("請選擇地點");
 
 		// set spinner for tag
 		Spinner spinnerActivityTag = (Spinner) findViewById(R.id.spinnerActivityTag);

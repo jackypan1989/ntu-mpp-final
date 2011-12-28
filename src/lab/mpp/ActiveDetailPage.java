@@ -46,7 +46,7 @@ public class ActiveDetailPage extends Activity {
 				String s = "";
 				for (int i = 0; i < a.length(); i++) {
 
-					s += a.getJSONObject(0).getString("name")+"\n";
+					s += a.getJSONObject(0).getString("name") + "\n";
 				}
 				friname.setText(s);
 
