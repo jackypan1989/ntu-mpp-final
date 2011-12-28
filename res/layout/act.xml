@@ -17,7 +17,9 @@
 			<HorizontalScrollView android:id="@+id/horizontalScrollView1" android:layout_width="match_parent" android:layout_height="wrap_content">
 				<LinearLayout android:id="@+id/linearLayout2" android:layout_height="match_parent" android:orientation="horizontal" android:layout_width="match_parent">
 					<Button android:layout_width="wrap_content" android:id="@+id/recommendButton" android:layout_height="wrap_content" android:text="推薦" android:layout_margin="5dip"></Button>
-					<LinearLayout android:id="@+id/linearLayout3" android:layout_width="wrap_content" android:layout_height="match_parent"></LinearLayout>
+					<LinearLayout android:id="@+id/linearLayout3" android:layout_width="wrap_content" android:layout_height="match_parent">
+						<TextView android:text="TextView" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+					</LinearLayout>
 				</LinearLayout>
 			</HorizontalScrollView>
 		</LinearLayout>

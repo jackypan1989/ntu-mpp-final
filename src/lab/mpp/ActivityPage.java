@@ -1,7 +1,11 @@
 package lab.mpp;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.net.MalformedURLException;
+=======
+import java.util.ArrayList;
+>>>>>>> origin/master
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class ActivityPage extends Activity {
+<<<<<<< HEAD
 	private String[] friendNameList = { "jacky", "wang" };
 	private long[] selectId;
 
@@ -36,6 +41,23 @@ public class ActivityPage extends Activity {
 		// setContentView(R.layout.search_activity);
 		setContentView(contentView);
 
+=======
+	
+	private String[] friendNameList = {"jacky","wang"};
+	
+	private long[] selectId ;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		View contentView = LayoutInflater.from(this.getParent()).inflate(R.layout.act, null);
+		//setContentView(R.layout.search_activity);
+		setContentView(contentView); 
+		
+		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
+		final String[] nameList = (String[])nameArrayList.toArray(new String[nameArrayList.size()]);
+		
+>>>>>>> origin/master
 		final Activity mppFinal = this.getParent().getParent();
 
 		// set button
@@ -49,10 +71,15 @@ public class ActivityPage extends Activity {
 				builder.setTitle("加入一個朋友");
 
 				final ListView modeList = new ListView(mppFinal);
+<<<<<<< HEAD
 				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(
 						mppFinal,
 						android.R.layout.simple_list_item_multiple_choice,
 						android.R.id.text1, friendNameList);
+=======
+				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(mppFinal, 
+						android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, nameList);
+>>>>>>> origin/master
 				modeList.setAdapter(modeAdapter);
 				modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -176,4 +203,5 @@ public class ActivityPage extends Activity {
 		super.onResume();
 		this.getParent().getParent().setTitle("ActivityPage");
 	}
+	
 }
