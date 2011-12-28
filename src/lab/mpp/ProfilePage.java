@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,7 +33,7 @@ public class ProfilePage extends Activity {
 					ImageView face = (ImageView) findViewById(R.id.imageView1);
 					face.setImageBitmap((LocalData.myFace));
 				} else {
-					myHandler.sendEmptyMessageDelayed(0,1000);
+					myHandler.sendEmptyMessageDelayed(0, 1000);
 				}
 				break;
 			case 1:
@@ -139,7 +140,8 @@ public class ProfilePage extends Activity {
 					long arg3) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getParent(), ActiveDetailPage.class);
-
+				Log.e("press",arg2+"");
+				intent.putExtra("id",((Act)(myadapter.array.get(arg2))).cheakId);
 				TabGroupActivity parentActivity = (TabGroupActivity) getParent();
 				parentActivity.startChildActivity("ActiveDetailPage", intent);
 
@@ -154,7 +156,7 @@ public class ProfilePage extends Activity {
 				if (j.getString("id").equals(myId)) {
 					myadapter.array.add(new Act(j.getString("tag"), j
 							.getString("location_name"), j
-							.getString("create_time")));
+							.getString("create_time"), i));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
