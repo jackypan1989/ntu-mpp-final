@@ -41,16 +41,16 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		if (APP_ID == null) {
-			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be " +
-			"specified before running this example: see Example.java");
+			Util.showAlert(this, "Warning", "Facebook Applicaton ID must be "
+					+ "specified before running this example: see Example.java");
 		}
 		setContentView(R.layout.login_page);
 
 		// set the views
 		mLoginButton = (LoginButton) findViewById(R.id.loginButton1);
-		Button facebookBtn = (Button)findViewById(R.id.facebookButton);
-		Button tryBtn = (Button)findViewById(R.id.tryButton);
-		Button supportBtn = (Button)findViewById(R.id.supportButton);
+		Button facebookBtn = (Button) findViewById(R.id.facebookButton);
+		Button tryBtn = (Button) findViewById(R.id.tryButton);
+		Button supportBtn = (Button) findViewById(R.id.supportButton);
 
 		// set facebook
 		mFacebook = new Facebook(APP_ID);
@@ -60,41 +60,50 @@ public class LoginActivity extends Activity {
 		SessionStore.restore(mFacebook, this);
 		SessionEvents.addAuthListener(new SampleAuthListener());
 		SessionEvents.addLogoutListener(new SampleLogoutListener());
-		mLoginButton.init(this, mFacebook , new String[] {"read_friendlists" , "user_photos" , "read_stream" });
+		mLoginButton.init(this, mFacebook, new String[] { "read_friendlists",
+				"user_photos", "read_stream" });
 		mLoginButton.setVisibility(View.INVISIBLE);
-		
-		if(mFacebook.isSessionValid()){
-			LocalData.app_status = "SESSION";
-			Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
-			startActivity(intent); 
-        }
-		
+
 		// set 3 buttons's click
-		facebookBtn.setOnClickListener(new Button.OnClickListener(){
+		facebookBtn.setOnClickListener(new Button.OnClickListener() {
 			@Override
-			public void onClick(View v){
+			public void onClick(View v) {
 				LocalData.app_status = "LOGIN";
 				mLoginButton.performClick();
 			}
 		});
 
-		tryBtn.setOnClickListener(new Button.OnClickListener(){
+		tryBtn.setOnClickListener(new Button.OnClickListener() {
 			@Override
-			public void onClick(View v){
+			public void onClick(View v) {
 				LocalData.app_status = "DEMO";
-				Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
-				startActivity(intent); 
+				Intent intent = new Intent(LoginActivity.this,
+						MPPFinalActivity.class);
+				startActivity(intent);
 			}
 		});
 
-		supportBtn.setOnClickListener(new Button.OnClickListener(){
+		supportBtn.setOnClickListener(new Button.OnClickListener() {
 			@Override
-			public void onClick(View v){
-				Intent intent = new Intent(LoginActivity.this ,SupportActivity.class); 
-				startActivity(intent); 
+			public void onClick(View v) {
+				Intent intent = new Intent(LoginActivity.this,
+						SupportActivity.class);
+				startActivity(intent);
 			}
 		});
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mFacebook.isSessionValid()) {
+			LocalData.app_status = "SESSION";
+			Intent intent = new Intent(LoginActivity.this,
+					MPPFinalActivity.class);
+			startActivity(intent);
+			this.finish();
+		}
 	}
 
 	@Override
