@@ -37,13 +37,23 @@ public class MapPage extends MapActivity implements LocationListener {
 			switch (m.what) {
 			case 0:
 				Log.e("log", "waitgps");
-				if (LocalData.latitude != 0 && LocalData.longitude != 0) {
+				if (LocalData.latitude != 0 && LocalData.longitude != 0
+						&& LocalData.myFace != null) {
 
 					GeoPoint p = new GeoPoint(
 							(int) (LocalData.latitude * 1000000),
 							(int) (LocalData.longitude * 1000000));
 					mc.setCenter(p);
-					pin.addOverlay(new OverlayItem(p, "", ""));
+					OverlayItem o = new OverlayItem(p, "", "");
+					Matrix ma = new Matrix();
+					ma.postScale(2, 2);
+					Bitmap b = Bitmap.createBitmap(LocalData.myFace, 0, 0, 50,
+							50, ma, true);
+					BitmapDrawable bd = new BitmapDrawable(b);
+					bd.setBounds(0, 0, bd.getIntrinsicWidth(),
+							bd.getIntrinsicHeight());
+					o.setMarker(bd);
+					pin.addOverlay(o);
 
 					mc.setCenter(p);
 					flagHasDraw = true;

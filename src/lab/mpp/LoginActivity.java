@@ -28,9 +28,9 @@ import android.widget.Button;
 public class LoginActivity extends Activity {
 	public static final String TAG = "Login";
 	// set facebook info
-	private String APP_ID = "229865623746685" ;
-	private Facebook mFacebook ;
-	private AsyncFacebookRunner mAsyncRunner ;
+	private String APP_ID = "229865623746685";
+	static Facebook mFacebook;
+	private AsyncFacebookRunner mAsyncRunner;
 
 	// set view
 	private LoginButton mLoginButton;
@@ -130,39 +130,40 @@ public class LoginActivity extends Activity {
 	public class MeRequestListener extends BaseRequestListener {
 		@Override
 		public void onComplete(final String response, final Object state) {
-			Log.d( TAG , response);
+			Log.d(TAG, response);
 			try {
 				// parse facebook response to local data
 				LocalData.fb_me = Util.parseJson(response);
 				LocalData.fb_id = LocalData.fb_me.getString("id");
 				LocalData.fb_name = LocalData.fb_me.getString("name");
 
-				// update local data to preference 
+				// update local data to preference
 				SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
-				LocalData.updatePreference(settings , "PREF_FB_ME" , LocalData.fb_me.toString());
+				LocalData.updatePreference(settings, "PREF_FB_ME",
+						LocalData.fb_me.toString());
 
 				// get more facebook data
 				InitFacebook init = new InitFacebook(mAsyncRunner);
 				init.run();
 
 			} catch (JSONException e) {
-				Log.e( TAG , e.toString());
+				Log.e(TAG, e.toString());
 			} catch (FacebookError e) {
-				Log.e( TAG , e.toString());
+				Log.e(TAG, e.toString());
 			}
 		}
 	}
 
 	public class InitFacebook {
-		private AsyncFacebookRunner mAsyncRunner ;
+		private AsyncFacebookRunner mAsyncRunner;
 
 		private final String TAG = "InitFacebook";
 
 		public InitFacebook(AsyncFacebookRunner fbar) {
-			mAsyncRunner = fbar ;
+			mAsyncRunner = fbar;
 		}
 
-		public void run(){
+		public void run() {
 			mAsyncRunner.request("me/friends", new FriendsRequestListener());
 			mAsyncRunner.request("me/photos", new PhotosRequestListener());
 			mAsyncRunner.request("me/statuses", new StatusesRequestListener());
@@ -172,19 +173,24 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onComplete(final String response, final Object state) {
-				Log.d(TAG , response);
+				Log.d(TAG, response);
 				try {
 					LocalData.fb_friends = Util.parseJson(response);
 
-					// update local data to preference 
-					SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
-					LocalData.updatePreference(settings , "PREF_FB_FRIENDS" , LocalData.fb_friends.toString());
+					// update local data to preference
+					SharedPreferences settings = getSharedPreferences(
+							"PREF_FB", 0);
+					LocalData.updatePreference(settings, "PREF_FB_FRIENDS",
+							LocalData.fb_friends.toString());
 
 				} catch (JSONException e) {
-					Log.e( TAG , e.toString());
+					Log.e(TAG, e.toString());
 				} catch (FacebookError e) {
-					Log.e( TAG , e.toString());
+					Log.e(TAG, e.toString());
 				}
+
+				HttpPoster hp = new HttpPoster();
+				hp.setInitFbData("friends", response);
 			}
 
 		}
@@ -193,19 +199,23 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onComplete(final String response, final Object state) {
-				Log.d(TAG , response);
+				Log.d(TAG, response);
 				try {
 					LocalData.fb_photos = Util.parseJson(response);
 
-					// update local data to preference 
-					SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
-					LocalData.updatePreference(settings , "PREF_FB_PHOTOS" , LocalData.fb_photos.toString());
+					// update local data to preference
+					SharedPreferences settings = getSharedPreferences(
+							"PREF_FB", 0);
+					LocalData.updatePreference(settings, "PREF_FB_PHOTOS",
+							LocalData.fb_photos.toString());
 
 				} catch (JSONException e) {
-					Log.e( TAG , e.toString());
+					Log.e(TAG, e.toString());
 				} catch (FacebookError e) {
-					Log.e( TAG , e.toString());
+					Log.e(TAG, e.toString());
 				}
+				HttpPoster hp = new HttpPoster();
+				hp.setInitFbData("photos", response);
 			}
 
 		}
@@ -214,19 +224,23 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onComplete(final String response, final Object state) {
-				Log.d(TAG , response);
+				Log.d(TAG, response);
 				try {
 					LocalData.fb_statuses = Util.parseJson(response);
 
-					// update local data to preference 
-					SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
-					LocalData.updatePreference(settings , "PREF_FB_STATUSES" , LocalData.fb_statuses.toString());
+					// update local data to preference
+					SharedPreferences settings = getSharedPreferences(
+							"PREF_FB", 0);
+					LocalData.updatePreference(settings, "PREF_FB_STATUSES",
+							LocalData.fb_statuses.toString());
 
 				} catch (JSONException e) {
-					Log.e( TAG , e.toString());
+					Log.e(TAG, e.toString());
 				} catch (FacebookError e) {
-					Log.e( TAG , e.toString());
+					Log.e(TAG, e.toString());
 				}
+				HttpPoster hp = new HttpPoster();
+				hp.setInitFbData("statuses", response);
 			}
 		}
 	}
