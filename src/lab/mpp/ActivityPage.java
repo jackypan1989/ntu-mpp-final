@@ -3,6 +3,8 @@ package lab.mpp;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.LocalData;
@@ -52,7 +54,6 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				createAct();
 				dialog.show();
 			}
 		});
@@ -62,7 +63,7 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				createAct();
 				Log.e(TAG,"test");
 				//MPPFinalActivity.goTo(2);
 			}
@@ -140,9 +141,14 @@ public class ActivityPage extends Activity {
 
 	void setFriendList() {
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
+		ArrayList<String> idArrayList = LocalData.getFbFriendIdList();
+		
 		nameList = nameArrayList.toArray(new String[nameArrayList
 				.size()]);
-
+		idList = idArrayList.toArray(new String[idArrayList
+		                            				.size()]);
+		
+		
 		friendsListView = new ListView(this.getParent().getParent());
 		dialog = new Dialog(ActivityPage.this.getParent().getParent());
 		AlertDialog.Builder builder = new AlertDialog.Builder(ActivityPage.this
@@ -162,8 +168,9 @@ public class ActivityPage extends Activity {
 		builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface d, int i) {
-				selectedFriends = friendsListView.getCheckedItemIds();
-				Log.d(TAG,String.valueOf(selectedFriends[0]));
+//				selectedFriends = friendsListView.getCheckedItemIds();
+
+//				Log.e(TAG,selectedFriends[0]+"test");
 			}
 		});
 		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -177,25 +184,34 @@ public class ActivityPage extends Activity {
     
 	// create a new activity
 	public void createAct(){
-		String location = locationSpinner.getPrompt().toString();
-		String tag = tagSpinner.getPrompt().toString();
-		String status = statusSpinner.getPrompt().toString();		
+		selectedFriends = friendsListView.getCheckItemIds();
+		String location = locationSpinner.getSelectedItem().toString();
+		String tag = tagSpinner.getSelectedItem().toString();
+		String status = statusSpinner.getSelectedItem().toString();		
 		String description = descriptionTextView.getText().toString();
 		String withFriend = null;
 		
 		JSONArray friendList = new JSONArray();
-		//friendList.put
+		
+		Log.e(TAG,selectedFriends.length+"");
 		for(int i = 0;i<selectedFriends.length;i++){
-			long index = selectedFriends[i];
-			//friendList.put("id",nameList[index]);
+			int index = (int)selectedFriends[i];
+			try {
+				JSONObject json = new JSONObject();
+				json.put("id", idList[index]);
+				json.put("name", nameList[index]);
+				friendList.put(index, json);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
+		withFriend = friendList.toString();
+		Log.e(TAG,friendList.toString());
 		
-		
-		
-	    //HttpPoster hp = new HttpPoster();
-	    //hp.createCheckin(location,tag,status,description,withFriend);
-		
+	    HttpPoster hp = new HttpPoster();
+	    hp.createCheckin(location,tag,status,description,withFriend);
 		
 	}
 	

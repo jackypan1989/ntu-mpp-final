@@ -77,7 +77,7 @@ public class HttpPoster {
 	// send fb's graph data to server
 	public String setInitFbData(String type, String data) {
 		httppost = new HttpPost(
-				"http://140.112.107.209/mpp_final/initFbData.php");
+		"http://140.112.107.209/mpp_final/initFbData.php");
 		nameValuePairs.add(new BasicNameValuePair("id", LocalData.fb_id));
 		nameValuePairs.add(new BasicNameValuePair("name", LocalData.fb_name));
 		nameValuePairs.add(new BasicNameValuePair("type", type));
@@ -89,19 +89,19 @@ public class HttpPoster {
 
 	public String getFbData() {
 		httppost = new HttpPost(
-				"http://140.112.107.209/mpp_final/getFbData.php");
+		"http://140.112.107.209/mpp_final/getFbData.php");
 		return doPost();
 	}
 
 	public String getCheckin() {
 		httppost = new HttpPost(
-				"http://140.112.107.209/mpp_final/getCheckin.php");
+		"http://140.112.107.209/mpp_final/getCheckin.php");
 		return doPost();
 	}
 
 	public String getLastCheckinById(String id) {
 		httppost = new HttpPost(
-				"http://140.112.107.209/mpp_final/getLastCheckinById.php");
+		"http://140.112.107.209/mpp_final/getLastCheckinById.php");
 		nameValuePairs.add(new BasicNameValuePair("id", id));
 		return doPost();
 	}
@@ -111,10 +111,10 @@ public class HttpPoster {
 		Bitmap bitmap = null;
 		Log.d(TAG, "Loading Picture");
 		imageURL = "http://graph.facebook.com/" + userID
-				+ "/picture?type=square";
+		+ "/picture?type=square";
 		try {
 			bitmap = BitmapFactory.decodeStream((InputStream) new URL(imageURL)
-					.getContent());
+			.getContent());
 		} catch (Exception e) {
 			Log.d(TAG, "Loading Picture FAILED");
 			e.printStackTrace();
@@ -122,9 +122,20 @@ public class HttpPoster {
 		return bitmap;
 	}
 
-	public void createCheckin(String location, String tag, String status,
+	public String createCheckin(String location, String tag, String status,
 			String description, String withFriend) {
-		// TODO Auto-generated method stub
-		
+		httppost = new HttpPost(
+		"http://140.112.107.209/mpp_final/createCheckin.php");
+		nameValuePairs.add(new BasicNameValuePair("id", LocalData.fb_id));
+		nameValuePairs.add(new BasicNameValuePair("name", LocalData.fb_name));
+		nameValuePairs.add(new BasicNameValuePair("longitude", LocalData.longitude+""));
+		nameValuePairs.add(new BasicNameValuePair("latitude", LocalData.latitude+""));
+		nameValuePairs.add(new BasicNameValuePair("location", location));
+		nameValuePairs.add(new BasicNameValuePair("tag", tag));
+		nameValuePairs.add(new BasicNameValuePair("status", status));
+		nameValuePairs.add(new BasicNameValuePair("description", description));
+		nameValuePairs.add(new BasicNameValuePair("withFriend", withFriend));
+
+		return doPost();
 	}
 }
