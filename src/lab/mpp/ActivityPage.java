@@ -29,7 +29,11 @@ import android.view.View;
 public class ActivityPage extends Activity {
 	private String[] friendNameList = { "jacky", "wang" };
 	private long[] selectId;
-	ProgressDialog dialog ;
+	private long[] friendCheak;
+	ListView modeList;
+	String[] nameList;
+	Dialog dialog;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,50 +42,13 @@ public class ActivityPage extends Activity {
 		// setContentView(R.layout.search_activity);
 		setContentView(contentView);
 
-		dialog = ProgressDialog.show(getParent(), "",
-				"Loading locations. Please wait...", true);
-		
-		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
-		final String[] nameList = (String[]) nameArrayList
-				.toArray(new String[nameArrayList.size()]);
-
-		final Activity mppFinal = this.getParent().getParent();
-
 		// set button
 		Button button = (Button) findViewById(R.id.recommendButton);
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Dialog dialog = new Dialog(mppFinal);
-				AlertDialog.Builder builder = new AlertDialog.Builder(mppFinal);
-				builder.setTitle("加入一個朋友");
 
-				final ListView modeList = new ListView(mppFinal);
-
-				ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(
-						mppFinal,
-						android.R.layout.simple_list_item_multiple_choice,
-						android.R.id.text1, nameList);
-				modeList.setAdapter(modeAdapter);
-				modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-				builder.setView(modeList);
-				builder.setPositiveButton("確定",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface d, int i) {
-								selectId = modeList.getCheckItemIds();
-								// if(selectId.is)
-							}
-						});
-				builder.setNegativeButton("取消",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface d, int i) {
-
-							}
-						});
-
-				dialog = builder.create();
 				dialog.show();
 			}
 		});
@@ -95,47 +62,17 @@ public class ActivityPage extends Activity {
 			}
 		});
 
-		String placeName[] = null;
-		try {
-			Bundle params = new Bundle();
-			params.putString("type", "place");
-
-			params.putString("center", LocalData.latitude + ","
-					+ LocalData.longitude);
-
-			params.putString("distance", "1000");
-
-			JSONObject o = new JSONObject(LoginActivity.mFacebook.request(
-					"search", params));
-			JSONArray j = o.getJSONArray("data");
-			placeName = new String[j.length()];
-			// Log.e("gps",j+"");
-			for (int i = 0; i < j.length(); i++) {
-				placeName[i] = j.getJSONObject(i).getString("name");
-			}
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (LocalData.placeName != null) {
+			// 地標的spinner
+			ArrayAdapter<String> placeAdapter = new ArrayAdapter<String>(
+					getParent().getParent(),
+					android.R.layout.simple_spinner_item, LocalData.placeName);
+			placeAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			Spinner spinnerPlcae = (Spinner) findViewById(R.id.spinner3);
+			spinnerPlcae.setAdapter(placeAdapter);
+			spinnerPlcae.setPrompt("請選擇地點");
 		}
-		dialog.dismiss();
-		
-
-		// 地標的spinner
-		ArrayAdapter<String> placeAdapter = new ArrayAdapter<String>(
-				getParent().getParent(), android.R.layout.simple_spinner_item,
-				placeName);
-		placeAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		Spinner spinnerPlcae = (Spinner) findViewById(R.id.spinner3);
-		spinnerPlcae.setAdapter(placeAdapter);
-		spinnerPlcae.setPrompt("請選擇地點");
 
 		// set spinner for tag
 		Spinner spinnerActivityTag = (Spinner) findViewById(R.id.spinnerActivityTag);
@@ -188,7 +125,43 @@ public class ActivityPage extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		this.getParent().getParent().setTitle("ActivityPage");
+		setFriendList();
+	}
+
+	void setFriendList() {
+		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
+		nameList = (String[]) nameArrayList.toArray(new String[nameArrayList
+				.size()]);
+
+		modeList = new ListView(this.getParent().getParent());
+		dialog = new Dialog(ActivityPage.this.getParent().getParent());
+		AlertDialog.Builder builder = new AlertDialog.Builder(ActivityPage.this
+				.getParent().getParent());
+		builder.setTitle("加入一個朋友");
+
+		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(
+				ActivityPage.this.getParent().getParent(),
+				android.R.layout.simple_list_item_multiple_choice,
+				android.R.id.text1, nameList);
+
+		modeList.setAdapter(modeAdapter);
+		modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+		builder.setView(modeList);
+
+		builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface d, int i) {
+
+				selectId = modeList.getCheckItemIds();
+				// if(selectId.is)
+			}
+		});
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface d, int i) {
+				setFriendList();
+			}
+		});
+		dialog = builder.create();
 	}
 
 }

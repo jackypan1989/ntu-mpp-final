@@ -1,14 +1,17 @@
 package lab.mpp;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,11 +40,12 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 	/** Called when the activity is first created. */
 	public static final String TAG = "MPPFinalActivity";
 	static TabHost tabHost;
+	ProgressDialog dialog;
 	Handler myHandler = new Handler() {
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:
-
+				Globo.flagPlaceRead = false;
 				LocationManager lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 				Criteria criteria = new Criteria();
 				String best = lmgr.getBestProvider(criteria, true);
@@ -78,6 +82,37 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 						// // TODO Auto-generated catch block
 						// e.printStackTrace();
 						// }
+						if (LoginActivity.mFacebook.isSessionValid()) {
+							try {
+								Bundle params = new Bundle();
+								params.putString("type", "place");
+
+								params.putString("center", x + "," + y);
+
+								params.putString("distance", "1000");
+
+								JSONObject o = new JSONObject(
+										LoginActivity.mFacebook.request(
+												"search", params));
+								JSONArray j = o.getJSONArray("data");
+								LocalData.placeName = new String[j.length()];
+								// Log.e("gps",j+"");
+								for (int i = 0; i < j.length(); i++) {
+									LocalData.placeName[i] = j.getJSONObject(i)
+											.getString("name");
+								}
+								Globo.flagPlaceRead = true;
+							} catch (MalformedURLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 					} else {
 						this.sendEmptyMessageDelayed(0, 3000);
 					}
@@ -93,15 +128,15 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+
+		dialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
 		// get preferences
 		SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
 		LocalData.getPreference(settings);
 
 		Log.d(TAG, "My id is " + LocalData.fb_id + ". My name is "
 				+ LocalData.fb_name);
-		
-		myHandler.sendEmptyMessage(0);
+
 		// check if user is the first time to login
 		/*
 		 * if(LocalData.fb_id.equals("") && LocalData.fb_name.equals("")){
@@ -115,7 +150,8 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		tabHost = getTabHost();
 		addTab("List", new Intent(this, TGAHome.class), R.drawable.tabhome);
 		addTab("Map", new Intent(this, TGAMap.class), R.drawable.tabmap);
-		addTab("Profile", new Intent(this, TGAProfile.class), R.drawable.tabprof);
+		addTab("Profile", new Intent(this, TGAProfile.class),
+				R.drawable.tabprof);
 		addTab("Create", new Intent(this, TGAActivity.class), R.drawable.tabact);
 
 		tabHost.setCurrentTab(0);
@@ -129,9 +165,9 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		title.setText(name);
 		ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
 		icon.setImageResource(pic);
-		  
-		TabSpec setContent = tabHost.newTabSpec(name).setIndicator(tabIndicator)
-				.setContent(intent);
+
+		TabSpec setContent = tabHost.newTabSpec(name)
+				.setIndicator(tabIndicator).setContent(intent);
 
 		tabHost.addTab(setContent);
 	}
@@ -151,7 +187,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		// TODO Auto-generated method stub
 		Log.e("Log", "thread start");
 		HttpPoster hp = new HttpPoster();
-		Log.e("log",hp.getFbData());
+		Log.e("log", hp.getFbData());
 		String response = hp.getCheckin();
 		if (response == null) {
 			Globo.flagHasInternet = false;
@@ -163,6 +199,8 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		try {
 			RemoteData.checkins = new JSONArray(response);
 			Globo.flagStringLoad = true;
+			dialog.dismiss();
+			myHandler.sendEmptyMessage(0);
 			// for (int i = 0; i < RemoteData.checkins.length(); i++) {
 			// Geocoder c = new Geocoder(MPPFinalActivity.this);
 			// try {
@@ -181,7 +219,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			// e.printStackTrace();
 			// }
 			// }
-			LocalData.myFace=hp.getUserPic(LocalData.fb_id);
+			LocalData.myFace = hp.getUserPic(LocalData.fb_id);
 			RemoteData.face = new Bitmap[RemoteData.checkins.length()];
 			for (int i = 0; i < RemoteData.face.length; i++) {
 				RemoteData.face[i] = hp.getUserPic(RemoteData.checkins
@@ -189,20 +227,20 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			}
 			// Log.e("log", "picok");
 			Globo.flagPicLoad = true;
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		/*
-		if(LocalData.fb_friends != null && LocalData.photos != null && LocalData.fb_friends != null){
-			hp.setInitFbData("friends" , LocalData.fb_friends.toString());
-			hp.setInitFbData("photos" , LocalData.fb_photos.toString());
-			hp.setInitFbData("statuses" , LocalData.fb_statuses.toString());
-		}
-		*/
-		
+		 * if(LocalData.fb_friends != null && LocalData.photos != null &&
+		 * LocalData.fb_friends != null){ hp.setInitFbData("friends" ,
+		 * LocalData.fb_friends.toString()); hp.setInitFbData("photos" ,
+		 * LocalData.fb_photos.toString()); hp.setInitFbData("statuses" ,
+		 * LocalData.fb_statuses.toString()); }
+		 */
+
 	}
 
 	@Override

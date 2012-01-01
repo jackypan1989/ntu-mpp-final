@@ -26,20 +26,7 @@
 			<TextView android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:id="@+id/textView2"
 				android:text="選擇要加入的朋友" android:textSize="20dip" android:layout_marginLeft="5dip"></TextView>
-			<HorizontalScrollView android:id="@+id/horizontalScrollView1"
-				android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5dip" android:layout_marginRight="5dip">
-				<LinearLayout android:id="@+id/linearLayout2"
-					android:layout_height="match_parent" android:orientation="horizontal"
-					android:layout_width="match_parent">
-					<Button android:layout_width="wrap_content" android:id="@+id/recommendButton"
-						android:layout_height="wrap_content" android:text="推薦"></Button>
-					<LinearLayout android:id="@+id/linearLayout3"
-						android:layout_width="wrap_content" android:layout_height="match_parent">
-						<TextView android:text="TextView" android:id="@+id/textView1"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-					</LinearLayout>
-				</LinearLayout>
-			</HorizontalScrollView>
+			<Button android:text="推薦" android:layout_height="wrap_content" android:id="@+id/recommendButton" android:layout_width="fill_parent"></Button>
 		</LinearLayout>
 	</ScrollView>
 	<Button android:layout_width="fill_parent"

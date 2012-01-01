@@ -5,4 +5,5 @@ public class Globo {
 	static boolean flagStringLoad = false;
 	static boolean flagPicLoad = false;
 	static boolean flagHasInternet = true;
+	static boolean flagPlaceRead = false;
 }
