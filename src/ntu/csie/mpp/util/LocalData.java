@@ -25,7 +25,7 @@ public class LocalData {
 	public static JSONObject fb_friends; 
 	public static JSONObject fb_photos; 
 	public static JSONObject fb_statuses;
-
+	public static JSONArray query;
 	public static String[] tagList = {"純打卡","吃飯","打球","睡覺","念書","逛街","聊天","寫作業"};
 	public static String[] statusList = {"無聊","忙碌","徵人","覺得很爽","快樂","難過"};
 	public static String[] placeName;
@@ -36,6 +36,7 @@ public class LocalData {
 			LocalData.fb_friends = new JSONObject(settings.getString("PREF_FB_FRIENDS", ""));
 			LocalData.fb_photos = new JSONObject(settings.getString("PREF_FB_PHOTOS", ""));
 			LocalData.fb_statuses = new JSONObject(settings.getString("PREF_FB_STATUSES", ""));
+			LocalData.query = new JSONArray(settings.getString("PREF_QUERY", ""));
 			LocalData.fb_id = LocalData.fb_me.getString("id");
 			LocalData.fb_name = LocalData.fb_me.getString("name");
 		} catch (JSONException e) {

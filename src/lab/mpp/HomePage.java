@@ -2,11 +2,14 @@ package lab.mpp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
-
+import ntu.csie.mpp.query.Query;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -107,12 +110,14 @@ public class HomePage extends Activity {
 			}
 		});
 		h.sendEmptyMessage(0);
+		
+
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.e("log", "homePage");
+//		Log.e("log", "homePage");
 		// this.getParent().getParent().setTitle("HomePage");
 	}
 
@@ -130,7 +135,7 @@ public class HomePage extends Activity {
 			checkinListItem.add(map);
 		}
 
-		Log.e("test", checkinListItem.toString());
+//		Log.e("test", checkinListItem.toString());
 
 		// checkinListItemAdapter =new LazyAdapter(this, mStrings);
 		checkinListItemAdapter = new CheckinListAdapter(this, checkinListItem);
