@@ -59,7 +59,6 @@ public class LoginActivity extends Activity {
 		// set facebook session and login
 		SessionStore.restore(mFacebook, this);
 		SessionEvents.addAuthListener(new SampleAuthListener());
-		SessionEvents.addLogoutListener(new SampleLogoutListener());
 		mLoginButton.init(this, mFacebook , new String[] {"read_friendlists" , "user_photos" , "read_stream" });
 		mLoginButton.setVisibility(View.INVISIBLE);
 		
@@ -99,7 +98,9 @@ public class LoginActivity extends Activity {
 			LocalData.app_status = "SESSION";
 			Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
 			startActivity(intent); 
-        }
+			finish();
+		}
+		
 	}
 	
 	@Override

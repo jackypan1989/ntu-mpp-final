@@ -12,6 +12,7 @@ import ntu.csie.mpp.util.LocalData;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.AdapterView;
@@ -28,7 +29,7 @@ import android.view.View;
 public class ActivityPage extends Activity {
 	private String[] friendNameList = { "jacky", "wang" };
 	private long[] selectId;
-
+	ProgressDialog dialog ;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,6 +38,9 @@ public class ActivityPage extends Activity {
 		// setContentView(R.layout.search_activity);
 		setContentView(contentView);
 
+		dialog = ProgressDialog.show(getParent(), "",
+				"Loading locations. Please wait...", true);
+		
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
 		final String[] nameList = (String[]) nameArrayList
 				.toArray(new String[nameArrayList.size()]);
@@ -120,6 +124,8 @@ public class ActivityPage extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dialog.dismiss();
+		
 
 		// 地標的spinner
 		ArrayAdapter<String> placeAdapter = new ArrayAdapter<String>(

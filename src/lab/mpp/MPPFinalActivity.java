@@ -93,13 +93,14 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		Log.d(TAG, "My id is " + LocalData.fb_id + ". My name is "
-				+ LocalData.fb_name);
-
+		
 		// get preferences
 		SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
 		LocalData.getPreference(settings);
 
+		Log.d(TAG, "My id is " + LocalData.fb_id + ". My name is "
+				+ LocalData.fb_name);
+		
 		myHandler.sendEmptyMessage(0);
 		// check if user is the first time to login
 		/*
@@ -180,7 +181,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			// e.printStackTrace();
 			// }
 			// }
-
+			LocalData.myFace=hp.getUserPic(LocalData.fb_id);
 			RemoteData.face = new Bitmap[RemoteData.checkins.length()];
 			for (int i = 0; i < RemoteData.face.length; i++) {
 				RemoteData.face[i] = hp.getUserPic(RemoteData.checkins
@@ -188,17 +189,19 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			}
 			// Log.e("log", "picok");
 			Globo.flagPicLoad = true;
-			LocalData.myFace=hp.getUserPic("100000170686960");//LocalData.fb_id);
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		if(LocalData.fb_friends!=null){
+		/*
+		if(LocalData.fb_friends != null && LocalData.photos != null && LocalData.fb_friends != null){
 			hp.setInitFbData("friends" , LocalData.fb_friends.toString());
 			hp.setInitFbData("photos" , LocalData.fb_photos.toString());
 			hp.setInitFbData("statuses" , LocalData.fb_statuses.toString());
 		}
+		*/
 		
 	}
 
