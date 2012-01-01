@@ -29,7 +29,7 @@ import android.view.View;
 public class ActivityPage extends Activity {
 	private String[] friendNameList = { "jacky", "wang" };
 	private long[] selectId;
-	ProgressDialog dialog ;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,9 +38,6 @@ public class ActivityPage extends Activity {
 		// setContentView(R.layout.search_activity);
 		setContentView(contentView);
 
-		dialog = ProgressDialog.show(getParent(), "",
-				"Loading locations. Please wait...", true);
-		
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
 		final String[] nameList = (String[]) nameArrayList
 				.toArray(new String[nameArrayList.size()]);
@@ -95,48 +92,18 @@ public class ActivityPage extends Activity {
 			}
 		});
 
-		String placeName[] = null;
-		try {
-			Bundle params = new Bundle();
-			params.putString("type", "place");
-
-			params.putString("center", LocalData.latitude + ","
-					+ LocalData.longitude);
-
-			params.putString("distance", "1000");
-
-			JSONObject o = new JSONObject(LoginActivity.mFacebook.request(
-					"search", params));
-			JSONArray j = o.getJSONArray("data");
-			placeName = new String[j.length()];
-			// Log.e("gps",j+"");
-			for (int i = 0; i < j.length(); i++) {
-				placeName[i] = j.getJSONObject(i).getString("name");
-			}
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (LocalData.placeName != null) {
+			// 地標的spinner
+			ArrayAdapter<String> placeAdapter = new ArrayAdapter<String>(
+					getParent().getParent(),
+					android.R.layout.simple_spinner_item, LocalData.placeName);
+			placeAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			Spinner spinnerPlcae = (Spinner) findViewById(R.id.spinner3);
+			spinnerPlcae.setAdapter(placeAdapter);
+			spinnerPlcae.setPrompt("請選擇地點");
 		}
-		dialog.dismiss();
 		
-
-		// 地標的spinner
-		ArrayAdapter<String> placeAdapter = new ArrayAdapter<String>(
-				getParent().getParent(), android.R.layout.simple_spinner_item,
-				placeName);
-		placeAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		Spinner spinnerPlcae = (Spinner) findViewById(R.id.spinner3);
-		spinnerPlcae.setAdapter(placeAdapter);
-		spinnerPlcae.setPrompt("請選擇地點");
-
 		// set spinner for tag
 		Spinner spinnerActivityTag = (Spinner) findViewById(R.id.spinnerActivityTag);
 		// create array to set adapter
