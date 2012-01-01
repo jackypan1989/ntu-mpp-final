@@ -23,10 +23,12 @@
 				android:text="選擇狀態" android:layout_marginLeft="5dip"></TextView>
 			<Spinner android:layout_width="match_parent"
 				android:layout_height="wrap_content" android:id="@+id/spinnerActivityStatus" android:layout_marginLeft="5dip" android:layout_marginRight="5dip"></Spinner>
-			<TextView android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:id="@+id/textView2"
-				android:text="選擇要加入的朋友" android:textSize="20dip" android:layout_marginLeft="5dip"></TextView>
-			<Button android:text="推薦" android:layout_height="wrap_content" android:id="@+id/recommendButton" android:layout_width="fill_parent"></Button>
+			<TextView android:layout_width="wrap_content" android:text="選擇要加入的朋友" android:layout_marginLeft="5dip" android:layout_height="wrap_content" android:textSize="20dip" android:id="@+id/TextView02"></TextView>
+			<Button android:layout_height="wrap_content" android:id="@+id/recommendButton" android:layout_width="fill_parent" android:layout_marginLeft="5dip" android:layout_marginRight="5dip" android:text="已加入的清單"></Button>
+			<TextView android:layout_width="wrap_content" android:layout_marginLeft="5dip" android:layout_height="wrap_content" android:textSize="20dip" android:id="@+id/textView2" android:text="請輸入一些描述"></TextView>
+			<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5dip" android:layout_marginRight="5dip" android:id="@+id/descriptionText">
+				<requestFocus></requestFocus>
+			</EditText>
 		</LinearLayout>
 	</ScrollView>
 	<Button android:layout_width="fill_parent"

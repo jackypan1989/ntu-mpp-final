@@ -1,39 +1,40 @@
 package lab.mpp;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.LocalData;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 public class ActivityPage extends Activity {
-	private String[] friendNameList = { "jacky", "wang" };
-	private long[] selectId;
-	private long[] friendCheak;
-	ListView modeList;
-	String[] nameList;
-	Dialog dialog;
-
+	public static final String TAG = "ActivityPage";
+	
+	private ListView friendsListView;
+	private Spinner locationSpinner;
+	private Spinner tagSpinner;
+	private Spinner statusSpinner;
+	private TextView descriptionTextView;
+	
+	private String[] nameList;
+	private String[] idList;
+	private Dialog dialog;
+	private long[] selectedFriends;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,13 +43,16 @@ public class ActivityPage extends Activity {
 		// setContentView(R.layout.search_activity);
 		setContentView(contentView);
 
+		// set View
+		descriptionTextView = (TextView) findViewById(R.id.descriptionText); 
+		
 		// set button
 		Button button = (Button) findViewById(R.id.recommendButton);
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
+				createAct();
 				dialog.show();
 			}
 		});
@@ -58,7 +62,9 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				MPPFinalActivity.goTo(2);
+				
+				Log.e(TAG,"test");
+				//MPPFinalActivity.goTo(2);
 			}
 		});
 
@@ -69,52 +75,56 @@ public class ActivityPage extends Activity {
 					android.R.layout.simple_spinner_item, LocalData.placeName);
 			placeAdapter
 					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			Spinner spinnerPlcae = (Spinner) findViewById(R.id.spinner3);
-			spinnerPlcae.setAdapter(placeAdapter);
-			spinnerPlcae.setPrompt("請選擇地點");
+			locationSpinner = (Spinner) findViewById(R.id.spinner3);
+			locationSpinner.setAdapter(placeAdapter);
+			locationSpinner.setPrompt("請選擇地點");
 		}
 
 		// set spinner for tag
-		Spinner spinnerActivityTag = (Spinner) findViewById(R.id.spinnerActivityTag);
+		tagSpinner = (Spinner) findViewById(R.id.spinnerActivityTag);
 		// create array to set adapter
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getParent()
 				.getParent(), android.R.layout.simple_spinner_item,
 				LocalData.tagList);
 		// set dropdown view
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerActivityTag.setAdapter(adapter);
-		spinnerActivityTag.setPrompt("請選擇一個標籤");
+		tagSpinner.setAdapter(adapter);
+		tagSpinner.setPrompt("請選擇一個標籤");
 		// set onclick
-		spinnerActivityTag
+		tagSpinner
 				.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+					@Override
 					public void onItemSelected(AdapterView adapterView,
 							View view, int position, long id) {
 
 					}
 
+					@Override
 					public void onNothingSelected(AdapterView arg0) {
 
 					}
 				});
 
 		// set spinner for tag
-		Spinner spinnerActivityStatus = (Spinner) findViewById(R.id.spinnerActivityStatus);
+		statusSpinner = (Spinner) findViewById(R.id.spinnerActivityStatus);
 		// create array to set adapter
 		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getParent()
 				.getParent(), android.R.layout.simple_spinner_item,
 				LocalData.statusList);
 		// set dropdown view
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerActivityStatus.setAdapter(adapter2);
-		spinnerActivityStatus.setPrompt("請選擇目前狀態");
+		statusSpinner.setAdapter(adapter2);
+		statusSpinner.setPrompt("請選擇目前狀態");
 		// set onclick
-		spinnerActivityStatus
+		statusSpinner
 				.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+					@Override
 					public void onItemSelected(AdapterView adapterView,
 							View view, int position, long id) {
 
 					}
 
+					@Override
 					public void onNothingSelected(AdapterView arg0) {
 
 					}
@@ -130,10 +140,10 @@ public class ActivityPage extends Activity {
 
 	void setFriendList() {
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
-		nameList = (String[]) nameArrayList.toArray(new String[nameArrayList
+		nameList = nameArrayList.toArray(new String[nameArrayList
 				.size()]);
 
-		modeList = new ListView(this.getParent().getParent());
+		friendsListView = new ListView(this.getParent().getParent());
 		dialog = new Dialog(ActivityPage.this.getParent().getParent());
 		AlertDialog.Builder builder = new AlertDialog.Builder(ActivityPage.this
 				.getParent().getParent());
@@ -144,24 +154,49 @@ public class ActivityPage extends Activity {
 				android.R.layout.simple_list_item_multiple_choice,
 				android.R.id.text1, nameList);
 
-		modeList.setAdapter(modeAdapter);
-		modeList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		friendsListView.setAdapter(modeAdapter);
+		friendsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-		builder.setView(modeList);
+		builder.setView(friendsListView);
 
 		builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface d, int i) {
-
-				selectId = modeList.getCheckItemIds();
-				// if(selectId.is)
+				selectedFriends = friendsListView.getCheckedItemIds();
+				Log.d(TAG,String.valueOf(selectedFriends[0]));
 			}
 		});
 		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface d, int i) {
 				setFriendList();
 			}
 		});
 		dialog = builder.create();
 	}
-
+    
+	// create a new activity
+	public void createAct(){
+		String location = locationSpinner.getPrompt().toString();
+		String tag = tagSpinner.getPrompt().toString();
+		String status = statusSpinner.getPrompt().toString();		
+		String description = descriptionTextView.getText().toString();
+		String withFriend = null;
+		
+		JSONArray friendList = new JSONArray();
+		//friendList.put
+		for(int i = 0;i<selectedFriends.length;i++){
+			long index = selectedFriends[i];
+			//friendList.put("id",nameList[index]);
+		}
+		
+		
+		
+		
+	    //HttpPoster hp = new HttpPoster();
+	    //hp.createCheckin(location,tag,status,description,withFriend);
+		
+		
+	}
+	
 }

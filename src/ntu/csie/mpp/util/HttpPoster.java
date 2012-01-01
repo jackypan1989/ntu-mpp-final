@@ -121,4 +121,10 @@ public class HttpPoster {
 		}
 		return bitmap;
 	}
+
+	public void createCheckin(String location, String tag, String status,
+			String description, String withFriend) {
+		// TODO Auto-generated method stub
+		
+	}
 }
