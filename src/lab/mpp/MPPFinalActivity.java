@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ntu.csie.mpp.query.Query;
 import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
@@ -233,6 +234,16 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			e.printStackTrace();
 		}
 
+		if (LocalData.fb_photos != null) {
+			Query.setPhoto(LocalData.fb_photos);
+			List<String> q = Query.queryWithHost();
+			for (int i = 0; i < q.size(); i++) {
+				Log.e("qqq", q.get(i));
+			}
+		}
+		else{
+			Log.e("qqq","null");
+		}
 		/*
 		 * if(LocalData.fb_friends != null && LocalData.photos != null &&
 		 * LocalData.fb_friends != null){ hp.setInitFbData("friends" ,
