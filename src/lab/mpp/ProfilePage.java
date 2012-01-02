@@ -59,18 +59,6 @@ public class ProfilePage extends Activity {
 
 		// listView.setOnItemClickListener(OnCreationListViewClickListener);
 
-		// Message m = new Message();
-		// m.what = 0;
-		// m.arg1 = 1;
-		// myHandler.sendMessage(m);
-		// m = new Message();
-		// m.what = 0;
-		// m.arg1 = 2;
-		// myHandler.sendMessage(m);
-		// m = new Message();
-		// m.what = 0;
-		// m.arg1 = 3;
-		// myHandler.sendMessage(m);
 	}
 
 	@Override
@@ -90,12 +78,11 @@ public class ProfilePage extends Activity {
 				}
 			}
 		}
-		if(myId==-1){
-			myId=0;
-			Log.e("id","id=-1 error");
-		}
-		else{
-			Log.e("id","id="+LocalData.fb_id);
+		if (myId == -1) {
+			myId = 0;
+			Log.e("id", "id=-1 error");
+		} else {
+			Log.e("id", "id=" + LocalData.fb_id);
 		}
 
 		FriendClass f = RemoteData.friend.get(myId);

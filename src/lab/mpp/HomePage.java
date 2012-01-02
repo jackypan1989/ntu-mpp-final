@@ -54,11 +54,11 @@ public class HomePage extends Activity {
 				Log.e("wait", "id=" + LocalData.fb_id);
 				if (Globo.flagStringLoad) {
 					updateCheckinList();
-					// query();
+					sendEmptyMessage(2);
 
 				} else if (Globo.flagHasInternet) {
 
-					 sendEmptyMessageDelayed(0, 1000);
+					sendEmptyMessageDelayed(0, 1000);
 				} else {
 					Log.e("log", "nointernet");
 				}
@@ -75,6 +75,39 @@ public class HomePage extends Activity {
 					sendMessageDelayed(m2, 1000);
 				}
 
+				break;
+			case 2:
+				Log.e("query","querying");
+				if (LocalData.query == null) {
+					sendEmptyMessageDelayed(2, 1000);
+				} else {
+					ArrayList<FriendClass> f = RemoteData.friend;
+					for (FriendClass c : f) {
+						Log.e("id", c.id);
+					}
+					try {
+						for (int i = LocalData.query.length() - 1; i >= 0; i--) {
+							Log.e("swap", LocalData.query.getJSONObject(i)
+									.getString("id"));
+							for (int j = 0; j < f.size(); j++) {
+
+								if (f.get(j).id.equals(LocalData.query
+										.getJSONObject(i).getString("id"))) {
+									Log.e("swap", f.get(j).name);
+									f.add(0, f.remove(j));
+								}
+
+							}
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					// f.add(2, f.remove(6));
+					updateCheckinList();
+					Toast.makeText(HomePage.this.getParent(), "swapped",
+							Toast.LENGTH_LONG).show();
+				}
 				break;
 			}
 		}
@@ -103,9 +136,7 @@ public class HomePage extends Activity {
 	}
 
 	public void updateCheckinList() {
-		Log.e("up", "id=" + LocalData.fb_id);
-		 checkinList.setAdapter(new CheckinListAdapter(this,
-		 RemoteData.friend));
+		checkinList.setAdapter(new CheckinListAdapter(this, RemoteData.friend));
 		checkinList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -115,37 +146,6 @@ public class HomePage extends Activity {
 				MPPFinalActivity.goTo(2);
 			}
 		});
-		Log.e("up-end", "id=" + LocalData.fb_id);
-	}
-
-	void query() {
-		if (LocalData.query == null) {
-			return;
-		}
-		ArrayList<FriendClass> f = RemoteData.friend;
-		for (FriendClass c : f) {
-			Log.e("id", c.id);
-		}
-		try {
-			for (int i = LocalData.query.length() - 1; i >= 0; i--) {
-				Log.e("swap", LocalData.query.getJSONObject(i).getString("id"));
-				for (int j = 0; j < f.size(); j++) {
-
-					if (f.get(j).id.equals(LocalData.query.getJSONObject(i)
-							.getString("id"))) {
-						Log.e("swap", f.get(j).name);
-						f.add(0, f.remove(j));
-					}
-
-				}
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// f.add(2, f.remove(6));
-		updateCheckinList();
-		Toast.makeText(this.getParent(), "swapped", Toast.LENGTH_LONG).show();
 	}
 
 	@Override

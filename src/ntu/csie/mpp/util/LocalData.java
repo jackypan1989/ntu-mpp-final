@@ -33,29 +33,22 @@ public class LocalData {
 
 	// load the facebook data from preference(at local device)
 	public static void getPreference(SharedPreferences settings) {
-		Log.e("get", "getPreference");
 		try {
-			Log.e("get", "1");
 			LocalData.fb_me = new JSONObject(settings.getString("PREF_FB_ME",
 					""));
-			Log.e("get", "2");
 			LocalData.fb_friends = new JSONObject(settings.getString(
 					"PREF_FB_FRIENDS", ""));
-			Log.e("get", "3");
 			LocalData.fb_photos = new JSONObject(settings.getString(
 					"PREF_FB_PHOTOS", ""));
-			Log.e("get", "4");
 			LocalData.fb_statuses = new JSONObject(settings.getString(
 					"PREF_FB_STATUSES", ""));
-			Log.e("get", "5");
 
-			
 			LocalData.fb_id = LocalData.fb_me.getString("id");
 			LocalData.fb_name = LocalData.fb_me.getString("name");
-			
-//			LocalData.query = new JSONArray(
-//			settings.getString("PREF_QUERY", ""));
-			
+			Log.e("query", "!" + settings.getString("PREF_QUERY", ""));
+			LocalData.query = new JSONArray(
+					settings.getString("PREF_QUERY", ""));
+
 			Log.e("get", "id=" + LocalData.fb_id);
 		} catch (JSONException e) {
 			Log.e("LocalData", e.toString());

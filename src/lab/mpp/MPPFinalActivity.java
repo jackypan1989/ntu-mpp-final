@@ -184,11 +184,11 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 
 	@Override
 	public void run() {
-		
-//		if (LocalData.fb_id == null || LocalData.fb_id.equals("")) {
-//			SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
-//			fb_id=settings.
-//		}
+
+		// if (LocalData.fb_id == null || LocalData.fb_id.equals("")) {
+		// SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
+		// fb_id=settings.
+		// }
 
 		Globo.flagStringLoad = false;
 		Globo.flagPicLoad = false;
@@ -247,16 +247,36 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			e.printStackTrace();
 		}
 
-		// if (LocalData.fb_photos != null) {
-		// Query.setPhoto(LocalData.fb_photos);
-		// List<String> q = Query.queryWithHost();
-		// for (int i = 0; i < q.size(); i++) {
-		// Log.e("qqq", q.get(i));
-		// }
-		// }
-		// else {
-		// Log.e("qqq", "null");
-		// }
+		while (LocalData.fb_photos == null) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		Query.setPhoto(LocalData.fb_photos);
+		List<String> q = Query.queryWithHost();
+		Log.e("query", "get query");
+		String r = "[";
+		for (int i = 0; i < q.size(); i++) {
+			r += "{\"id\":\"" + q.get(i) + "\"}";
+			if (i != q.size() - 1) {
+				r += ",";
+			}
+		}
+		r += "]";
+		SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
+		LocalData.updatePreference(settings, "PREF_QUERY", r);
+		Log.e("query",r);
+		try {
+			LocalData.query=new JSONArray(r);
+		} catch (JSONException e) {
+			Log.e("query","JSONerror");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Log.e("query", "put query");
 		/*
 		 * if(LocalData.fb_friends != null && LocalData.photos != null &&
 		 * LocalData.fb_friends != null){ hp.setInitFbData("friends" ,
