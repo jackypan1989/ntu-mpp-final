@@ -94,6 +94,9 @@ public class ProfilePage extends Activity {
 			myId=0;
 			Log.e("id","id=-1 error");
 		}
+		else{
+			Log.e("id","id="+LocalData.fb_id);
+		}
 
 		FriendClass f = RemoteData.friend.get(myId);
 		name.setText(f.name);

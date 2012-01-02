@@ -131,7 +131,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		Log.e("local", "id=" + LocalData.fb_id);
 		dialog = ProgressDialog.show(this, "", "Loading. Please wait...", true);
 		// get preferences
 		SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
@@ -157,7 +157,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 				R.drawable.tabprof);
 		addTab("Create", new Intent(this, TGAActivity.class), R.drawable.tabact);
 
-		tabHost.setCurrentTab(3);
+		tabHost.setCurrentTab(0);
 	}
 
 	void addTab(String name, Intent intent, int pic) {
@@ -184,6 +184,12 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 
 	@Override
 	public void run() {
+		
+//		if (LocalData.fb_id == null || LocalData.fb_id.equals("")) {
+//			SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
+//			fb_id=settings.
+//		}
+
 		Globo.flagStringLoad = false;
 		Globo.flagPicLoad = false;
 		Globo.flagHasInternet = true;

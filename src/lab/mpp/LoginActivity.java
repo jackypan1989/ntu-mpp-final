@@ -81,6 +81,7 @@ public class LoginActivity extends Activity {
 				Intent intent = new Intent(LoginActivity.this ,MPPFinalActivity.class); 
 				startActivity(intent); 
 				finish();
+				
 			}
 		});
 

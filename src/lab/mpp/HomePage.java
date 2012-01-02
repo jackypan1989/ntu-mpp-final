@@ -51,23 +51,22 @@ public class HomePage extends Activity {
 		public void handleMessage(Message m) {
 			switch (m.what) {
 			case 0:
-				Log.e("log", "wait");
+				Log.e("wait", "id=" + LocalData.fb_id);
 				if (Globo.flagStringLoad) {
 					updateCheckinList();
-					query();
+					// query();
 
 				} else if (Globo.flagHasInternet) {
 
-					sendEmptyMessageDelayed(0, 1000);
+					 sendEmptyMessageDelayed(0, 1000);
 				} else {
 					Log.e("log", "nointernet");
 				}
 				break;
 			case 1:
-				// if (RemoteData.face != null && RemoteData.face[m.arg1] !=
-				// null) {
+				// // if (RemoteData.face != null && RemoteData.face[m.arg1] !=
+				// // null) {
 				if (RemoteData.friend.get(m.arg1).getBitmap() != null) {
-					// updateCheckinList();
 					updateCheckinList();
 				} else {
 					Message m2 = new Message();
@@ -89,30 +88,24 @@ public class HomePage extends Activity {
 		setContentView(R.layout.home);
 
 		checkinList = (ListView) findViewById(R.id.checkinListView);
-		checkinList.setAdapter(new CheckinListAdapter(this, RemoteData.friend));
-		checkinList.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				Globo.prefid = position;
-				MPPFinalActivity.goTo(2);
-			}
-		});
-		h.sendEmptyMessage(0);
+		// h.sendEmptyMessage(0);
 
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateCheckinList();
+		h.sendEmptyMessage(0);
+		// updateCheckinList();
 		// Log.e("log", "homePage");
 		// this.getParent().getParent().setTitle("HomePage");
 	}
 
 	public void updateCheckinList() {
-		checkinList.setAdapter(new CheckinListAdapter(this, RemoteData.friend));
+		Log.e("up", "id=" + LocalData.fb_id);
+		 checkinList.setAdapter(new CheckinListAdapter(this,
+		 RemoteData.friend));
 		checkinList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -122,6 +115,7 @@ public class HomePage extends Activity {
 				MPPFinalActivity.goTo(2);
 			}
 		});
+		Log.e("up-end", "id=" + LocalData.fb_id);
 	}
 
 	void query() {
