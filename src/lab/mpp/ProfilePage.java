@@ -90,6 +90,10 @@ public class ProfilePage extends Activity {
 				}
 			}
 		}
+		if(myId==-1){
+			myId=0;
+			Log.e("id","id=-1 error");
+		}
 
 		FriendClass f = RemoteData.friend.get(myId);
 		name.setText(f.name);

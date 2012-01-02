@@ -125,6 +125,9 @@ public class HomePage extends Activity {
 	}
 
 	void query() {
+		if (LocalData.query == null) {
+			return;
+		}
 		ArrayList<FriendClass> f = RemoteData.friend;
 		for (FriendClass c : f) {
 			Log.e("id", c.id);
@@ -146,7 +149,7 @@ public class HomePage extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		f.add(2, f.remove(6));
+		// f.add(2, f.remove(6));
 		updateCheckinList();
 		Toast.makeText(this.getParent(), "swapped", Toast.LENGTH_LONG).show();
 	}

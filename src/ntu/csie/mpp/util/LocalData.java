@@ -52,7 +52,9 @@ public class LocalData {
 	}// get friend name list
 	public static ArrayList<String> getFbFriendIdList(){
 		ArrayList<String> s = new ArrayList<String>();
-		
+		if(fb_friends==null){
+			return s;
+		}
 		// set fb friend
 		try {
 			JSONArray json = fb_friends.getJSONArray("data");
@@ -70,7 +72,9 @@ public class LocalData {
 	// get friend name list
 	public static ArrayList<String> getFbFriendNameList(){
 		ArrayList<String> s = new ArrayList<String>();
-		
+		if(fb_friends==null){
+			return s;
+		}
 		// set fb friend
 		try {
 			JSONArray json = fb_friends.getJSONArray("data");

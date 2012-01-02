@@ -157,7 +157,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 				R.drawable.tabprof);
 		addTab("Create", new Intent(this, TGAActivity.class), R.drawable.tabact);
 
-		tabHost.setCurrentTab(0);
+		tabHost.setCurrentTab(3);
 	}
 
 	void addTab(String name, Intent intent, int pic) {
