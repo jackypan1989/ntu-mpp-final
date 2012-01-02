@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class HomePage extends Activity {
 	public static final String TAG = "HomePage";
@@ -53,6 +54,8 @@ public class HomePage extends Activity {
 				Log.e("log", "wait");
 				if (Globo.flagStringLoad) {
 					updateCheckinList();
+					query();
+
 				} else if (Globo.flagHasInternet) {
 
 					sendEmptyMessageDelayed(0, 1000);
@@ -119,6 +122,33 @@ public class HomePage extends Activity {
 				MPPFinalActivity.goTo(2);
 			}
 		});
+	}
+
+	void query() {
+		ArrayList<FriendClass> f = RemoteData.friend;
+		for (FriendClass c : f) {
+			Log.e("id", c.id);
+		}
+		try {
+			for (int i = LocalData.query.length() - 1; i >= 0; i--) {
+				Log.e("swap", LocalData.query.getJSONObject(i).getString("id"));
+				for (int j = 0; j < f.size(); j++) {
+
+					if (f.get(j).id.equals(LocalData.query.getJSONObject(i)
+							.getString("id"))) {
+						Log.e("swap", f.get(j).name);
+						f.add(0, f.remove(j));
+					}
+
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		f.add(2, f.remove(6));
+		updateCheckinList();
+		Toast.makeText(this.getParent(), "swapped", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
