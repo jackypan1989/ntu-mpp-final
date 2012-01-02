@@ -9,14 +9,18 @@ import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -198,6 +202,75 @@ public class ProfilePage extends Activity {
 		myadapter.notifyDataSetChanged();
 
 		Globo.prefid = -1;
+
+	}
+	
+	public class MyAdapter extends BaseAdapter {
+		private Context context;
+		ArrayList<CheakClass> array;
+
+		private class ViewContainer {
+
+			// ImageView activityImage;
+			TextView time;
+			TextView place;
+			TextView tag;
+
+		}
+
+		public MyAdapter(Context context, ArrayList<CheakClass> a) {
+			this.context = context;
+			array = a;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			ViewContainer viewContainer = new ViewContainer();
+			if (position < array.size()) {
+				if (convertView == null) {
+					LayoutInflater layoutInflater = (LayoutInflater) context
+							.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					convertView = layoutInflater.inflate(R.layout.listitem, null);
+
+					// Create and set ViewContainer
+
+					// viewContainer.activityImage = (ImageView) convertView
+					// .findViewById(R.id.item_view_item_img);
+
+					viewContainer.time = (TextView) convertView
+							.findViewById(R.id.textView1);
+					viewContainer.place = (TextView) convertView
+							.findViewById(R.id.textView2);
+					viewContainer.tag = (TextView) convertView
+							.findViewById(R.id.textView3);
+					convertView.setTag(viewContainer);
+
+				} else {
+					viewContainer = (ViewContainer) convertView.getTag();
+				}
+				viewContainer.tag.setText(array.get(position).tag);
+				viewContainer.time.setText(array.get(position).update_time);
+				viewContainer.place.setText(array.get(position).location_name);
+			}
+			return convertView;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return array.size();// length.intValue();
+		}
 
 	}
 }

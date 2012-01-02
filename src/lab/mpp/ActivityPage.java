@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ActivityPage extends Activity {
 	private Spinner tagSpinner;
 	private Spinner statusSpinner;
 	private TextView descriptionTextView;
+	private Button addButton;
 	
 	private String[] nameList;
 	private String[] idList;
@@ -49,8 +51,8 @@ public class ActivityPage extends Activity {
 		descriptionTextView = (TextView) findViewById(R.id.descriptionText); 
 		
 		// set button
-		Button button = (Button) findViewById(R.id.recommendButton);
-		button.setOnClickListener(new View.OnClickListener() {
+		addButton = (Button) findViewById(R.id.recommendButton);
+		addButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -64,8 +66,8 @@ public class ActivityPage extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				createAct();
-				Log.e(TAG,"test");
-				//MPPFinalActivity.goTo(2);
+				Toast.makeText(ActivityPage.this, "活動已建立!", Toast.LENGTH_LONG).show();
+				MPPFinalActivity.goTo(2);
 			}
 		});
 
@@ -168,15 +170,16 @@ public class ActivityPage extends Activity {
 		builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface d, int i) {
-//				selectedFriends = friendsListView.getCheckedItemIds();
-
+				selectedFriends = friendsListView.getCheckItemIds();
+				addButton.setText("目前已有"+selectedFriends.length+"位朋友");
 //				Log.e(TAG,selectedFriends[0]+"test");
 			}
 		});
-		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("清除", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface d, int i) {
 				setFriendList();
+				addButton.setText("目前尚未選擇任何朋友");
 			}
 		});
 		dialog = builder.create();
