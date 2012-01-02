@@ -2,6 +2,7 @@ package lab.mpp;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 	Handler myHandler = new Handler() {
 		public void handleMessage(Message m) {
 			switch (m.what) {
+			//讀取GPS
 			case 0:
 				Globo.flagPlaceRead = false;
 				LocationManager lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -197,34 +199,41 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		// Log.d(TAG, response);
 
 		try {
-			RemoteData.checkins = new JSONArray(response);
+//			RemoteData.checkins = new JSONArray(response);
+			// 改成讀進RemoteData.friend
+			boolean flag = false;
+			RemoteData.friend = new ArrayList<FriendClass>();
+			JSONArray a = new JSONArray(response);
+			for (int i = 0; i < a.length(); i++) {
+				JSONObject j = a.getJSONObject(i);
+				flag = false;
+				for (FriendClass f : RemoteData.friend) {
+
+					if (f.id.equals(j.getString("id"))) {
+						f.addCheak(j);
+						flag = true;
+					}
+				}
+				if (!flag) {
+					RemoteData.friend.add(new FriendClass(j));
+				}
+			}
 			Globo.flagStringLoad = true;
+			
+			for (FriendClass f : RemoteData.friend) {
+				Log.e("fri",f.name+" "+f.cheak.size());
+			}
 			dialog.dismiss();
 			myHandler.sendEmptyMessage(0);
-			// for (int i = 0; i < RemoteData.checkins.length(); i++) {
-			// Geocoder c = new Geocoder(MPPFinalActivity.this);
-			// try {
-			// List<Address> la = c.getFromLocation(
-			// RemoteData.checkins.getJSONObject(i).getDouble(
-			// "latitude"),
-			// RemoteData.checkins.getJSONObject(i).getDouble(
-			// "longitude"), 100);
-			// Log.e("location", RemoteData.checkins.getJSONObject(i)
-			// .getString("name"));
-			// for (Address a : la) {
-			// Log.e("location", a + "");
-			// }
-			// } catch (IOException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-			LocalData.myFace = hp.getUserPic(LocalData.fb_id);
-			RemoteData.face = new Bitmap[RemoteData.checkins.length()];
-			for (int i = 0; i < RemoteData.face.length; i++) {
-				RemoteData.face[i] = hp.getUserPic(RemoteData.checkins
-						.getJSONObject(i).getString("id"));
-			}
+
+
+//			LocalData.myFace = hp.getUserPic(LocalData.fb_id);
+//			RemoteData.face = new Bitmap[RemoteData.checkins.length()];
+//			for (int i = 0; i < RemoteData.face.length; i++) {
+//				RemoteData.face[i] = hp.getUserPic(RemoteData.checkins
+//						.getJSONObject(i).getString("id"));
+//				
+//			}
 			// Log.e("log", "picok");
 			Globo.flagPicLoad = true;
 
@@ -239,9 +248,8 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 			for (int i = 0; i < q.size(); i++) {
 				Log.e("qqq", q.get(i));
 			}
-		}
-		else{
-			Log.e("qqq","null");
+		} else {
+			Log.e("qqq", "null");
 		}
 		/*
 		 * if(LocalData.fb_friends != null && LocalData.photos != null &&

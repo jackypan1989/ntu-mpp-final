@@ -60,36 +60,13 @@ public class MyOverlay extends ItemizedOverlay {
 			int cnt = 0;
 			if (!flagMove) {
 
-				try {
-					if (RemoteData.checkins != null) {
-						for (int i = 0; i < RemoteData.checkins.length(); i++) {
-
-							GeoPoint p = new GeoPoint(
-									(int) (RemoteData.checkins.getJSONObject(i)
-											.getDouble("latitude") * 1000000),
-									(int) (RemoteData.checkins.getJSONObject(i)
-											.getDouble("longitude") * 1000000));
-							Point xy = mp.getProjection().toPixels(p, null);
-
-							if (xy != null) {
-								// Log.e("log", xy.x + " " + me.getX());
-								if (Math.abs(xy.x - me.getX() + 50) < 50
-										&& Math.abs(xy.y - me.getY() + 50) < 50) {
-
-									// Globo.prefid = i;
-									// MPPFinalActivity.goTo(2);
-									// return true;
-									c[cnt] = i;
-									cnt++;
-								}
-
-							}
-						}
-					}
-
-					GeoPoint p = new GeoPoint(
-							(int) (LocalData.latitude * 1000000),
-							(int) (LocalData.longitude * 1000000));
+				// if (RemoteData.checkins != null) {
+				// for (int i = 0; i < RemoteData.checkins.length();
+				// i++) {
+				for (int i = 0; i < RemoteData.friend.size(); i++) {
+					FriendClass f = RemoteData.friend.get(i);
+					GeoPoint p = new GeoPoint((int) (f.latitude * 1000000),
+							(int) (f.longitude * 1000000));
 					Point xy = mp.getProjection().toPixels(p, null);
 
 					if (xy != null) {
@@ -97,49 +74,62 @@ public class MyOverlay extends ItemizedOverlay {
 						if (Math.abs(xy.x - me.getX() + 50) < 50
 								&& Math.abs(xy.y - me.getY() + 50) < 50) {
 
-							// Globo.prefid = -1;
+							// Globo.prefid = i;
 							// MPPFinalActivity.goTo(2);
 							// return true;
-							c[cnt] = -1;
+							c[cnt] = i;
 							cnt++;
 						}
 
 					}
-
-					if (cnt == 1) {
-						Globo.prefid = c[0];
-						MPPFinalActivity.goTo(2);
-						return true;
-					} else if (cnt > 1) {
-						Log.e("log", "alert cnt");
-						String[] nameArray = new String[cnt];
-						for (int i = 0; i < cnt; i++) {
-							if (c[i] != -1) {
-								nameArray[i] = RemoteData.checkins
-										.getJSONObject(c[i]).getString("name");
-							} else {
-								nameArray[i] = LocalData.fb_name;
-							}
-						}
-						Builder nearIcon = new Builder(
-								((Activity) (mp.getContext())).getParent());
-						nearIcon.setTitle("您點選的人是")
-								.setItems(nameArray,
-										new DialogInterface.OnClickListener() {
-
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												Globo.prefid = c[which];
-												MPPFinalActivity.goTo(2);
-											}
-										}).show();
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				// }
+
+				// GeoPoint p = new GeoPoint(
+				// (int) (LocalData.latitude * 1000000),
+				// (int) (LocalData.longitude * 1000000));
+				// Point xy = mp.getProjection().toPixels(p, null);
+				//
+				// if (xy != null) {
+				// // Log.e("log", xy.x + " " + me.getX());
+				// if (Math.abs(xy.x - me.getX() + 50) < 50
+				// && Math.abs(xy.y - me.getY() + 50) < 50) {
+				//
+				// // Globo.prefid = -1;
+				// // MPPFinalActivity.goTo(2);
+				// // return true;
+				// c[cnt] = -1;
+				// cnt++;
+				// }
+				//
+				// }
+
+				if (cnt == 1) {
+					Globo.prefid = c[0];
+					MPPFinalActivity.goTo(2);
+					return true;
+				} else if (cnt > 1) {
+					Log.e("log", "alert cnt");
+					String[] nameArray = new String[cnt];
+					for (int i = 0; i < cnt; i++) {
+						nameArray[i] = RemoteData.friend.get(c[i]).name;
+					}
+					Builder nearIcon = new Builder(
+							((Activity) (mp.getContext())).getParent());
+					nearIcon.setTitle("您點選的人是")
+							.setItems(nameArray,
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											Globo.prefid = c[which];
+											MPPFinalActivity.goTo(2);
+										}
+									}).show();
+				}
+
 			}
 			flagMove = false;
 		}

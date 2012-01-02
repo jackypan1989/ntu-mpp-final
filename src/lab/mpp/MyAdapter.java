@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class MyAdapter extends BaseAdapter {
 	private Context context;
-	ArrayList<Act> array;
+	ArrayList<CheakClass> array;
 
 	private class ViewContainer {
 
@@ -23,7 +23,7 @@ public class MyAdapter extends BaseAdapter {
 
 	}
 
-	public MyAdapter(Context context, ArrayList<Act> a) {
+	public MyAdapter(Context context, ArrayList<CheakClass> a) {
 		this.context = context;
 		array = a;
 	}
@@ -65,8 +65,8 @@ public class MyAdapter extends BaseAdapter {
 				viewContainer = (ViewContainer) convertView.getTag();
 			}
 			viewContainer.name.setText(array.get(position).name);
-			viewContainer.time.setText(array.get(position).time);
-			viewContainer.place.setText(array.get(position).place);
+			viewContainer.time.setText(array.get(position).update_time);
+			viewContainer.place.setText(array.get(position).location_name);
 		}
 		return convertView;
 	}

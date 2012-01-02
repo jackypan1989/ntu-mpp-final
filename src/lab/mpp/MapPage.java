@@ -35,73 +35,69 @@ public class MapPage extends MapActivity implements LocationListener {
 		@Override
 		public void handleMessage(Message m) {
 			switch (m.what) {
-			case 0:
-				Log.e("log", "waitgps");
-				if (LocalData.latitude != 0 && LocalData.longitude != 0
-						&& LocalData.myFace != null) {
+			// case 0:
+			// Log.e("log", "waitgps");
+			// if (LocalData.latitude != 0 && LocalData.longitude != 0
+			// && LocalData.myFace != null) {
+			//
+			// GeoPoint p = new GeoPoint(
+			// (int) (LocalData.latitude * 1000000),
+			// (int) (LocalData.longitude * 1000000));
+			// mc.setCenter(p);
+			// OverlayItem o = new OverlayItem(p, "", "");
+			// Matrix ma = new Matrix();
+			// ma.postScale(2, 2);
+			// Bitmap b = Bitmap.createBitmap(LocalData.myFace, 0, 0, 50,
+			// 50, ma, true);
+			// BitmapDrawable bd = new BitmapDrawable(b);
+			// bd.setBounds(0, 0, bd.getIntrinsicWidth(),
+			// bd.getIntrinsicHeight());
+			// o.setMarker(bd);
+			// pin.addOverlay(o);
+			//
+			// mc.setCenter(p);
+			// flagHasDraw = true;
+			//
+			// } else {
+			// this.sendEmptyMessageDelayed(0, 3000);
+			//
+			// }
+			//
+			// break;
+			case 1:
 
+				Log.e("log", "waitpic");
+
+				for (FriendClass f : RemoteData.friend) {
+
+					// for (int i = 0; i < RemoteData.checkins.length();
+					// i++) {
+					Log.e("log", "add");
 					GeoPoint p = new GeoPoint(
-							(int) (LocalData.latitude * 1000000),
-							(int) (LocalData.longitude * 1000000));
-					mc.setCenter(p);
+							(int) (f.latitude * 1000000),
+							(int) (f.longitude * 1000000));
+					// mc.setCenter(p);
 					OverlayItem o = new OverlayItem(p, "", "");
 					Matrix ma = new Matrix();
 					ma.postScale(2, 2);
-					Bitmap b = Bitmap.createBitmap(LocalData.myFace, 0, 0, 50,
-							50, ma, true);
+					Bitmap b = BitmapFactory.decodeResource(
+							MapPage.this.getResources(), R.drawable.icon);
+					if (f.getBitmap() != null) {
+						b = Bitmap.createBitmap(f.getBitmap(), 0, 0, 50, 50,
+								ma, true);
+					}
 					BitmapDrawable bd = new BitmapDrawable(b);
 					bd.setBounds(0, 0, bd.getIntrinsicWidth(),
 							bd.getIntrinsicHeight());
 					o.setMarker(bd);
 					pin.addOverlay(o);
-
-					mc.setCenter(p);
-					flagHasDraw = true;
-
-				} else {
-					this.sendEmptyMessageDelayed(0, 3000);
-
-				}
-
-				break;
-			case 1:
-				Log.e("log", "waitpic");
-				if (Globo.flagPicLoad) {
-					try {
-
-						for (int i = 0; i < RemoteData.checkins.length(); i++) {
-							Log.e("log", "add");
-							GeoPoint p = new GeoPoint(
-									(int) (RemoteData.checkins.getJSONObject(i)
-											.getDouble("latitude") * 1000000),
-									(int) (RemoteData.checkins.getJSONObject(i)
-											.getDouble("longitude") * 1000000));
-							// mc.setCenter(p);
-							OverlayItem o = new OverlayItem(p, "", "");
-							Matrix ma = new Matrix();
-							ma.postScale(2, 2);
-							Bitmap b = BitmapFactory.decodeResource(
-									MapPage.this.getResources(),
-									R.drawable.icon);
-							if (RemoteData.face[i] != null) {
-								b = Bitmap.createBitmap(RemoteData.face[i], 0,
-										0, 50, 50, ma, true);
-							}
-							BitmapDrawable bd = new BitmapDrawable(b);
-							bd.setBounds(0, 0, bd.getIntrinsicWidth(),
-									bd.getIntrinsicHeight());
-							o.setMarker(bd);
-							pin.addOverlay(o);
-
-						}
-						sendEmptyMessage(0);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					
+					if(f.id.equals(LocalData.fb_id)){
+						mc.setCenter(p);
 					}
-				} else if (Globo.flagHasInternet) {
-					sendEmptyMessageDelayed(1, 1000);
+
 				}
+
 				break;
 			}
 		}

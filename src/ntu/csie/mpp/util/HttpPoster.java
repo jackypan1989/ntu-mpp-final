@@ -106,7 +106,7 @@ public class HttpPoster {
 		return doPost();
 	}
 
-	public Bitmap getUserPic(String userID) {
+	static public Bitmap getUserPic(String userID) {
 		String imageURL;
 		Bitmap bitmap = null;
 		Log.d(TAG, "Loading Picture");

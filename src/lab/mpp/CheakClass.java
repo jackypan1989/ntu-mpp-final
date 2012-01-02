@@ -6,8 +6,7 @@ import org.json.JSONObject;
 
 public class CheakClass {
 	int checkin_id;
-	int id;
-	String name;
+
 	String location_name;
 	double latitude;
 	double longitude;
@@ -17,14 +16,12 @@ public class CheakClass {
 	With[] with_friends;
 	String create_time;
 	String update_time;
+	String name;
 
 	CheakClass(JSONObject j) {
 		try {
 			checkin_id = j.getInt("checkin_id");
-			id = j.getInt("id");
-
 			name = j.getString("name");
-
 			location_name = j.getString("location_name");
 			latitude = j.getDouble("latitude");
 			longitude = j.getDouble("longitude");
