@@ -87,8 +87,8 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				loading = ProgressDialog
-						.show(ActivityPage.this.getParent(), "", "UpLoading. Please wait...", true);
+				loading = ProgressDialog.show(ActivityPage.this.getParent(),
+						"", "UpLoading. Please wait...", true);
 				createAct();
 				Toast.makeText(ActivityPage.this, "活動已建立!", Toast.LENGTH_LONG)
 						.show();
@@ -169,7 +169,25 @@ public class ActivityPage extends Activity {
 	void setFriendList() {
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
 		ArrayList<String> idArrayList = LocalData.getFbFriendIdList();
+		try {
+			if (LocalData.query != null) {
+				for (int i = LocalData.query.length() - 1; i >= 0; i--) {
+					for (int j = 0; j < idArrayList.size(); j++) {
+						if (idArrayList.get(j).equals(
+								LocalData.query.getJSONObject(i)
+										.getString("id"))) {
 
+							idArrayList.add(0, idArrayList.remove(j));
+							nameArrayList.add(0, nameArrayList.remove(j));
+						}
+					}
+
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		nameList = nameArrayList.toArray(new String[nameArrayList.size()]);
 		idList = idArrayList.toArray(new String[idArrayList.size()]);
 
@@ -218,7 +236,7 @@ public class ActivityPage extends Activity {
 
 		JSONArray friendList = new JSONArray();
 
-//		Log.e(TAG, selectedFriends.length + "");
+		// Log.e(TAG, selectedFriends.length + "");
 		for (int i = 0; i < selectedFriends.length; i++) {
 			int index = (int) selectedFriends[i];
 			try {
