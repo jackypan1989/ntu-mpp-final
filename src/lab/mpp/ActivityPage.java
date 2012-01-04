@@ -11,8 +11,11 @@ import ntu.csie.mpp.util.LocalData;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,19 +29,38 @@ import android.view.View;
 
 public class ActivityPage extends Activity {
 	public static final String TAG = "ActivityPage";
-	
+
 	private ListView friendsListView;
 	private Spinner locationSpinner;
 	private Spinner tagSpinner;
 	private Spinner statusSpinner;
 	private TextView descriptionTextView;
 	private Button addButton;
-	
+
 	private String[] nameList;
 	private String[] idList;
 	private Dialog dialog;
 	private long[] selectedFriends;
-	
+
+	ProgressDialog loading;
+
+	Handler h = new Handler() {
+		@Override
+		public void handleMessage(Message m) {
+			switch (m.what) {
+			case 0:
+				if (!Globo.flagStringLoad) {
+					sendEmptyMessageDelayed(0, 1000);
+				} else {
+					MPPFinalActivity.goTo(2);
+					loading.dismiss();
+				}
+				break;
+
+			}
+		}
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,8 +70,8 @@ public class ActivityPage extends Activity {
 		setContentView(contentView);
 
 		// set View
-		descriptionTextView = (TextView) findViewById(R.id.descriptionText); 
-		
+		descriptionTextView = (TextView) findViewById(R.id.descriptionText);
+
 		// set button
 		addButton = (Button) findViewById(R.id.recommendButton);
 		addButton.setOnClickListener(new View.OnClickListener() {
@@ -65,8 +87,11 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				loading = ProgressDialog
+						.show(ActivityPage.this.getParent(), "", "UpLoading. Please wait...", true);
 				createAct();
-				Toast.makeText(ActivityPage.this, "活動已建立!", Toast.LENGTH_LONG).show();
+				Toast.makeText(ActivityPage.this, "活動已建立!", Toast.LENGTH_LONG)
+						.show();
 				MPPFinalActivity.goTo(2);
 			}
 		});
@@ -144,13 +169,10 @@ public class ActivityPage extends Activity {
 	void setFriendList() {
 		ArrayList<String> nameArrayList = LocalData.getFbFriendNameList();
 		ArrayList<String> idArrayList = LocalData.getFbFriendIdList();
-		
-		nameList = nameArrayList.toArray(new String[nameArrayList
-				.size()]);
-		idList = idArrayList.toArray(new String[idArrayList
-		                            				.size()]);
-		
-		
+
+		nameList = nameArrayList.toArray(new String[nameArrayList.size()]);
+		idList = idArrayList.toArray(new String[idArrayList.size()]);
+
 		friendsListView = new ListView(this.getParent().getParent());
 		dialog = new Dialog(ActivityPage.this.getParent().getParent());
 		AlertDialog.Builder builder = new AlertDialog.Builder(ActivityPage.this
@@ -171,8 +193,8 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(DialogInterface d, int i) {
 				selectedFriends = friendsListView.getCheckItemIds();
-				addButton.setText("目前已有"+selectedFriends.length+"位朋友");
-//				Log.e(TAG,selectedFriends[0]+"test");
+				addButton.setText("目前已有" + selectedFriends.length + "位朋友");
+				// Log.e(TAG,selectedFriends[0]+"test");
 			}
 		});
 		builder.setNegativeButton("清除", new DialogInterface.OnClickListener() {
@@ -184,38 +206,41 @@ public class ActivityPage extends Activity {
 		});
 		dialog = builder.create();
 	}
-    
+
 	// create a new activity
-	public void createAct(){
+	public void createAct() {
 		selectedFriends = friendsListView.getCheckItemIds();
 		String location = locationSpinner.getSelectedItem().toString();
 		String tag = tagSpinner.getSelectedItem().toString();
-		String status = statusSpinner.getSelectedItem().toString();		
+		String status = statusSpinner.getSelectedItem().toString();
 		String description = descriptionTextView.getText().toString();
 		String withFriend = null;
-		
+
 		JSONArray friendList = new JSONArray();
-		
-		Log.e(TAG,selectedFriends.length+"");
-		for(int i = 0;i<selectedFriends.length;i++){
-			int index = (int)selectedFriends[i];
+
+//		Log.e(TAG, selectedFriends.length + "");
+		for (int i = 0; i < selectedFriends.length; i++) {
+			int index = (int) selectedFriends[i];
 			try {
 				JSONObject json = new JSONObject();
 				json.put("id", idList[index]);
 				json.put("name", nameList[index]);
-				friendList.put(index, json);
+				friendList.put(i, json);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		withFriend = friendList.toString();
-		Log.e(TAG,friendList.toString());
-		
-	    HttpPoster hp = new HttpPoster();
-	    hp.createCheckin(location,tag,status,description,withFriend);
-		
+		Log.e(TAG, friendList.toString());
+
+		HttpPoster hp = new HttpPoster();
+		hp.createCheckin(location, tag, status, description, withFriend);
+		Globo.flagStringLoad = false;
+
+		MPPFinalActivity.reload();
+		h.sendEmptyMessage(0);
 	}
-	
+
 }

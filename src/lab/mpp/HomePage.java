@@ -105,8 +105,8 @@ public class HomePage extends Activity {
 					}
 					// f.add(2, f.remove(6));
 					updateCheckinList();
-					Toast.makeText(HomePage.this.getParent(), "swapped",
-							Toast.LENGTH_LONG).show();
+//					Toast.makeText(HomePage.this.getParent(), "swapped",
+//							Toast.LENGTH_LONG).show();
 				}
 				break;
 			}

@@ -8,6 +8,7 @@ import ntu.csie.mpp.util.LocalData;
 import ntu.csie.mpp.util.RemoteData;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,9 +46,13 @@ public class ActiveDetailPage extends Activity {
 		}
 		String s = "";
 		if (c.with_friends != null) {
+			Log.e("log","1");
 			for (int i = 0; i < c.with_friends.length; i++) {
-
-				s += c.with_friends[i].name + "\n";
+				Log.e("log","length=:"+c.with_friends.length);
+				if (c.with_friends[i] != null) {
+					Log.e("log","3");
+					s += c.with_friends[i].name + "\n";
+				}
 			}
 		}
 		friname.setText(s);

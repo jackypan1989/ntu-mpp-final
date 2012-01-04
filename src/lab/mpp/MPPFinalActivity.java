@@ -160,6 +160,45 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		tabHost.setCurrentTab(0);
 	}
 
+	static void reload() {
+		Globo.flagStringLoad = false;
+		Globo.flagHasInternet = true;
+		// TODO Auto-generated method stub
+		HttpPoster hp = new HttpPoster();
+		String response = hp.getCheckin();
+		if (response == null) {
+			Globo.flagHasInternet = false;
+			return;
+		}
+
+		// Log.d(TAG, response);
+
+		try {
+			// RemoteData.checkins = new JSONArray(response);
+			// 改成讀進RemoteData.friend
+			// RemoteData.friend = new ArrayList<FriendClass>();
+			for (FriendClass f : RemoteData.friend) {
+				f.cheak.clear();
+			}
+			JSONArray a = new JSONArray(response);
+			for (int i = 0; i < a.length(); i++) {
+				JSONObject j = a.getJSONObject(i);
+				for (FriendClass f : RemoteData.friend) {
+
+					if (f.id.equals(j.getString("id"))) {
+						f.addCheak(j);
+					}
+				}
+
+			}
+			Globo.flagStringLoad = true;
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	void addTab(String name, Intent intent, int pic) {
 		View tabIndicator = LayoutInflater.from(tabHost.getContext()).inflate(
 				R.layout.tab_indicator, null);
@@ -268,11 +307,11 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 		r += "]";
 		SharedPreferences settings = getSharedPreferences("PREF_FB", 0);
 		LocalData.updatePreference(settings, "PREF_QUERY", r);
-		Log.e("query",r);
+		Log.e("query", r);
 		try {
-			LocalData.query=new JSONArray(r);
+			LocalData.query = new JSONArray(r);
 		} catch (JSONException e) {
-			Log.e("query","JSONerror");
+			Log.e("query", "JSONerror");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

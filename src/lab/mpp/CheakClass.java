@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class CheakClass {
 	int checkin_id;
 
@@ -32,12 +34,15 @@ public class CheakClass {
 			create_time = j.getString("create_time");
 			update_time = j.getString("update_time");
 
-			JSONArray a = j.getJSONArray("with_friend");
+			JSONArray a = j.getJSONArray("with_friends");
 			with_friends = new With[a.length()];
 			for (int i = 0; i < with_friends.length; i++) {
-				with_friends[i] = new With(a.getJSONObject(i));
+				if (a.getJSONObject(i) != null) {
+					with_friends[i] = new With(a.getJSONObject(i));
+				}
 			}
 		} catch (JSONException e) {
+			Log.e("error","null");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
