@@ -77,6 +77,7 @@ public class MapPage extends MapActivity implements LocationListener {
 							(int) (f.latitude * 1000000),
 							(int) (f.longitude * 1000000));
 					// mc.setCenter(p);
+					
 					OverlayItem o = new OverlayItem(p, "", "");
 					Matrix ma = new Matrix();
 					ma.postScale(2, 2);
@@ -90,6 +91,7 @@ public class MapPage extends MapActivity implements LocationListener {
 					bd.setBounds(0, 0, bd.getIntrinsicWidth(),
 							bd.getIntrinsicHeight());
 					o.setMarker(bd);
+					
 					pin.addOverlay(o);
 					
 					if(f.id.equals(LocalData.fb_id)){

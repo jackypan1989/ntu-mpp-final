@@ -1,10 +1,17 @@
 package lab.mpp;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
+import com.facebook.android.FacebookError;
+import com.google.android.maps.GeoPoint;
 
 import ntu.csie.mpp.util.HttpPoster;
 import ntu.csie.mpp.util.LocalData;
@@ -19,6 +26,7 @@ import android.os.Message;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,9 +42,8 @@ public class ActivityPage extends Activity {
 	private Spinner locationSpinner;
 	private Spinner tagSpinner;
 	private Spinner statusSpinner;
-	private TextView descriptionTextView;
+	private EditText descriptionTextView;
 	private Button addButton;
-
 	private String[] nameList;
 	private String[] idList;
 	private Dialog dialog;
@@ -70,7 +77,7 @@ public class ActivityPage extends Activity {
 		setContentView(contentView);
 
 		// set View
-		descriptionTextView = (TextView) findViewById(R.id.descriptionText);
+		descriptionTextView = (EditText) findViewById(R.id.descriptionText);
 
 		// set button
 		addButton = (Button) findViewById(R.id.recommendButton);
@@ -87,6 +94,13 @@ public class ActivityPage extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if (LoginActivity.mFacebook == null
+						|| !LoginActivity.mFacebook.isSessionValid()) {
+					Toast.makeText(ActivityPage.this.getParent(),
+							"請使用FaceBook帳號登入", Toast.LENGTH_LONG).show();
+					MPPFinalActivity.goTo(2);
+					return;
+				}
 				loading = ProgressDialog.show(ActivityPage.this.getParent(),
 						"", "UpLoading. Please wait...", true);
 				createAct();
@@ -157,13 +171,18 @@ public class ActivityPage extends Activity {
 
 					}
 				});
-
+		reSet();
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
+	void reSet() {
 		setFriendList();
+		if (locationSpinner != null)
+			locationSpinner.setSelection(0);
+		tagSpinner.setSelection(0);
+		statusSpinner.setSelection(0);
+		addButton.setText("加入朋友");
+		descriptionTextView.setText("");
+
 	}
 
 	void setFriendList() {
@@ -259,6 +278,56 @@ public class ActivityPage extends Activity {
 
 		MPPFinalActivity.reload();
 		h.sendEmptyMessage(0);
+
+		// ,'application' => '{"name":"yourasdfapp","id":"'xx"}'
+		String msg;
+		msg = "我現在"
+				+ LocalData.statusPost[statusSpinner.getSelectedItemPosition()];
+		if (tagSpinner.getSelectedItemPosition() != 0) {
+			msg += ",一起來"
+					+ LocalData.tagList[tagSpinner.getSelectedItemPosition()]
+					+ "!!";
+		}
+		Bundle params = new Bundle();
+		params.putString("methos", "POST");
+		params.putString("message", msg);
+		params.putString("access_token",
+				LoginActivity.mFacebook.getAccessToken());
+		JSONObject coordinates = new JSONObject();
+		try {
+			coordinates.put("latitude", LocalData.latitude);
+			coordinates.put("longitude", LocalData.longitude);
+			params.putString(
+					"place",
+					LocalData.placeId[locationSpinner.getSelectedItemPosition()]);
+			params.putString("coordinates", coordinates.toString());
+			String f = "";
+			for (int i = 0; i < friendList.length(); i++) {
+				f = f + friendList.getJSONObject(i).getString("id") + ",";
+			}
+			f = f.substring(0, f.length() - 1);
+			Log.e("log", f);
+			// Log.e("fri", frnd_data.toString());
+			// params.putString("tags", frnd_data.toString());
+
+			params.putString("tags", f);
+			String r = LoginActivity.mFacebook.request("me/checkins", params,
+					"POST");
+			Log.e("log", "result:" + r);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		reSet();
 	}
 
 }

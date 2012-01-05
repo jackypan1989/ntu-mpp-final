@@ -29,9 +29,10 @@ public class LoginActivity extends Activity {
 	public static final String TAG = "LoginActivity";
 
 	// setting facebook login info
-	private String APP_ID = "229865623746685";
+//	private String APP_ID = "229865623746685";
+	private String APP_ID = "226437114100280";
 	static Facebook mFacebook;
-	private AsyncFacebookRunner mAsyncRunner;
+	static AsyncFacebookRunner mAsyncRunner;
 
 	// setting preferences
 	private SharedPreferences settings;
@@ -63,7 +64,7 @@ public class LoginActivity extends Activity {
 		// initializing facebook session and login
 		SessionStore.restore(mFacebook, this);
 		SessionEvents.addAuthListener(new SampleAuthListener());
-		mLoginButton.init(this, mFacebook , new String[] {"read_friendlists" , "user_photos" , "read_stream" });
+		mLoginButton.init(this, mFacebook , new String[] {"read_friendlists" , "user_photos" , "read_stream" ,"publish_checkins"});
 		mLoginButton.setVisibility(View.INVISIBLE);
 
 		// initializing login page 3 buttons' click listener

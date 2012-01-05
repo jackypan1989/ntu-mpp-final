@@ -99,10 +99,13 @@ public class MPPFinalActivity extends TabActivity implements Runnable,
 												"search", params));
 								JSONArray j = o.getJSONArray("data");
 								LocalData.placeName = new String[j.length()];
+								LocalData.placeId=new String[j.length()];
 								// Log.e("gps",j+"");
 								for (int i = 0; i < j.length(); i++) {
 									LocalData.placeName[i] = j.getJSONObject(i)
 											.getString("name");
+									LocalData.placeId[i] = j.getJSONObject(i)
+											.getString("id");
 								}
 								Globo.flagPlaceRead = true;
 							} catch (MalformedURLException e) {
